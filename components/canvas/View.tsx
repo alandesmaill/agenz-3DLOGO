@@ -2,7 +2,7 @@
 
 import { Canvas, Scene, FracturedLogo } from '@/components/canvas';
 import { NavigationLabel, TestSection, AnimatedBackground } from '@/components/dom';
-import { Suspense, useState, useRef } from 'react';
+import { Suspense, useState, useRef, useEffect } from 'react';
 import * as THREE from 'three';
 
 export default function View() {
@@ -24,6 +24,26 @@ export default function View() {
     section: null,
     isVisible: false,
   });
+
+  const [logoScale, setLogoScale] = useState(1.2);
+
+  // Responsive scaling
+  useEffect(() => {
+    const updateScale = () => {
+      const width = window.innerWidth;
+      if (width < 768) {
+        setLogoScale(0.8); // Mobile - smaller
+      } else if (width < 1024) {
+        setLogoScale(1.0); // Tablet - medium
+      } else {
+        setLogoScale(1.2); // Desktop - larger
+      }
+    };
+
+    updateScale();
+    window.addEventListener('resize', updateScale);
+    return () => window.removeEventListener('resize', updateScale);
+  }, []);
 
   // Handle navigation hover callback from FracturedLogo
   const handleNavigationHover = (
@@ -97,7 +117,7 @@ export default function View() {
             <FracturedLogo
               path="/models/3d-logo.glb"
               position={[0, 0, 0]}
-              scale={1.2}
+              scale={logoScale}
               onNavigationHover={handleNavigationHover}
               onNavigationClick={handleNavigationClick}
             />

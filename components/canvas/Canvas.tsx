@@ -1,7 +1,7 @@
 'use client';
 
 import { Canvas as ThreeCanvas } from '@react-three/fiber';
-import { ReactNode } from 'react';
+import { ReactNode, useEffect, useState } from 'react';
 
 interface CanvasProps {
   children: ReactNode;
@@ -9,18 +9,45 @@ interface CanvasProps {
 }
 
 export default function Canvas({ children, className = '' }: CanvasProps) {
+  const [cameraSettings, setCameraSettings] = useState({
+    position: [0, 0, 5] as [number, number, number],
+    fov: 75,
+  });
+
+  useEffect(() => {
+    const updateCameraSettings = () => {
+      const width = typeof window !== 'undefined' ? window.innerWidth : 1920;
+
+      if (width < 768) {
+        // Mobile - pull back and wider FOV
+        setCameraSettings({ position: [0, 0, 6], fov: 85 });
+      } else if (width < 1024) {
+        // Tablet
+        setCameraSettings({ position: [0, 0, 5.5], fov: 80 });
+      } else {
+        // Desktop
+        setCameraSettings({ position: [0, 0, 5], fov: 75 });
+      }
+    };
+
+    updateCameraSettings();
+    window.addEventListener('resize', updateCameraSettings);
+    return () => window.removeEventListener('resize', updateCameraSettings);
+  }, []);
+
   return (
     <ThreeCanvas
       className={className}
       camera={{
-        position: [0, 0, 5],
-        fov: 75,
+        position: cameraSettings.position,
+        fov: cameraSettings.fov,
         near: 0.1,
         far: 1000,
       }}
       gl={{
         antialias: true,
         alpha: true,
+        powerPreference: 'high-performance',
       }}
       dpr={[1, 2]}
     >

@@ -164,6 +164,38 @@ export default function FracturedLogo({
 
     setNavigationPieces(navPieces);
     setDebrisPieces(debris);
+
+    // Initial assembly animation for smooth loading
+    if (groupRef.current) {
+      // Start with logo slightly scaled down and transparent
+      groupRef.current.scale.set(0.8, 0.8, 0.8);
+
+      // Animate to full size with GSAP
+      gsap.to(groupRef.current.scale, {
+        x: 1,
+        y: 1,
+        z: 1,
+        duration: 0.8,
+        ease: 'power2.out',
+        delay: 0.2,
+      });
+
+      // Also fade in materials
+      [...navPieces, ...debris].forEach((piece, index) => {
+        if (piece.mesh.material instanceof THREE.MeshStandardMaterial) {
+          const originalOpacity = piece.mesh.material.opacity;
+          piece.mesh.material.opacity = 0;
+          piece.mesh.material.transparent = true;
+
+          gsap.to(piece.mesh.material, {
+            opacity: originalOpacity || 1,
+            duration: 0.8,
+            ease: 'power2.inOut',
+            delay: 0.2 + index * 0.002, // Slight stagger
+          });
+        }
+      });
+    }
   }, [scene]);
 
   // Idle rotation animation (only when assembled)

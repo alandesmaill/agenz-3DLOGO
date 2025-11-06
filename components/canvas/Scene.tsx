@@ -15,13 +15,16 @@ export default function Scene({ children }: SceneProps) {
 
       {/* Controls */}
       <OrbitControls
+        target={[0, 0, 0]}
         enableDamping
-        dampingFactor={0.05}
+        dampingFactor={0.08}
         minDistance={2}
         maxDistance={10}
-        enablePan={true}
+        enablePan={false}
         enableZoom={true}
         enableRotate={true}
+        rotateSpeed={0.5}
+        zoomSpeed={0.8}
       />
 
       {/* Lighting - Moderately reduced to prevent washout */}
