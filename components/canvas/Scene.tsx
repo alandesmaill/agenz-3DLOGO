@@ -24,9 +24,9 @@ export default function Scene({ children }: SceneProps) {
         enableRotate={true}
       />
 
-      {/* Lighting - Optimized for fractured logo visibility */}
-      <ambientLight intensity={0.6} />
-      <directionalLight position={[10, 10, 5]} intensity={0.8} castShadow />
+      {/* Lighting - Moderately reduced to prevent washout */}
+      <ambientLight intensity={0.4} />
+      <directionalLight position={[10, 10, 5]} intensity={0.6} castShadow />
       <directionalLight position={[-10, -10, -5]} intensity={0.4} />
       <pointLight position={[-10, -10, -5]} intensity={0.5} />
       <spotLight

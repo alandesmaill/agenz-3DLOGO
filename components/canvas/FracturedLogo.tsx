@@ -349,9 +349,8 @@ export default function FracturedLogo({
     }
   };
 
-  const handlePointerLeave = () => {
-    handleRecompose();
-  };
+  // Removed: handlePointerLeave to prevent auto-reassembly
+  // The logo now decomposes once and stays decomposed
 
   // Navigation piece hover handlers
   const handleNavPieceHover = (piece: NavigationPiece, isHovering: boolean) => {
@@ -503,18 +502,6 @@ export default function FracturedLogo({
             <meshBasicMaterial transparent opacity={0} />
           </mesh>
         ))}
-
-      {/* Large collision mesh for mouse leave detection when decomposed */}
-      {isDecomposed && (
-        <mesh
-          position={[0, 0, 0]}
-          onPointerLeave={handlePointerLeave}
-          visible={false}
-        >
-          <boxGeometry args={[12, 12, 8]} />
-          <meshBasicMaterial transparent opacity={0} />
-        </mesh>
-      )}
     </group>
   );
 }

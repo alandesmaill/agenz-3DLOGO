@@ -1,7 +1,7 @@
 'use client';
 
 import { Canvas, Scene, FracturedLogo } from '@/components/canvas';
-import { NavigationLabel, TestSection } from '@/components/dom';
+import { NavigationLabel, TestSection, AnimatedBackground } from '@/components/dom';
 import { Suspense, useState, useRef } from 'react';
 import * as THREE from 'three';
 
@@ -86,6 +86,9 @@ export default function View() {
 
   return (
     <div ref={containerRef} className="relative w-full h-full">
+      {/* Animated Background with Brand Colors */}
+      <AnimatedBackground />
+
       {/* Three.js Canvas */}
       <Canvas className="w-full h-full">
         <Suspense fallback={null}>
@@ -94,7 +97,7 @@ export default function View() {
             <FracturedLogo
               path="/models/3d-logo.glb"
               position={[0, 0, 0]}
-              scale={1}
+              scale={1.2}
               onNavigationHover={handleNavigationHover}
               onNavigationClick={handleNavigationClick}
             />
