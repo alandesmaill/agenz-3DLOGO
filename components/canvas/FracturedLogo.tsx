@@ -2,7 +2,7 @@
 
 import { useGLTF } from '@react-three/drei';
 import { useRef, useEffect, useState } from 'react';
-import { useFrame } from '@react-three/fiber';
+import { useFrame, useThree } from '@react-three/fiber';
 import * as THREE from 'three';
 import { GLTF } from 'three-stdlib';
 import { gsap } from 'gsap';
@@ -35,13 +35,13 @@ interface NavigationPiece extends PieceData {
   section: string;
 }
 
-// Navigation piece configuration
-const NAV_CONFIG = {
-  'Piece_001': { position: new THREE.Vector3(-2, 2, 0), label: 'ABOUT', section: 'about' },
-  'Piece_002': { position: new THREE.Vector3(2, 2, 0), label: 'SERVICES', section: 'services' },
-  'Piece_003': { position: new THREE.Vector3(-2, -2, 0), label: 'PORTFOLIO', section: 'portfolio' },
-  'Piece_004': { position: new THREE.Vector3(2, -2, 0), label: 'CONTACT', section: 'contact' },
-};
+// Navigation sections and their target positions (z: 2 brings them closer to camera)
+const NAV_SECTIONS = [
+  { section: 'about', label: 'ABOUT', position: new THREE.Vector3(-1.5, 0.8, 2) },
+  { section: 'works', label: 'WORKS', position: new THREE.Vector3(1.5, 0.8, 2) },
+  { section: 'services', label: 'SERVICES', position: new THREE.Vector3(-1.5, -0.8, 2) },
+  { section: 'contact', label: 'CONTACT', position: new THREE.Vector3(1.5, -0.8, 2) },
+];
 
 export default function FracturedLogo({
   path,
@@ -57,6 +57,9 @@ export default function FracturedLogo({
   const [debrisPieces, setDebrisPieces] = useState<PieceData[]>([]);
   const [isDecomposed, setIsDecomposed] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
+
+  // Access camera and renderer for zoom animation
+  const { camera, gl } = useThree();
 
   // Load the GLTF/GLB model
   const { scene } = useGLTF(path) as GLTFResult;
@@ -79,6 +82,36 @@ export default function FracturedLogo({
 
     console.log(`Found ${allMeshes.length} meshes in the model`);
 
+    // Calculate bounding box volume for each mesh to find the largest pieces
+    interface MeshWithVolume {
+      mesh: THREE.Mesh;
+      volume: number;
+      index: number;
+      name: string;
+    }
+
+    const meshesWithVolume: MeshWithVolume[] = allMeshes.map((mesh, index) => {
+      const box = new THREE.Box3().setFromObject(mesh);
+      const size = box.getSize(new THREE.Vector3());
+      const volume = size.x * size.y * size.z;
+
+      return {
+        mesh,
+        volume,
+        index,
+        name: mesh.name,
+      };
+    });
+
+    // Sort by volume (largest first) and take top 4
+    meshesWithVolume.sort((a, b) => b.volume - a.volume);
+    const largestFour = meshesWithVolume.slice(0, 4);
+
+    console.log('4 Largest pieces by volume:');
+    largestFour.forEach((item, idx) => {
+      console.log(`  ${idx + 1}. ${item.name} - Volume: ${item.volume.toFixed(4)}`);
+    });
+
     // Separate navigation pieces from debris
     const navPieces: NavigationPiece[] = [];
     const debris: PieceData[] = [];
@@ -96,9 +129,12 @@ export default function FracturedLogo({
         index,
       };
 
-      // Check if this is a navigation piece (Piece_001 through Piece_004)
-      if (meshName in NAV_CONFIG) {
-        const config = NAV_CONFIG[meshName as keyof typeof NAV_CONFIG];
+      // Check if this is one of the 4 largest pieces
+      const largestIndex = largestFour.findIndex(item => item.mesh === mesh);
+
+      if (largestIndex !== -1) {
+        // This is a navigation piece - assign section based on largest order
+        const config = NAV_SECTIONS[largestIndex];
         navPieces.push({
           ...pieceData,
           targetPosition: config.position,
@@ -111,6 +147,8 @@ export default function FracturedLogo({
           mesh.material.emissive = new THREE.Color(0x4444ff);
           mesh.material.emissiveIntensity = 0;
         }
+
+        console.log(`  → Assigned to: ${config.label} (${config.section})`);
       } else {
         // This is a debris piece
         debris.push(pieceData);
@@ -129,9 +167,24 @@ export default function FracturedLogo({
   }, [scene]);
 
   // Idle rotation animation (only when assembled)
-  useFrame(() => {
+  useFrame((state) => {
     if (groupRef.current && !isDecomposed && !isAnimating) {
       groupRef.current.rotation.y += 0.001;
+    }
+
+    // Floating animation for navigation pieces (only when decomposed)
+    if (isDecomposed && !isAnimating) {
+      const time = state.clock.getElapsedTime();
+
+      navigationPieces.forEach((piece, index) => {
+        // Gentle up-down floating motion with offset per piece
+        const floatOffset = index * 0.5; // Offset the wave for each piece
+        const floatY = Math.sin(time * 0.8 + floatOffset) * 0.1;
+        piece.mesh.position.y = piece.targetPosition.y + floatY;
+
+        // Slow continuous rotation on Y-axis
+        piece.mesh.rotation.y += 0.005;
+      });
     }
   });
 
@@ -355,12 +408,69 @@ export default function FracturedLogo({
     }
   };
 
-  // Navigation piece click handler
+  // Navigation piece click handler with camera zoom animation
   const handleNavPieceClick = (piece: NavigationPiece) => {
     console.log(`Navigating to: ${piece.section.toUpperCase()}`);
-    if (onNavigationClick) {
-      onNavigationClick(piece.section);
-    }
+
+    // Store original camera position for potential reset
+    const originalCameraPos = camera.position.clone();
+
+    // Create camera dive animation timeline
+    const timeline = gsap.timeline({
+      onStart: () => {
+        setIsAnimating(true);
+      },
+      onComplete: () => {
+        // Notify parent component that zoom is complete
+        if (onNavigationClick) {
+          onNavigationClick(piece.section);
+        }
+      },
+    });
+
+    // Get world position of the piece
+    const worldPos = new THREE.Vector3();
+    piece.mesh.getWorldPosition(worldPos);
+
+    timeline
+      // 1. Zoom camera INTO the piece
+      .to(camera.position, {
+        x: worldPos.x,
+        y: worldPos.y,
+        z: worldPos.z + 0.5, // Get close but not too close
+        duration: 1.5,
+        ease: 'power2.inOut',
+      })
+      // 2. Scale piece up to fill view (simultaneously with camera zoom)
+      .to(
+        piece.mesh.scale,
+        {
+          x: piece.originalScale.x * 8,
+          y: piece.originalScale.y * 8,
+          z: piece.originalScale.z * 8,
+          duration: 1.5,
+          ease: 'power2.in',
+        },
+        '-=1.5'
+      )
+      // 3. Increase glow dramatically
+      .to(
+        piece.mesh.material instanceof THREE.MeshStandardMaterial ? piece.mesh.material : {},
+        {
+          emissiveIntensity: 1.5,
+          duration: 1.5,
+        },
+        '-=1.5'
+      )
+      // 4. Fade to white (using DOM element opacity)
+      .to(
+        gl.domElement,
+        {
+          opacity: 0,
+          duration: 0.5,
+        },
+        '-=0.5'
+      );
   };
 
   return (

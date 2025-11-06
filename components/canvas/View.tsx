@@ -1,7 +1,7 @@
 'use client';
 
 import { Canvas, Scene, FracturedLogo } from '@/components/canvas';
-import { NavigationLabel } from '@/components/dom';
+import { NavigationLabel, TestSection } from '@/components/dom';
 import { Suspense, useState, useRef } from 'react';
 import * as THREE from 'three';
 
@@ -14,6 +14,14 @@ export default function View() {
   }>({
     label: null,
     position: null,
+    isVisible: false,
+  });
+
+  const [testSection, setTestSection] = useState<{
+    section: string | null;
+    isVisible: boolean;
+  }>({
+    section: null,
     isVisible: false,
   });
 
@@ -47,11 +55,33 @@ export default function View() {
     });
   };
 
-  // Handle navigation click callback
+  // Handle navigation click callback - show test section
   const handleNavigationClick = (section: string) => {
     console.log(`Navigation clicked: ${section}`);
-    // TODO: Implement navigation to section
-    // Example: router.push(`/#${section}`) or scroll to section
+    setTestSection({
+      section,
+      isVisible: true,
+    });
+  };
+
+  // Handle back button - reset to logo view
+  const handleBack = () => {
+    setTestSection({
+      section: null,
+      isVisible: false,
+    });
+
+    // Reset canvas opacity
+    const canvas = containerRef.current?.querySelector('canvas');
+    if (canvas) {
+      canvas.style.opacity = '1';
+    }
+
+    // Reload page to reset Three.js scene
+    // This is a simple approach for testing - in production you'd want a proper reset function
+    setTimeout(() => {
+      window.location.reload();
+    }, 300);
   };
 
   return (
@@ -77,6 +107,13 @@ export default function View() {
         label={labelData.label}
         position={labelData.position}
         isVisible={labelData.isVisible}
+      />
+
+      {/* HTML Overlay - Test Section Display */}
+      <TestSection
+        section={testSection.section}
+        isVisible={testSection.isVisible}
+        onBack={handleBack}
       />
     </div>
   );
