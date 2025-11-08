@@ -15,7 +15,7 @@ export default function Scene({ children }: SceneProps) {
 
       {/* Controls */}
       <OrbitControls
-        target={[0, 0, 0]}
+        target={[0.4, 1, 0]}
         enableDamping
         dampingFactor={0.08}
         minDistance={2}
