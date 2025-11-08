@@ -36,11 +36,12 @@ interface NavigationPiece extends PieceData {
 }
 
 // Navigation sections and their target positions (z: 2 brings them closer to camera)
+// Adjusted for camera target [0.4, 1, 0]
 const NAV_SECTIONS = [
-  { section: 'about', label: 'ABOUT', position: new THREE.Vector3(-1.5, 0.8, 2) },
-  { section: 'works', label: 'WORKS', position: new THREE.Vector3(1.5, 0.8, 2) },
-  { section: 'services', label: 'SERVICES', position: new THREE.Vector3(-1.5, -0.8, 2) },
-  { section: 'contact', label: 'CONTACT', position: new THREE.Vector3(1.5, -0.8, 2) },
+  { section: 'about', label: 'ABOUT', position: new THREE.Vector3(-1.1, 1.8, 2) },
+  { section: 'works', label: 'WORKS', position: new THREE.Vector3(1.9, 1.8, 2) },
+  { section: 'services', label: 'SERVICES', position: new THREE.Vector3(-1.1, 0.2, 2) },
+  { section: 'contact', label: 'CONTACT', position: new THREE.Vector3(1.9, 0.2, 2) },
 ];
 
 export default function FracturedLogo({
@@ -193,10 +194,11 @@ export default function FracturedLogo({
       groupRef.current.scale.set(0.8, 0.8, 0.8);
 
       // Animate to full size with GSAP (track for cleanup)
+      // Scale to 1.5 to make assembled logo bigger
       const scaleTween = gsap.to(groupRef.current.scale, {
-        x: 1,
-        y: 1,
-        z: 1,
+        x: 1.5,
+        y: 1.5,
+        z: 1.5,
         duration: 0.8,
         ease: 'power2.out',
         delay: 0.2,
@@ -244,7 +246,8 @@ export default function FracturedLogo({
         piece.mesh.position.y = piece.targetPosition.y + floatY;
 
         // FIXED: Use delta for frame-rate independence
-        piece.mesh.rotation.y += delta * 1.5;
+        // Slowed down rotation from 1.5 to 0.5 (3x slower)
+        piece.mesh.rotation.y += delta * 0.5;
       });
     }
   });
@@ -260,6 +263,18 @@ export default function FracturedLogo({
     const animDuration = prefersReducedMotion ? 0.5 : 1.5;
     const animDelay = prefersReducedMotion ? 0 : 0.01;
 
+    // Shrink group from 1.5 to 1.0 during decomposition
+    // This keeps navigation pieces at same visual size
+    if (groupRef.current) {
+      gsap.to(groupRef.current.scale, {
+        x: 1.0,
+        y: 1.0,
+        z: 1.0,
+        duration: animDuration,
+        ease: 'power2.inOut',
+      });
+    }
+
     // Animate navigation pieces to target positions
     navigationPieces.forEach((piece, index) => {
       gsap.to(piece.mesh.position, {
@@ -271,10 +286,13 @@ export default function FracturedLogo({
         delay: index * animDelay,
       });
 
+      // Scale pieces up to compensate for group shrink
+      // Group: 1.5→1.0, Pieces: 1.2→1.8
+      // Net: (1.0 × 1.8) / (1.5 × 1.2) = 1.0 (same visual size!)
       gsap.to(piece.mesh.scale, {
-        x: piece.originalScale.x * 1.2,
-        y: piece.originalScale.y * 1.2,
-        z: piece.originalScale.z * 1.2,
+        x: piece.originalScale.x * 1.8,
+        y: piece.originalScale.y * 1.8,
+        z: piece.originalScale.z * 1.8,
         duration: animDuration,
         ease: 'power2.inOut',
         delay: index * animDelay,
@@ -406,11 +424,11 @@ export default function FracturedLogo({
     if (!isDecomposed || isAnimating) return;
 
     if (isHovering) {
-      // Scale up on hover
+      // Scale up on hover (from 1.8 to 2.0)
       gsap.to(piece.mesh.scale, {
-        x: piece.originalScale.x * 1.3,
-        y: piece.originalScale.y * 1.3,
-        z: piece.originalScale.z * 1.3,
+        x: piece.originalScale.x * 2.0,
+        y: piece.originalScale.y * 2.0,
+        z: piece.originalScale.z * 2.0,
         duration: 0.3,
         ease: 'back.out(1.7)',
       });
@@ -423,11 +441,11 @@ export default function FracturedLogo({
         onNavigationHover(piece.name, piece.label, worldPos);
       }
     } else {
-      // Scale back to decomposed size
+      // Scale back to decomposed size (1.8)
       gsap.to(piece.mesh.scale, {
-        x: piece.originalScale.x * 1.2,
-        y: piece.originalScale.y * 1.2,
-        z: piece.originalScale.z * 1.2,
+        x: piece.originalScale.x * 1.8,
+        y: piece.originalScale.y * 1.8,
+        z: piece.originalScale.z * 1.8,
         duration: 0.3,
         ease: 'power2.out',
       });
