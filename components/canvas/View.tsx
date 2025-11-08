@@ -36,7 +36,7 @@ export default function View() {
       } else if (width < 1024) {
         setLogoScale(1.0); // Tablet - medium
       } else {
-        setLogoScale(1.2); // Desktop - larger
+        setLogoScale(1.8); // Desktop - much larger
       }
     };
 

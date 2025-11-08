@@ -260,6 +260,10 @@ export default function FracturedLogo({
     const animDuration = prefersReducedMotion ? 0.5 : 1.5;
     const animDelay = prefersReducedMotion ? 0 : 0.01;
 
+    // Compensate for parent group scale to keep navigation pieces consistent size
+    const parentScale = typeof scale === 'number' ? scale : 1;
+    const targetScale = 1.2 / parentScale; // Inverse scale to maintain visual size
+
     // Animate navigation pieces to target positions
     navigationPieces.forEach((piece, index) => {
       gsap.to(piece.mesh.position, {
@@ -272,9 +276,9 @@ export default function FracturedLogo({
       });
 
       gsap.to(piece.mesh.scale, {
-        x: piece.originalScale.x * 1.2,
-        y: piece.originalScale.y * 1.2,
-        z: piece.originalScale.z * 1.2,
+        x: piece.originalScale.x * targetScale,
+        y: piece.originalScale.y * targetScale,
+        z: piece.originalScale.z * targetScale,
         duration: animDuration,
         ease: 'power2.inOut',
         delay: index * animDelay,
@@ -405,12 +409,17 @@ export default function FracturedLogo({
   const handleNavPieceHover = (piece: NavigationPiece, isHovering: boolean) => {
     if (!isDecomposed || isAnimating) return;
 
+    // Compensate for parent scale to maintain consistent piece sizes
+    const parentScale = typeof scale === 'number' ? scale : 1;
+    const baseScale = 1.2 / parentScale;
+    const hoverScale = 1.3 / parentScale;
+
     if (isHovering) {
       // Scale up on hover
       gsap.to(piece.mesh.scale, {
-        x: piece.originalScale.x * 1.3,
-        y: piece.originalScale.y * 1.3,
-        z: piece.originalScale.z * 1.3,
+        x: piece.originalScale.x * hoverScale,
+        y: piece.originalScale.y * hoverScale,
+        z: piece.originalScale.z * hoverScale,
         duration: 0.3,
         ease: 'back.out(1.7)',
       });
@@ -425,9 +434,9 @@ export default function FracturedLogo({
     } else {
       // Scale back to decomposed size
       gsap.to(piece.mesh.scale, {
-        x: piece.originalScale.x * 1.2,
-        y: piece.originalScale.y * 1.2,
-        z: piece.originalScale.z * 1.2,
+        x: piece.originalScale.x * baseScale,
+        y: piece.originalScale.y * baseScale,
+        z: piece.originalScale.z * baseScale,
         duration: 0.3,
         ease: 'power2.out',
       });
