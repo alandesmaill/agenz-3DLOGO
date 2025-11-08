@@ -249,6 +249,26 @@ export default function FracturedLogo({
         // Slowed down rotation from 1.5 to 0.5 (3x slower)
         piece.mesh.rotation.y += delta * 0.5;
       });
+
+      // Subtle looping motion for debris pieces in background
+      debrisPieces.forEach((piece) => {
+        // Each piece has unique timing based on its index
+        const offset = piece.index * 0.3;
+
+        // Very gentle floating motion with very slow frequencies
+        const floatX = Math.sin(time * 0.1 + offset) * 0.05;
+        const floatY = Math.cos(time * 0.12 + offset * 1.5) * 0.08;
+        const floatZ = Math.sin(time * 0.08 + offset * 2) * 0.05;
+
+        // Apply extremely subtle movement to current position
+        piece.mesh.position.x += floatX * 0.02;
+        piece.mesh.position.y += floatY * 0.02;
+        piece.mesh.position.z += floatZ * 0.02;
+
+        // Extremely slow continuous rotation (barely noticeable)
+        piece.mesh.rotation.x += delta * 0.01;
+        piece.mesh.rotation.y += delta * 0.015;
+      });
     }
   });
 
