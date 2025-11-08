@@ -170,12 +170,6 @@ export default function FracturedLogo({
           section: config.section,
         });
 
-        // Enhance material for navigation pieces
-        if (mesh.material instanceof THREE.MeshStandardMaterial) {
-          mesh.material.emissive = new THREE.Color(0x4444ff);
-          mesh.material.emissiveIntensity = 0;
-        }
-
         console.log(`  → Assigned to: ${config.label} (${config.section})`);
       } else {
         // This is a debris piece
@@ -285,15 +279,6 @@ export default function FracturedLogo({
         ease: 'power2.inOut',
         delay: index * animDelay,
       });
-
-      // Add glow to navigation pieces
-      if (piece.mesh.material instanceof THREE.MeshStandardMaterial) {
-        gsap.to(piece.mesh.material, {
-          emissiveIntensity: 0.3,
-          duration: animDuration,
-          delay: index * animDelay,
-        });
-      }
     });
 
     // Animate debris pieces - explode randomly
@@ -372,14 +357,6 @@ export default function FracturedLogo({
         duration: 1.2,
         ease: 'power2.inOut',
       });
-
-      // Remove glow
-      if (piece.mesh.material instanceof THREE.MeshStandardMaterial) {
-        gsap.to(piece.mesh.material, {
-          emissiveIntensity: 0,
-          duration: 1.2,
-        });
-      }
     });
 
     // Return debris pieces to original positions
@@ -429,7 +406,6 @@ export default function FracturedLogo({
     if (!isDecomposed || isAnimating) return;
 
     if (isHovering) {
-
       // Scale up on hover
       gsap.to(piece.mesh.scale, {
         x: piece.originalScale.x * 1.3,
@@ -439,14 +415,6 @@ export default function FracturedLogo({
         ease: 'back.out(1.7)',
       });
 
-      // Increase glow
-      if (piece.mesh.material instanceof THREE.MeshStandardMaterial) {
-        gsap.to(piece.mesh.material, {
-          emissiveIntensity: 0.8,
-          duration: 0.3,
-        });
-      }
-
       // Get world position for label
       const worldPos = new THREE.Vector3();
       piece.mesh.getWorldPosition(worldPos);
@@ -455,7 +423,6 @@ export default function FracturedLogo({
         onNavigationHover(piece.name, piece.label, worldPos);
       }
     } else {
-
       // Scale back to decomposed size
       gsap.to(piece.mesh.scale, {
         x: piece.originalScale.x * 1.2,
@@ -464,14 +431,6 @@ export default function FracturedLogo({
         duration: 0.3,
         ease: 'power2.out',
       });
-
-      // Return to normal glow
-      if (piece.mesh.material instanceof THREE.MeshStandardMaterial) {
-        gsap.to(piece.mesh.material, {
-          emissiveIntensity: 0.3,
-          duration: 0.3,
-        });
-      }
 
       if (onNavigationHover) {
         onNavigationHover(null, null, null);
@@ -525,16 +484,7 @@ export default function FracturedLogo({
         },
         '-=1.5'
       )
-      // 3. Increase glow dramatically
-      .to(
-        piece.mesh.material instanceof THREE.MeshStandardMaterial ? piece.mesh.material : {},
-        {
-          emissiveIntensity: 1.5,
-          duration: 1.5,
-        },
-        '-=1.5'
-      )
-      // 4. Fade to white (using DOM element opacity)
+      // 3. Fade to white (using DOM element opacity)
       .to(
         gl.domElement,
         {
