@@ -61,8 +61,8 @@ export default function AnimatedBackground() {
       {/* Dark background base */}
       <div className="absolute inset-0 bg-[#0a0a0a]" />
 
-      {/* Gradient mesh orbs */}
-      <div className="absolute inset-0 opacity-60">
+      {/* Gradient mesh orbs - reduced opacity */}
+      <div className="absolute inset-0 opacity-40">
         {/* Orb 1 - Cyan gradient */}
         <div
           ref={orb1Ref}
@@ -115,6 +115,53 @@ export default function AnimatedBackground() {
           background: 'radial-gradient(circle at center, transparent 0%, #0a0a0a 100%)',
         }}
       />
+
+      {/* Animated grid pattern for depth */}
+      <div className="absolute inset-0 opacity-10">
+        <svg
+          className="w-full h-full"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <defs>
+            <pattern
+              id="grid"
+              width="80"
+              height="80"
+              patternUnits="userSpaceOnUse"
+            >
+              <path
+                d="M 80 0 L 0 0 0 80"
+                fill="none"
+                stroke="rgba(0, 255, 255, 0.3)"
+                strokeWidth="0.5"
+              />
+            </pattern>
+            <linearGradient id="gridFade" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stopColor="white" stopOpacity="0" />
+              <stop offset="50%" stopColor="white" stopOpacity="1" />
+              <stop offset="100%" stopColor="white" stopOpacity="0" />
+            </linearGradient>
+          </defs>
+          <rect width="100%" height="100%" fill="url(#grid)" mask="url(#gridFade)" />
+        </svg>
+      </div>
+
+      {/* Floating particles in background - reduced for performance */}
+      <div className="absolute inset-0 overflow-hidden">
+        {[...Array(8)].map((_, i) => (
+          <div
+            key={i}
+            className="absolute w-1 h-1 bg-cyan-400 rounded-full animate-pulse"
+            style={{
+              left: `${Math.random() * 100}%`,
+              top: `${Math.random() * 100}%`,
+              animationDelay: `${Math.random() * 5}s`,
+              animationDuration: `${3 + Math.random() * 4}s`,
+              opacity: 0.15 + Math.random() * 0.2,
+            }}
+          />
+        ))}
+      </div>
     </div>
   );
 }

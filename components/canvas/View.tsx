@@ -1,8 +1,20 @@
 'use client';
 
 import { Canvas, Scene, FracturedLogo } from '@/components/canvas';
-import { NavigationLabel, TestSection, AnimatedBackground } from '@/components/dom';
+import { NavigationLabel, TestSection, AnimatedBackground, LoadingScreen } from '@/components/dom';
 import { Suspense, useState, useRef, useEffect } from 'react';
+import { useProgress } from '@react-three/drei';
+
+// Loading progress component inside Canvas
+function LoadingManager({ onProgress }: { onProgress: (progress: number) => void }) {
+  const { progress } = useProgress();
+
+  useEffect(() => {
+    onProgress(progress);
+  }, [progress, onProgress]);
+
+  return null;
+}
 
 export default function View() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -25,6 +37,8 @@ export default function View() {
   });
 
   const [logoScale, setLogoScale] = useState(1.2);
+  const [loadingProgress, setLoadingProgress] = useState(0);
+  const [isLoaded, setIsLoaded] = useState(false);
 
   // Responsive scaling
   useEffect(() => {
@@ -43,6 +57,15 @@ export default function View() {
     window.addEventListener('resize', updateScale);
     return () => window.removeEventListener('resize', updateScale);
   }, []);
+
+  // Mark as loaded when progress reaches 100%
+  useEffect(() => {
+    if (loadingProgress >= 100) {
+      setTimeout(() => {
+        setIsLoaded(true);
+      }, 500);
+    }
+  }, [loadingProgress]);
 
   // Handle navigation hover callback from FracturedLogo
   const handleNavigationHover = (
@@ -93,12 +116,16 @@ export default function View() {
 
   return (
     <div ref={containerRef} className="relative w-full h-full">
+      {/* Loading Screen */}
+      <LoadingScreen progress={loadingProgress} isLoaded={isLoaded} />
+
       {/* Animated Background with Brand Colors */}
       <AnimatedBackground />
 
       {/* Three.js Canvas */}
       <Canvas className="w-full h-full">
         <Suspense fallback={null}>
+          <LoadingManager onProgress={setLoadingProgress} />
           <Scene>
             {/* Interactive Fractured Logo */}
             <FracturedLogo

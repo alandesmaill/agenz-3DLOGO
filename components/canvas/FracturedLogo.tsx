@@ -6,6 +6,7 @@ import { useFrame, useThree } from '@react-three/fiber';
 import * as THREE from 'three';
 import { GLTF } from 'three-stdlib';
 import { gsap } from 'gsap';
+import ParticleAssembly from './ParticleAssembly';
 
 interface FracturedLogoProps {
   path: string;
@@ -58,6 +59,8 @@ export default function FracturedLogo({
   const [debrisPieces, setDebrisPieces] = useState<PieceData[]>([]);
   const [isDecomposed, setIsDecomposed] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
+  const [showParticles, setShowParticles] = useState(true);
+  const [particleTargets, setParticleTargets] = useState<THREE.Vector3[]>([]);
 
   // Access camera and renderer for zoom animation
   const { camera, gl } = useThree();
@@ -188,49 +191,90 @@ export default function FracturedLogo({
     setNavigationPieces(navPieces);
     setDebrisPieces(debris);
 
-    // Initial assembly animation for smooth loading
+    // Collect particle target positions from all meshes
+    const targets: THREE.Vector3[] = [];
+    [...navPieces, ...debris].forEach((piece) => {
+      // Sample multiple points from each mesh for particles
+      const sampleCount = 20; // Points per mesh
+      for (let i = 0; i < sampleCount; i++) {
+        const worldPos = new THREE.Vector3();
+        piece.mesh.getWorldPosition(worldPos);
+
+        // Add some spread around the mesh position
+        const spread = 0.3;
+        worldPos.x += (Math.random() - 0.5) * spread;
+        worldPos.y += (Math.random() - 0.5) * spread;
+        worldPos.z += (Math.random() - 0.5) * spread;
+
+        targets.push(worldPos);
+      }
+    });
+    setParticleTargets(targets);
+
+    // Cinematic camera introduction - zoom from far away
+    const originalCameraPos = camera.position.clone();
+    camera.position.set(0, 2, 15); // Start further back and slightly above
+
+    gsap.to(camera.position, {
+      x: originalCameraPos.x,
+      y: originalCameraPos.y,
+      z: originalCameraPos.z,
+      duration: 3.5,
+      ease: 'power2.inOut',
+    });
+
+    // Initial assembly animation - start invisible and scale from particles
     if (groupRef.current) {
-      // Start with logo slightly scaled down and transparent
-      groupRef.current.scale.set(0.8, 0.8, 0.8);
+      // Start with logo pieces invisible (particles will form first)
+      groupRef.current.scale.set(1.0, 1.0, 1.0);
 
-      // Animate to full size with GSAP (track for cleanup)
-      // Scale to 1.5 to make assembled logo bigger
-      const scaleTween = gsap.to(groupRef.current.scale, {
-        x: 1.5,
-        y: 1.5,
-        z: 1.5,
-        duration: 0.8,
-        ease: 'power2.out',
-        delay: 0.2,
-      });
-      tweensRef.current.push(scaleTween);
-
-      // Also fade in materials
-      [...navPieces, ...debris].forEach((piece, index) => {
+      // Make all pieces invisible initially
+      [...navPieces, ...debris].forEach((piece) => {
         if (piece.mesh.material instanceof THREE.MeshStandardMaterial) {
-          const originalOpacity = piece.mesh.material.opacity;
           piece.mesh.material.opacity = 0;
           piece.mesh.material.transparent = true;
-
-          const fadeTween = gsap.to(piece.mesh.material, {
-            opacity: originalOpacity || 1,
-            duration: 0.8,
-            ease: 'power2.inOut',
-            delay: 0.2 + index * 0.002, // Slight stagger
-          });
-          tweensRef.current.push(fadeTween);
         }
       });
+
+      // After particles assemble (2.5s), fade in the actual meshes and hide particles
+      setTimeout(() => {
+        // Fade in the logo meshes
+        [...navPieces, ...debris].forEach((piece, index) => {
+          if (piece.mesh.material instanceof THREE.MeshStandardMaterial) {
+            const fadeTween = gsap.to(piece.mesh.material, {
+              opacity: 1,
+              duration: 0.8,
+              ease: 'power2.inOut',
+              delay: index * 0.005, // Slight stagger
+            });
+            tweensRef.current.push(fadeTween);
+          }
+        });
+
+        // Scale up to 1.5 as meshes appear
+        const scaleTween = gsap.to(groupRef.current!.scale, {
+          x: 1.5,
+          y: 1.5,
+          z: 1.5,
+          duration: 1.0,
+          ease: 'back.out(1.2)',
+        });
+        tweensRef.current.push(scaleTween);
+
+        // Hide particles after logo forms
+        setShowParticles(false);
+      }, 2600); // Slightly after particle animation completes
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [scene]);
 
   // OPTIMIZATION: Frame-rate independent animation with delta
   useFrame((state, delta) => {
     if (groupRef.current && !isDecomposed && !isAnimating) {
       // FIXED: Use delta for frame-rate independence
-      // Skip idle rotation if reduced motion is preferred
+      // Very slow rotation (reduced from 0.3 to 0.02)
       if (!prefersReducedMotion) {
-        groupRef.current.rotation.y += delta * 0.3;
+        groupRef.current.rotation.y += delta * 0.02;
       }
     }
 
@@ -453,6 +497,27 @@ export default function FracturedLogo({
         ease: 'back.out(1.7)',
       });
 
+      // Add glow effect with bloom
+      if (piece.mesh.material instanceof THREE.MeshStandardMaterial) {
+        // Set emissive color to brand colors for bloom effect
+        const originalEmissive = piece.mesh.material.emissive.clone();
+        const glowColor = new THREE.Color(0x00ffff); // Cyan glow
+
+        gsap.to(piece.mesh.material.emissive, {
+          r: glowColor.r,
+          g: glowColor.g,
+          b: glowColor.b,
+          duration: 0.3,
+          ease: 'power2.out',
+        });
+
+        gsap.to(piece.mesh.material, {
+          emissiveIntensity: 0.5, // Gentle glow (reduced from 2.5)
+          duration: 0.3,
+          ease: 'power2.out',
+        });
+      }
+
       // Get world position and convert to screen coordinates
       const worldPos = new THREE.Vector3();
       piece.mesh.getWorldPosition(worldPos);
@@ -478,6 +543,23 @@ export default function FracturedLogo({
         duration: 0.3,
         ease: 'power2.out',
       });
+
+      // Remove glow effect
+      if (piece.mesh.material instanceof THREE.MeshStandardMaterial) {
+        gsap.to(piece.mesh.material.emissive, {
+          r: 0,
+          g: 0,
+          b: 0,
+          duration: 0.3,
+          ease: 'power2.out',
+        });
+
+        gsap.to(piece.mesh.material, {
+          emissiveIntensity: 0,
+          duration: 0.3,
+          ease: 'power2.out',
+        });
+      }
 
       if (onNavigationHover) {
         onNavigationHover(null, null, null);
@@ -588,6 +670,16 @@ export default function FracturedLogo({
             <meshBasicMaterial transparent opacity={0} />
           </mesh>
         ))}
+
+      {/* Particle assembly system - Z shape formation */}
+      {showParticles && particleTargets.length > 0 && (
+        <ParticleAssembly
+          targetPositions={particleTargets}
+          isActive={true}
+          particleCount={800}
+          duration={2.5}
+        />
+      )}
     </group>
   );
 }
