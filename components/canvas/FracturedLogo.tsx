@@ -676,7 +676,7 @@ export default function FracturedLogo({
         <ParticleAssembly
           targetPositions={particleTargets}
           isActive={true}
-          particleCount={800}
+          particleCount={1500}
           duration={2.5}
         />
       )}

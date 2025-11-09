@@ -17,7 +17,7 @@ export default function ParticleAssembly({
   targetPositions,
   isActive,
   onComplete,
-  particleCount = 800,
+  particleCount = 1500,
   duration = 2.5,
 }: ParticleAssemblyProps) {
   const particlesRef = useRef<THREE.Points>(null);
@@ -47,31 +47,31 @@ export default function ParticleAssembly({
 
       let startX, startY, startZ;
 
-      // Form letter "Z" shape
+      // Form letter "Z" shape (smaller and more compact)
       if (i < topLineCount) {
         // Top horizontal line: left to right
         const t = i / topLineCount;
-        startX = -1.5 + t * 3.0; // -1.5 to 1.5
-        startY = 1.5;
+        startX = -1.2 + t * 2.4; // -1.2 to 1.2
+        startY = 1.2;
         startZ = 2.0;
       } else if (i < topLineCount + diagonalCount) {
         // Diagonal line: top-right to bottom-left
         const t = (i - topLineCount) / diagonalCount;
-        startX = 1.5 - t * 3.0; // 1.5 to -1.5
-        startY = 1.5 - t * 3.0; // 1.5 to -1.5
+        startX = 1.2 - t * 2.4; // 1.2 to -1.2
+        startY = 1.2 - t * 2.4; // 1.2 to -1.2
         startZ = 2.0;
       } else {
         // Bottom horizontal line: left to right
         const t = (i - topLineCount - diagonalCount) / bottomLineCount;
-        startX = -1.5 + t * 3.0; // -1.5 to 1.5
-        startY = -1.5;
+        startX = -1.2 + t * 2.4; // -1.2 to 1.2
+        startY = -1.2;
         startZ = 2.0;
       }
 
-      // Add slight randomness for organic look
-      startX += (Math.random() - 0.5) * 0.1;
-      startY += (Math.random() - 0.5) * 0.1;
-      startZ += (Math.random() - 0.5) * 0.2;
+      // Add minimal randomness for tight Z formation
+      startX += (Math.random() - 0.5) * 0.02;
+      startY += (Math.random() - 0.5) * 0.02;
+      startZ += (Math.random() - 0.5) * 0.02;
 
       positions[i3] = startX;
       positions[i3 + 1] = startY;
@@ -102,8 +102,8 @@ export default function ParticleAssembly({
       colors[i3 + 1] = color.g;
       colors[i3 + 2] = color.b;
 
-      // Smaller particle sizes for better performance
-      sizes[i] = 0.02 + Math.random() * 0.02;
+      // Larger particle sizes for clearer Z
+      sizes[i] = 0.06 + Math.random() * 0.04;
     }
 
     return {
@@ -213,7 +213,7 @@ export default function ParticleAssembly({
         />
       </bufferGeometry>
       <pointsMaterial
-        size={0.03}
+        size={0.08}
         vertexColors
         transparent
         opacity={0.6}
