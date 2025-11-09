@@ -3,7 +3,6 @@
 import { Canvas, Scene, FracturedLogo } from '@/components/canvas';
 import { NavigationLabel, TestSection, AnimatedBackground } from '@/components/dom';
 import { Suspense, useState, useRef, useEffect } from 'react';
-import * as THREE from 'three';
 
 export default function View() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -49,28 +48,16 @@ export default function View() {
   const handleNavigationHover = (
     piece: string | null,
     label: string | null,
-    worldPosition: THREE.Vector3 | null
+    screenPosition: { x: number; y: number } | null
   ) => {
-    if (!worldPosition || !label || !containerRef.current) {
+    if (!screenPosition || !label) {
       setLabelData({ label: null, position: null, isVisible: false });
       return;
     }
 
-    // Get canvas element for viewport calculations
-    const canvas = containerRef.current.querySelector('canvas');
-    if (!canvas) return;
-
-    const rect = canvas.getBoundingClientRect();
-
-    // Convert 3D world position to 2D screen position
-    // This is a simplified projection - the actual camera projection is handled by Three.js
-    // We'll use a rough estimate based on the world position
-    const screenX = rect.left + rect.width / 2 + worldPosition.x * (rect.width / 8);
-    const screenY = rect.top + rect.height / 2 - worldPosition.y * (rect.height / 8);
-
     setLabelData({
       label,
-      position: { x: screenX, y: screenY },
+      position: screenPosition,
       isVisible: true,
     });
   };

@@ -11,7 +11,7 @@ interface FracturedLogoProps {
   path: string;
   position?: [number, number, number];
   scale?: number | [number, number, number];
-  onNavigationHover?: (piece: string | null, label: string | null, position: THREE.Vector3 | null) => void;
+  onNavigationHover?: (piece: string | null, label: string | null, screenPosition: { x: number; y: number } | null) => void;
   onNavigationClick?: (section: string) => void;
 }
 
@@ -453,12 +453,21 @@ export default function FracturedLogo({
         ease: 'back.out(1.7)',
       });
 
-      // Get world position for label
+      // Get world position and convert to screen coordinates
       const worldPos = new THREE.Vector3();
       piece.mesh.getWorldPosition(worldPos);
 
+      // Project 3D world position to 2D screen position using proper camera projection
+      const screenPos = worldPos.clone().project(camera);
+
+      // Convert normalized device coordinates (-1 to 1) to screen pixels
+      const canvas = gl.domElement;
+      const rect = canvas.getBoundingClientRect();
+      const screenX = rect.left + (screenPos.x + 1) * rect.width / 2;
+      const screenY = rect.top + (-screenPos.y + 1) * rect.height / 2;
+
       if (onNavigationHover) {
-        onNavigationHover(piece.name, piece.label, worldPos);
+        onNavigationHover(piece.name, piece.label, { x: screenX, y: screenY });
       }
     } else {
       // Scale back to decomposed size (1.8)
