@@ -6,7 +6,6 @@ import { useFrame, useThree } from '@react-three/fiber';
 import * as THREE from 'three';
 import { GLTF } from 'three-stdlib';
 import { gsap } from 'gsap';
-import ParticleAssembly from './ParticleAssembly';
 
 interface FracturedLogoProps {
   path: string;
@@ -59,8 +58,6 @@ export default function FracturedLogo({
   const [debrisPieces, setDebrisPieces] = useState<PieceData[]>([]);
   const [isDecomposed, setIsDecomposed] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
-  const [showParticles, setShowParticles] = useState(true);
-  const [particleTargets, setParticleTargets] = useState<THREE.Vector3[]>([]);
 
   // Access camera and renderer for zoom animation
   const { camera, gl } = useThree();
@@ -191,26 +188,6 @@ export default function FracturedLogo({
     setNavigationPieces(navPieces);
     setDebrisPieces(debris);
 
-    // Collect particle target positions from all meshes
-    const targets: THREE.Vector3[] = [];
-    [...navPieces, ...debris].forEach((piece) => {
-      // Sample multiple points from each mesh for particles
-      const sampleCount = 20; // Points per mesh
-      for (let i = 0; i < sampleCount; i++) {
-        const worldPos = new THREE.Vector3();
-        piece.mesh.getWorldPosition(worldPos);
-
-        // Add some spread around the mesh position
-        const spread = 0.3;
-        worldPos.x += (Math.random() - 0.5) * spread;
-        worldPos.y += (Math.random() - 0.5) * spread;
-        worldPos.z += (Math.random() - 0.5) * spread;
-
-        targets.push(worldPos);
-      }
-    });
-    setParticleTargets(targets);
-
     // Cinematic camera introduction - zoom from far away
     const originalCameraPos = camera.position.clone();
     camera.position.set(0, 2, 15); // Start further back and slightly above
@@ -223,10 +200,10 @@ export default function FracturedLogo({
       ease: 'power2.inOut',
     });
 
-    // Initial assembly animation - start invisible and scale from particles
+    // Classic landing animation - fade in and scale up
     if (groupRef.current) {
-      // Start with logo pieces invisible (particles will form first)
-      groupRef.current.scale.set(1.0, 1.0, 1.0);
+      // Start with logo at smaller scale
+      groupRef.current.scale.set(0.8, 0.8, 0.8);
 
       // Make all pieces invisible initially
       [...navPieces, ...debris].forEach((piece) => {
@@ -236,34 +213,31 @@ export default function FracturedLogo({
         }
       });
 
-      // After particles assemble (2.5s), fade in the actual meshes and hide particles
+      // Wait a moment for camera to start moving, then fade in the logo
       setTimeout(() => {
-        // Fade in the logo meshes
+        // Fade in the logo meshes with subtle stagger
         [...navPieces, ...debris].forEach((piece, index) => {
           if (piece.mesh.material instanceof THREE.MeshStandardMaterial) {
             const fadeTween = gsap.to(piece.mesh.material, {
               opacity: 1,
-              duration: 0.8,
-              ease: 'power2.inOut',
-              delay: index * 0.005, // Slight stagger
+              duration: 1.2,
+              ease: 'power2.out',
+              delay: index * 0.003, // Very subtle stagger
             });
             tweensRef.current.push(fadeTween);
           }
         });
 
-        // Scale up to 1.5 as meshes appear
+        // Smooth scale up to final size
         const scaleTween = gsap.to(groupRef.current!.scale, {
           x: 1.5,
           y: 1.5,
           z: 1.5,
-          duration: 1.0,
-          ease: 'back.out(1.2)',
+          duration: 2.0,
+          ease: 'power2.out',
         });
         tweensRef.current.push(scaleTween);
-
-        // Hide particles after logo forms
-        setShowParticles(false);
-      }, 2600); // Slightly after particle animation completes
+      }, 800); // Start after camera begins moving
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [scene]);
@@ -670,16 +644,6 @@ export default function FracturedLogo({
             <meshBasicMaterial transparent opacity={0} />
           </mesh>
         ))}
-
-      {/* Particle assembly system - Z shape formation */}
-      {showParticles && particleTargets.length > 0 && (
-        <ParticleAssembly
-          targetPositions={particleTargets}
-          isActive={true}
-          particleCount={1500}
-          duration={2.5}
-        />
-      )}
     </group>
   );
 }

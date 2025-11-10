@@ -77,6 +77,14 @@ Accept that headless mode will have lower FPS and adjust thresholds:
 ```bash
 npm run test:perf:headed
 ```
+ # Run tests (headless - fast but inaccurate for WebGL)
+  npm run test:perf
+
+  # Run tests WITH browser visible (accurate FPS)
+  npm run test:perf:headed
+
+  # View HTML report
+  npm run test:perf:report
 
 This will give more accurate results with GPU acceleration.
 

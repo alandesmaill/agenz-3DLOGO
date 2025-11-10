@@ -1,223 +1,250 @@
-# Three.js + Next.js + React + GSAP + WebGL
+# 3D Fractured Logo Navigation
 
-A production-ready setup for creating interactive 3D experiences using Three.js with Next.js, React Three Fiber, and GSAP animations.
+An interactive 3D navigation system featuring a fractured logo that decomposes into floating navigation pieces with particle effects and smooth animations.
 
-## Features
+![Three.js](https://img.shields.io/badge/Three.js-v0.169.0-black?style=flat-square&logo=three.js)
+![Next.js](https://img.shields.io/badge/Next.js-v14.2.21-black?style=flat-square&logo=next.js)
+![TypeScript](https://img.shields.io/badge/TypeScript-5.x-blue?style=flat-square&logo=typescript)
+![React](https://img.shields.io/badge/React-18.x-61DAFB?style=flat-square&logo=react)
 
-- **Next.js 15** with App Router
-- **Three.js** for 3D graphics
-- **React Three Fiber** - React renderer for Three.js
-- **React Three Drei** - Useful helpers and abstractions
-- **GSAP** - Professional-grade animations
-- **TypeScript** - Type safety
-- **Tailwind CSS** - Utility-first styling
-- **WebGL** optimized setup
+## ✨ Features
 
-## Getting Started
+### 🎯 Interactive 3D Navigation
+- **Fractured Logo System**: 99+ mesh pieces automatically categorized into 4 navigation sections
+- **Smart Piece Detection**: Automatically identifies the 4 largest pieces by volume as navigation elements
+- **Smooth Decomposition**: Logo explodes into floating navigation pieces on hover
+- **Navigation Sections**: ABOUT, WORKS, SERVICES, CONTACT
+- **Glow Effects**: Navigation pieces emit cyan glow on hover with bloom post-processing
 
-### 1. Fix NPM Permissions (If Needed)
+### 🌌 Particle Assembly Animation
+- **Z-Shape Formation**: 800 particles form the letter "Z" before morphing into the logo
+- **Brand Colors**: Cyan (#00ffff) to green (#00e92c) gradient
+- **Smooth Morphing**: 2.5-second transition from Z → logo shape
+- **Optimized Performance**: BufferGeometry-based system for 60fps
 
-If you encounter npm permission errors, run:
+### 📹 Cinematic Camera
+- **Intro Animation**: Camera starts distant (z: 15) and zooms in over 3.5 seconds
+- **Interactive Controls**: Orbit, zoom, and pan with smooth damping
+- **Zoom Navigation**: Camera dives into navigation pieces on click
+- **GSAP Animations**: Professional easing and timeline management
+
+### 🎨 Visual Effects
+- **Post-Processing**: Bloom and vignette effects for depth
+- **Liquid Glass Labels**: Semi-transparent navigation overlays with improved readability
+- **Loading Screen**: Circular progress ring with real-time percentage
+- **Animated Background**: Gradient orbs, grid pattern, and floating particles
+
+### ⚡ Performance Optimized
+- **60fps Target**: Optimized for smooth performance on modern hardware
+- **Reduced Motion Support**: Respects user accessibility preferences
+- **Mobile Friendly**: Larger collision areas for touch interactions
+- **Frame-Independent**: Uses delta time for consistent animations
+
+## 🚀 Quick Start
+
+### Prerequisites
+- Node.js 18.x or higher
+- npm or yarn
+
+### Installation
 
 ```bash
-sudo chown -R 501:20 "/Users/mac1/.npm"
-```
+# Clone the repository
+git clone <your-repo-url>
 
-### 2. Install Dependencies
-
-```bash
+# Install dependencies
 npm install
-```
 
-### 3. Run Development Server
-
-```bash
+# Start development server
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) to see your 3D scene.
+Open [http://localhost:3000](http://localhost:3000) to see the interactive 3D scene.
 
-## Project Structure
+## 📁 Project Structure
 
 ```
 ├── app/
-│   ├── page.tsx          # Main page with 3D scene
+│   ├── page.tsx          # Main page
 │   ├── layout.tsx        # Root layout
 │   └── globals.css       # Global styles
 ├── components/
-│   ├── canvas/           # Three.js components
-│   │   ├── Canvas.tsx    # Canvas wrapper
-│   │   ├── Scene.tsx     # Scene with lights & controls
-│   │   ├── Model.tsx     # 3D model loader
-│   │   ├── Cube.tsx      # Example animated cube
-│   │   └── index.ts      # Exports
-│   └── dom/              # Regular React components
+│   ├── canvas/           # 3D/WebGL components
+│   │   ├── Canvas.tsx    # ThreeJS canvas wrapper
+│   │   ├── Scene.tsx     # Lights, camera, environment
+│   │   ├── View.tsx      # Main 3D view orchestrator
+│   │   ├── FracturedLogo.tsx      # Main interactive logo
+│   │   └── ParticleAssembly.tsx   # Particle system
+│   └── dom/              # React/DOM components
+│       ├── AnimatedBackground.tsx # Background effects
+│       ├── LoadingScreen.tsx      # Loading UI
+│       ├── NavigationLabel.tsx    # 3D floating labels
+│       └── TestSection.tsx        # Navigation destination
 ├── public/
-│   └── models/           # Place your 3D models here (.glb, .gltf)
-└── ...config files
+│   └── models/
+│       └── 3d-logo.glb   # Fractured logo 3D model
+├── tests/                # Playwright performance tests
+├── docs/                 # Documentation
+│   ├── CLAUDE.md        # AI assistant guidelines
+│   └── CHANGELOG.md     # Development history
+└── [config files]
 ```
 
-## Adding 3D Models
+## 🎮 User Interaction Flow
 
-### 1. Place Your Model
+1. **Initial Load**
+   - Loading screen with animated progress
+   - Camera zooms from distance
+   - Particles form "Z" shape → morph into logo
+   - Logo fades in with bounce effect
 
-Add your `.glb` or `.gltf` files to the `/public/models/` folder.
+2. **Assembled State**
+   - Logo rotates slowly (idle state)
+   - Hover anywhere → triggers decomposition
 
-Example:
-```
-/public/models/robot.glb
-/public/models/car.gltf
-```
+3. **Decomposed State**
+   - 4 navigation pieces float at target positions
+   - 95+ debris pieces scatter in background
+   - Hover navigation piece → scale + glow effect
+   - Click navigation piece → camera zoom + section display
 
-### 2. Use the Model Component
+## 🛠️ Tech Stack
 
-In `app/page.tsx`:
+- **[Next.js 14](https://nextjs.org/)** - React framework with App Router
+- **[Three.js](https://threejs.org/)** - 3D graphics library
+- **[React Three Fiber](https://docs.pmnd.rs/react-three-fiber/)** - React renderer for Three.js
+- **[React Three Drei](https://github.com/pmndrs/drei)** - Helper components & utilities
+- **[GSAP](https://greensock.com/gsap/)** - Professional animation library
+- **[TypeScript](https://www.typescriptlang.org/)** - Type safety
+- **[Tailwind CSS](https://tailwindcss.com/)** - Utility-first styling
+- **[Playwright](https://playwright.dev/)** - E2E testing & performance monitoring
 
-```tsx
-import { Canvas, Scene, Model } from '@/components/canvas';
+## 📦 Key Dependencies
 
-export default function Home() {
-  return (
-    <Canvas>
-      <Scene>
-        <Model
-          path="/models/robot.glb"
-          position={[0, 0, 0]}
-          scale={1}
-          autoRotate={true}
-        />
-      </Scene>
-    </Canvas>
-  );
+```json
+{
+  "three": "^0.169.0",
+  "@react-three/fiber": "^8.18.0",
+  "@react-three/drei": "^9.122.0",
+  "@react-three/postprocessing": "^2.19.1",
+  "gsap": "^3.12.5",
+  "next": "14.2.21",
+  "react": "^18.3.1",
+  "react-dom": "^18.3.1"
 }
 ```
 
-### Model Component Props
+## 🎨 Customization
 
-- `path` - Path to your model file (string)
-- `position` - [x, y, z] coordinates (optional, default: [0, 0, 0])
-- `rotation` - [x, y, z] rotation in radians (optional, default: [0, 0, 0])
-- `scale` - Uniform scale number or [x, y, z] (optional, default: 1)
-- `autoRotate` - Enable auto-rotation (optional, default: false)
+### Change Brand Colors
 
-## Components Overview
-
-### Canvas
-Wrapper for the Three.js canvas with optimized settings.
-
-### Scene
-Pre-configured scene with:
-- Camera with orbit controls
-- Multiple light sources (ambient, directional, point, spot)
-- Environment lighting
-- Grid helper
-
-### Model
-GLTF/GLB model loader with animation support.
-
-### Cube
-Example component showing GSAP animations and interactions.
-
-## GSAP Integration
-
-The `Cube.tsx` component demonstrates GSAP animations:
-
-```tsx
-import { gsap } from 'gsap';
-
-// Animate on interaction
-gsap.to(meshRef.current.scale, {
-  x: 1.5,
-  y: 1.5,
-  z: 1.5,
-  duration: 0.3,
-  ease: 'back.out(1.7)',
-});
+In `components/canvas/ParticleAssembly.tsx`:
+```typescript
+const color = new THREE.Color();
+color.lerpColors(
+  new THREE.Color(0x00ffff), // Cyan
+  new THREE.Color(0x00e92c), // Green
+  progress
+);
 ```
 
-## Camera Controls
+### Adjust Camera Position
 
-- **Rotate**: Click and drag
-- **Zoom**: Scroll wheel
-- **Pan**: Right-click and drag (or two-finger drag)
-
-## Customization
-
-### Change Background Color
-
-In `app/globals.css`:
-```css
-:root {
-  --background: #0a0a0a; /* Change this */
-}
+In `components/canvas/Scene.tsx`:
+```typescript
+<PerspectiveCamera
+  makeDefault
+  position={[0, 0, 5]}  // Change camera position
+  fov={75}              // Field of view
+/>
 ```
 
-### Adjust Camera
+### Modify Navigation Sections
 
-In `components/canvas/Canvas.tsx`:
-```tsx
-camera={{
-  position: [0, 0, 5],  // Camera position
-  fov: 75,              // Field of view
-  near: 0.1,            // Near clipping plane
-  far: 1000,            // Far clipping plane
-}}
+In `components/canvas/FracturedLogo.tsx`:
+```typescript
+const NAV_SECTIONS = [
+  { section: 'about', label: 'ABOUT', position: new THREE.Vector3(-1.1, 1.8, 2) },
+  { section: 'works', label: 'WORKS', position: new THREE.Vector3(1.9, 1.8, 2) },
+  { section: 'services', label: 'SERVICES', position: new THREE.Vector3(-1.1, 0.2, 2) },
+  { section: 'contact', label: 'CONTACT', position: new THREE.Vector3(1.9, 0.2, 2) },
+];
 ```
 
-### Modify Lighting
+### Replace 3D Model
 
-Edit `components/canvas/Scene.tsx` to adjust lights.
+1. Place your `.glb` file in `/public/models/`
+2. Update the path in `app/page.tsx`:
+```typescript
+<FracturedLogo
+  path="/models/your-model.glb"
+  // ... other props
+/>
+```
 
-## Where to Get 3D Models
+**Model Requirements:**
+- Format: `.glb` or `.gltf`
+- Must have at least 4 distinct mesh pieces
+- Recommended: 50-150 mesh pieces for best effect
 
-- [Sketchfab](https://sketchfab.com/) - Free and paid models
-- [Poly Pizza](https://poly.pizza/) - Free low-poly models
-- [CGTrader](https://www.cgtrader.com/) - Professional models
-- [TurboSquid](https://www.turbosquid.com/) - Premium models
-- [Ready Player Me](https://readyplayer.me/) - Custom avatars
+## 🧪 Testing
 
-Make sure to use `.glb` or `.gltf` formats!
+### Run Performance Tests
+```bash
+# Run in headed mode (recommended for accurate FPS)
+npm run test:perf
 
-## Build for Production
+# Run headless
+npx playwright test
+```
+
+Performance tests verify:
+- Loading & particle animation (target: 60fps avg)
+- Idle logo rotation (target: 60fps avg)
+- Decomposition animation (target: 55fps avg)
+- Navigation hover with bloom (target: 55fps avg)
+- Stress test with rapid interactions (target: 50fps avg)
+
+## 📝 Scripts
 
 ```bash
-npm run build
-npm start
+npm run dev      # Start development server
+npm run build    # Build for production
+npm start        # Start production server
+npm run lint     # Run ESLint
 ```
 
-## Troubleshooting
+## 🎯 Browser Support
 
-### Canvas not rendering
-- Check browser console for errors
-- Ensure all dependencies are installed
-- Try clearing `.next` folder: `rm -rf .next`
+- Chrome/Edge 90+
+- Firefox 88+
+- Safari 15+
+- Requires WebGL 2.0 support
 
-### Model not loading
-- Verify the file path is correct
-- Check the model is in `/public/models/`
-- Ensure the file format is `.glb` or `.gltf`
+## 📚 Documentation
 
-### Performance issues
-- Reduce model complexity
-- Optimize textures
-- Use `dpr={[1, 2]}` in Canvas to limit pixel ratio
-- Enable shadows selectively
+- **[docs/CLAUDE.md](docs/CLAUDE.md)** - Guidelines for AI-assisted development
+- **[docs/CHANGELOG.md](docs/CHANGELOG.md)** - Detailed development history & optimizations
 
-## Learn More
+## 🤝 Contributing
 
-- [Three.js Documentation](https://threejs.org/docs/)
-- [React Three Fiber](https://docs.pmnd.rs/react-three-fiber/)
-- [React Three Drei](https://github.com/pmndrs/drei)
-- [GSAP Documentation](https://greensock.com/docs/)
-- [Next.js Documentation](https://nextjs.org/docs)
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
 
-## Scripts
+## 📄 License
 
-- `npm run dev` - Start development server
-- `npm run build` - Build for production
-- `npm start` - Start production server
-- `npm run lint` - Run ESLint
+This project is licensed under the MIT License.
+
+## 🙏 Acknowledgments
+
+- [Three.js](https://threejs.org/) for the incredible 3D engine
+- [Poimandres](https://pmnd.rs/) for React Three Fiber and Drei
+- [GreenSock](https://greensock.com/) for GSAP animation library
+- [Vercel](https://vercel.com/) for Next.js framework
 
 ---
 
-Built with Three.js, Next.js, React, GSAP, and WebGL
+**Built with Three.js, Next.js, React, GSAP, and WebGL**
