@@ -366,7 +366,7 @@ export default function FracturedLogo({
         y: piece.targetPosition.y,
         z: piece.targetPosition.z, // Already set to z:2 in NAV_SECTIONS
         duration: animDuration,
-        ease: 'power2.inOut',
+        ease: 'power3.out', // SMOOTH like debris
         delay: 0, // ALL AT ONCE
       });
 
@@ -376,7 +376,7 @@ export default function FracturedLogo({
         y: piece.originalScale.y * 1.8,
         z: piece.originalScale.z * 1.8,
         duration: animDuration,
-        ease: 'power2.inOut',
+        ease: 'power3.out', // SMOOTH like debris
         delay: 0, // ALL AT ONCE
       });
     });
