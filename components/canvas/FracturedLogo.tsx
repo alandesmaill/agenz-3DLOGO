@@ -161,6 +161,60 @@ export default function FracturedLogo({
       // Check if this is one of the 4 largest pieces
       const largestIndex = largestFour.findIndex(item => item.mesh === mesh);
 
+      // Enhance materials for better appearance on white background
+      if (mesh.material instanceof THREE.MeshStandardMaterial) {
+        // Clone material to avoid affecting other instances
+        const material = mesh.material.clone();
+        mesh.material = material;
+
+        // Calculate brightness to detect dark pieces (0-1 range)
+        const brightness = (material.color.r + material.color.g + material.color.b) / 3;
+
+        if (largestIndex !== -1) {
+          // NAVIGATION PIECES - Keep brand colors, add visual weight
+          // Preserve original brand colors (cyan/green)
+
+          // Detect if this navigation piece is too dark
+          if (brightness < 0.25) {
+            // DARK NAVIGATION PIECE - Lighten significantly to show geometry
+            material.color.multiplyScalar(2.2); // Brighten dark pieces
+            material.emissiveIntensity = 0.2; // Higher emissive for dark pieces
+          } else {
+            // BRIGHT NAVIGATION PIECE (cyan/green) - Keep as is
+            material.emissiveIntensity = 0.1; // Subtle inner glow
+          }
+
+          // Add emissive glow in brand colors for depth
+          material.emissive.copy(material.color);
+
+          // Premium solid look with higher metalness and lower roughness
+          material.metalness = 0.7; // More reflective for better visibility
+          material.roughness = 0.4; // Shinier, premium feel
+
+          // Enable transparency for animations
+          material.transparent = true;
+        } else {
+          // DEBRIS PIECES - Handle dark vs bright pieces differently
+
+          if (brightness < 0.25) {
+            // DARK DEBRIS PIECE - Lighten to show geometry (opposite of bright pieces)
+            material.color.multiplyScalar(1.8); // Lighten instead of darken
+            material.emissiveIntensity = 0.15; // Add emissive to dark debris
+            material.emissive.copy(material.color);
+          } else {
+            // BRIGHT DEBRIS PIECE - Darken slightly for contrast
+            material.color.multiplyScalar(0.7); // Darken bright pieces
+            material.emissiveIntensity = 0.05; // Subtle emissive
+            material.emissive.copy(material.color);
+          }
+
+          // Same material properties for consistency
+          material.metalness = 0.7; // Increased from 0.6 for more reflections
+          material.roughness = 0.4;
+          material.transparent = true;
+        }
+      }
+
       if (largestIndex !== -1) {
         // This is a navigation piece - assign section based on largest order
         const config = NAV_SECTIONS[largestIndex];
@@ -175,11 +229,6 @@ export default function FracturedLogo({
       } else {
         // This is a debris piece
         debris.push(pieceData);
-
-        // Make debris pieces slightly transparent when decomposed
-        if (mesh.material instanceof THREE.MeshStandardMaterial) {
-          mesh.material.transparent = true;
-        }
       }
     });
 
