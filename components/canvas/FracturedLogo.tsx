@@ -33,12 +33,12 @@ interface NavigationPiece extends PieceData {
 }
 
 // Navigation sections and their target positions (z: 2 brings them closer to camera)
-// Adjusted for camera target [0.4, 1, 0]
+// U-shaped arrangement - centered and fully visible
 const NAV_SECTIONS = [
-  { section: 'about', label: 'ABOUT', position: new THREE.Vector3(-1.1, 1.8, 2) },
-  { section: 'works', label: 'WORKS', position: new THREE.Vector3(1.9, 1.8, 2) },
-  { section: 'services', label: 'SERVICES', position: new THREE.Vector3(-1.1, 0.2, 2) },
-  { section: 'contact', label: 'CONTACT', position: new THREE.Vector3(1.9, 0.2, 2) },
+  { section: 'about', label: 'ABOUT', position: new THREE.Vector3(-1.0, 1.5, 2) },      // Top-left
+  { section: 'works', label: 'WORKS', position: new THREE.Vector3(1.0, 1.5, 2) },       // Top-right
+  { section: 'services', label: 'SERVICES', position: new THREE.Vector3(-1.0, 0.6, 2) }, // Bottom-left
+  { section: 'contact', label: 'CONTACT', position: new THREE.Vector3(1.0, 0.6, 2) },   // Bottom-right
 ];
 
 export default function FracturedLogo({
