@@ -336,7 +336,7 @@ export default function FracturedLogo({
     }
   });
 
-  // Handle decomposition animation
+  // Handle decomposition animation - ALL AT ONCE
   const handleDecompose = () => {
     if (isAnimating || isDecomposed) return;
 
@@ -345,7 +345,6 @@ export default function FracturedLogo({
 
     // OPTIMIZATION: Respect reduced motion preference
     const animDuration = prefersReducedMotion ? 0.5 : 1.5;
-    const animDelay = prefersReducedMotion ? 0 : 0.01;
 
     // Shrink group from 1.5 to 1.0 during decomposition
     // This keeps navigation pieces at same visual size
@@ -359,48 +358,49 @@ export default function FracturedLogo({
       });
     }
 
-    // Animate navigation pieces to target positions
-    navigationPieces.forEach((piece, index) => {
+    // Animate navigation pieces to FRONT (positive z)
+    // NO DELAY - all execute at once
+    navigationPieces.forEach((piece) => {
       gsap.to(piece.mesh.position, {
         x: piece.targetPosition.x,
         y: piece.targetPosition.y,
-        z: piece.targetPosition.z,
+        z: piece.targetPosition.z, // Already set to z:2 in NAV_SECTIONS
         duration: animDuration,
         ease: 'power2.inOut',
-        delay: index * animDelay,
+        delay: 0, // ALL AT ONCE
       });
 
       // Scale pieces up to compensate for group shrink
-      // Group: 1.5→1.0, Pieces: 1.2→1.8
-      // Net: (1.0 × 1.8) / (1.5 × 1.2) = 1.0 (same visual size!)
       gsap.to(piece.mesh.scale, {
         x: piece.originalScale.x * 1.8,
         y: piece.originalScale.y * 1.8,
         z: piece.originalScale.z * 1.8,
         duration: animDuration,
         ease: 'power2.inOut',
-        delay: index * animDelay,
+        delay: 0, // ALL AT ONCE
       });
     });
 
-    // Animate debris pieces - explode randomly
-    debrisPieces.forEach((piece, index) => {
-      // Calculate random explosion vector
+    // Animate debris pieces to BACK (negative z)
+    // NO DELAY - all execute at once
+    debrisPieces.forEach((piece) => {
+      // Calculate random scatter in x/y, but ALWAYS push to back (negative z)
       const angle = Math.random() * Math.PI * 2;
       const distance = 2 + Math.random() * 3; // 2-5 units
       const height = (Math.random() - 0.5) * 2;
 
       const targetX = piece.originalPosition.x + Math.cos(angle) * distance;
       const targetY = piece.originalPosition.y + height;
-      const targetZ = piece.originalPosition.z + Math.sin(angle) * distance;
+      // PUSH TO BACK: negative z between -5 and -10
+      const targetZ = piece.originalPosition.z - (5 + Math.random() * 5);
 
       gsap.to(piece.mesh.position, {
         x: targetX,
         y: targetY,
-        z: targetZ,
+        z: targetZ, // NEGATIVE Z = BACK
         duration: animDuration,
         ease: 'power3.out',
-        delay: (index + navigationPieces.length) * animDelay,
+        delay: 0, // ALL AT ONCE
       });
 
       // Random rotation
@@ -410,7 +410,7 @@ export default function FracturedLogo({
         z: piece.originalRotation.z + (Math.random() - 0.5) * Math.PI * 2,
         duration: animDuration,
         ease: 'power3.out',
-        delay: (index + navigationPieces.length) * animDelay,
+        delay: 0, // ALL AT ONCE
       });
 
       // Fade out debris
@@ -418,13 +418,13 @@ export default function FracturedLogo({
         gsap.to(piece.mesh.material, {
           opacity: 0.3 + Math.random() * 0.3, // 0.3-0.6
           duration: animDuration,
-          delay: (index + navigationPieces.length) * animDelay,
+          delay: 0, // ALL AT ONCE
         });
       }
     });
 
-    // Animation complete after duration + stagger time
-    const totalDelay = prefersReducedMotion ? 500 : 1500 + (navigationPieces.length + debrisPieces.length) * 10;
+    // Animation complete after duration (no stagger needed)
+    const totalDelay = prefersReducedMotion ? 500 : 1500;
     setTimeout(() => {
       setIsAnimating(false);
     }, totalDelay);
