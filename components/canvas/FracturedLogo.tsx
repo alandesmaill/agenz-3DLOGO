@@ -344,7 +344,7 @@ export default function FracturedLogo({
     setIsDecomposed(true);
 
     // OPTIMIZATION: Respect reduced motion preference
-    const animDuration = prefersReducedMotion ? 0.5 : 1.5;
+    const animDuration = prefersReducedMotion ? 0.5 : 2.5;
 
     // Shrink group from 1.5 to 1.0 during decomposition
     // This keeps navigation pieces at same visual size
@@ -391,8 +391,8 @@ export default function FracturedLogo({
 
       const targetX = piece.originalPosition.x + Math.cos(angle) * distance;
       const targetY = piece.originalPosition.y + height;
-      // PUSH TO BACK: negative z between -5 and -10
-      const targetZ = piece.originalPosition.z - (5 + Math.random() * 5);
+      // PUSH TO BACK: negative z between -1 and -3 (closer, more visible)
+      const targetZ = piece.originalPosition.z - (1 + Math.random() * 2);
 
       gsap.to(piece.mesh.position, {
         x: targetX,
@@ -424,7 +424,7 @@ export default function FracturedLogo({
     });
 
     // Animation complete after duration (no stagger needed)
-    const totalDelay = prefersReducedMotion ? 500 : 1500;
+    const totalDelay = prefersReducedMotion ? 500 : 2500;
     setTimeout(() => {
       setIsAnimating(false);
     }, totalDelay);
