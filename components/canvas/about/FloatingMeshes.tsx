@@ -3,10 +3,8 @@
 import * as THREE from 'three';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useFrame } from '@react-three/fiber';
-import { InstancedRigidBodies } from '@react-three/rapier';
 import { MeshTransmissionMaterial } from '@react-three/drei';
-import { easing } from 'maath';
-import type { RapierRigidBody } from '@react-three/rapier';
+import { gsap } from 'gsap';
 
 const ACCENT_COLORS = ['#8A2BE2', '#FF1493', '#FFFF00', '#DC143C'];
 const r = THREE.MathUtils.randFloatSpread;
@@ -17,57 +15,60 @@ interface FloatingMeshesProps {
   isMobile?: boolean;
 }
 
+interface SphereData {
+  position: THREE.Vector3;
+  velocity: THREE.Vector3;
+  scale: number;
+  phase: number;
+}
+
 export default function FloatingMeshes({
   totalCount = 18,
   transparentCount = 5,
   isMobile = false,
 }: FloatingMeshesProps) {
-  const apiNormal = useRef<RapierRigidBody[]>([]);
-  const apiTransparent = useRef<RapierRigidBody[]>([]);
-  const sphereRef = useRef<THREE.InstancedMesh>(null);
+  const normalGroupRef = useRef<THREE.Group>(null);
+  const transparentGroupRef = useRef<THREE.Group>(null);
+  const sphereDataRef = useRef<SphereData[]>([]);
+  const colorsRef = useRef<Float32Array>();
 
   const [currentAccentIndex, setCurrentAccentIndex] = useState(0);
 
   const normalCount = totalCount - transparentCount;
 
-  const { factors, xFactors, yFactors, zFactors, normalInstances, transparentInstances, colors } =
-    useMemo(() => {
-      const factors: number[] = [];
-      const xFactors: number[] = [];
-      const yFactors: number[] = [];
-      const zFactors: number[] = [];
-      const normalInstances: any[] = [];
-      const transparentInstances: any[] = [];
-      const colors = new Float32Array(normalCount * 3);
-      const color = new THREE.Color();
+  // Initialize sphere data and colors
+  const { colors } = useMemo(() => {
+    const colors = new Float32Array(normalCount * 3);
+    const color = new THREE.Color();
+    const sphereData: SphereData[] = [];
 
-      for (let i = 0; i < totalCount; i++) {
-        const instance = {
-          key: isMobile ? `mobileInstance_${i}` : `desktopInstance_${i}`,
-          position: [r(isMobile ? 10 : 20), r(10), r(20)] as [number, number, number],
-          scale: isMobile ? 0.8 : 1,
-        };
+    for (let i = 0; i < totalCount; i++) {
+      sphereData.push({
+        position: new THREE.Vector3(r(isMobile ? 10 : 20), r(10), r(20)),
+        velocity: new THREE.Vector3(
+          (Math.random() - 0.5) * 0.02,
+          (Math.random() - 0.5) * 0.02,
+          (Math.random() - 0.5) * 0.02
+        ),
+        scale: isMobile ? 0.8 : 1,
+        phase: Math.random() * Math.PI * 2,
+      });
 
-        factors.push(THREE.MathUtils.randInt(20, 100));
-        xFactors.push(THREE.MathUtils.randFloatSpread(isMobile ? 14 : 40));
-        yFactors.push(THREE.MathUtils.randFloatSpread(10));
-        zFactors.push(THREE.MathUtils.randFloatSpread(10));
-
-        if (i < normalCount) {
-          normalInstances.push(instance);
-          // First few are black, rest are accent colored
-          if ((!isMobile && i < 7) || (isMobile && i < 4)) {
-            colors.set(color.set('#1A1A1A').toArray(), i * 3);
-          } else {
-            colors.set(color.set(ACCENT_COLORS[0]).toArray(), i * 3);
-          }
+      if (i < normalCount) {
+        // First few are black, rest are accent colored
+        if ((!isMobile && i < 7) || (isMobile && i < 4)) {
+          colors.set(color.set('#1A1A1A').toArray(), i * 3);
         } else {
-          transparentInstances.push(instance);
+          colors.set(color.set(ACCENT_COLORS[0]).toArray(), i * 3);
         }
       }
+    }
 
-      return { factors, xFactors, yFactors, zFactors, normalInstances, transparentInstances, colors };
-    }, [isMobile, normalCount, totalCount]);
+    sphereDataRef.current = sphereData;
+    colorsRef.current = colors;
+
+    return { colors };
+  }, [isMobile, normalCount, totalCount]);
 
   // Color cycling effect
   useEffect(() => {
@@ -78,97 +79,72 @@ export default function FloatingMeshes({
     return () => clearInterval(interval);
   }, []);
 
-  // Physics-based floating animation
+  // Smooth floating animation
   useFrame((state, delta) => {
+    const time = state.clock.getElapsedTime();
+
     // Animate normal spheres
-    if (apiNormal.current) {
-      apiNormal.current.forEach((body, i) => {
-        if (body) {
-          const t = factors[i] + state.clock.elapsedTime * 0.25;
+    if (normalGroupRef.current) {
+      normalGroupRef.current.children.forEach((sphere, i) => {
+        const data = sphereDataRef.current[i];
+        if (!data) return;
 
-          const targetPosition = new THREE.Vector3(
-            Math.cos(t) +
-              Math.sin(t * 1) / 10 +
-              xFactors[i] +
-              Math.cos((t / 10) * factors[i]) +
-              (Math.sin(t * 1) * factors[i]) / 10,
-            Math.sin(t) +
-              Math.cos(t * 2) / 10 +
-              yFactors[i] +
-              Math.sin((t / 10) * factors[i]) +
-              (Math.cos(t * 2) * factors[i]) / 10,
-            Math.sin(t) +
-              Math.cos(t * 2) / 10 +
-              zFactors[i] +
-              Math.cos((t / 10) * factors[i]) +
-              (Math.sin(t * 3) * factors[i]) / 4,
-          );
+        // Smooth sinusoidal floating motion
+        const floatX = Math.sin(time * 0.3 + data.phase) * 2;
+        const floatY = Math.cos(time * 0.4 + data.phase * 1.3) * 2;
+        const floatZ = Math.sin(time * 0.35 + data.phase * 0.7) * 2;
 
-          const apiTranslation = body.translation();
-          const currentPosition = new THREE.Vector3(
-            apiTranslation.x,
-            apiTranslation.y,
-            apiTranslation.z,
-          );
+        sphere.position.x = data.position.x + floatX;
+        sphere.position.y = data.position.y + floatY;
+        sphere.position.z = data.position.z + floatZ;
 
-          const direction = new THREE.Vector3().subVectors(targetPosition, currentPosition);
-          const forceMagnitude = 0.5;
-          const force = direction.normalize().multiplyScalar(forceMagnitude);
-
-          body.applyImpulse(force, true);
-        }
+        // Gentle rotation
+        sphere.rotation.x += delta * 0.2;
+        sphere.rotation.y += delta * 0.3;
       });
 
-      // Update colors with smooth transition
-      const newColor = new THREE.Color(ACCENT_COLORS[currentAccentIndex]);
-      for (let i = isMobile ? 4 : 7; i < normalCount; i++) {
-        const currentColor = new THREE.Color().fromArray(colors.slice(i * 3, (i + 1) * 3));
-        easing.dampC(currentColor, newColor, 0.1, delta);
-        colors.set(currentColor.toArray(), i * 3);
-      }
+      // Update colors with smooth transition using GSAP
+      if (colorsRef.current) {
+        const targetColor = new THREE.Color(ACCENT_COLORS[currentAccentIndex]);
+        const startIndex = isMobile ? 4 : 7;
 
-      if (sphereRef.current?.geometry.attributes.color) {
-        sphereRef.current.geometry.attributes.color.needsUpdate = true;
+        for (let i = startIndex; i < normalCount; i++) {
+          const currentColor = new THREE.Color().fromArray(
+            colorsRef.current.slice(i * 3, (i + 1) * 3)
+          );
+
+          // Smooth color interpolation
+          currentColor.lerp(targetColor, delta * 0.5);
+          colorsRef.current.set(currentColor.toArray(), i * 3);
+        }
+
+        // Mark colors as needing update
+        const instancedMesh = normalGroupRef.current.children[0] as THREE.InstancedMesh;
+        if (instancedMesh?.geometry?.attributes?.color) {
+          instancedMesh.geometry.attributes.color.needsUpdate = true;
+        }
       }
     }
 
     // Animate transparent spheres
-    if (apiTransparent.current) {
-      apiTransparent.current.forEach((body, i) => {
-        if (body) {
-          const t = factors[normalCount + i] + state.clock.elapsedTime * 0.25;
+    if (transparentGroupRef.current) {
+      transparentGroupRef.current.children.forEach((sphere, i) => {
+        const dataIndex = normalCount + i;
+        const data = sphereDataRef.current[dataIndex];
+        if (!data) return;
 
-          const targetPosition = new THREE.Vector3(
-            Math.cos(t) +
-              Math.sin(t * 1) / 10 +
-              xFactors[normalCount + i] +
-              Math.cos((t / 10) * factors[normalCount + i]) +
-              (Math.sin(t * 1) * factors[normalCount + i]) / 10,
-            Math.sin(t) +
-              Math.cos(t * 2) / 10 +
-              yFactors[normalCount + i] +
-              Math.sin((t / 10) * factors[normalCount + i]) +
-              (Math.cos(t * 2) * factors[normalCount + i]) / 10,
-            Math.sin(t) +
-              Math.cos(t * 2) / 10 +
-              zFactors[normalCount + i] +
-              Math.cos((t / 10) * factors[normalCount + i]) +
-              (Math.sin(t * 3) * factors[normalCount + i]) / 4,
-          );
+        // Slightly different motion for transparent spheres
+        const floatX = Math.cos(time * 0.25 + data.phase) * 2.5;
+        const floatY = Math.sin(time * 0.35 + data.phase * 1.5) * 2.5;
+        const floatZ = Math.cos(time * 0.3 + data.phase * 0.8) * 2.5;
 
-          const apiTranslation = body.translation();
-          const currentPosition = new THREE.Vector3(
-            apiTranslation.x,
-            apiTranslation.y,
-            apiTranslation.z,
-          );
+        sphere.position.x = data.position.x + floatX;
+        sphere.position.y = data.position.y + floatY;
+        sphere.position.z = data.position.z + floatZ;
 
-          const direction = new THREE.Vector3().subVectors(targetPosition, currentPosition);
-          const forceMagnitude = 0.5;
-          const force = direction.normalize().multiplyScalar(forceMagnitude);
-
-          body.applyImpulse(force, true);
-        }
+        // Gentle rotation
+        sphere.rotation.x += delta * 0.15;
+        sphere.rotation.y += delta * 0.25;
       });
     }
   });
@@ -176,60 +152,48 @@ export default function FloatingMeshes({
   return (
     <>
       {/* Normal colored spheres */}
-      <InstancedRigidBodies
-        type="dynamic"
-        ref={apiNormal}
-        colliders="ball"
-        instances={normalInstances}
-        linearDamping={50}
-        angularDamping={50}
-        friction={0.1}
-      >
-        <instancedMesh
-          ref={sphereRef}
-          castShadow
-          receiveShadow
-          args={[undefined, undefined, normalCount]}
-        >
-          <sphereGeometry>
+      <group ref={normalGroupRef}>
+        <instancedMesh args={[undefined, undefined, normalCount]} castShadow receiveShadow>
+          <sphereGeometry args={[1, 32, 32]}>
             <instancedBufferAttribute attach="attributes-color" args={[colors, 3]} />
           </sphereGeometry>
           <meshStandardMaterial vertexColors roughness={0.5} metalness={0.2} />
         </instancedMesh>
-      </InstancedRigidBodies>
+      </group>
 
       {/* Transparent glass spheres */}
-      <InstancedRigidBodies
-        type="dynamic"
-        ref={apiTransparent}
-        colliders="ball"
-        instances={transparentInstances}
-        linearDamping={50}
-        angularDamping={50}
-        friction={0.1}
-      >
-        <instancedMesh
-          castShadow
-          receiveShadow
-          args={[undefined, undefined, transparentCount]}
-        >
-          <sphereGeometry />
-          <MeshTransmissionMaterial
-            samples={10}
-            transmission={1.0}
-            roughness={0}
-            thickness={4}
-            ior={1.5}
-            chromaticAberration={0.06}
-            anisotropy={0.2}
-            distortion={0}
-            distortionScale={0.3}
-            temporalDistortion={0.5}
-            clearcoat={1}
-            attenuationDistance={0.5}
-          />
-        </instancedMesh>
-      </InstancedRigidBodies>
+      <group ref={transparentGroupRef}>
+        {Array.from({ length: transparentCount }).map((_, i) => {
+          const data = sphereDataRef.current[normalCount + i];
+          if (!data) return null;
+
+          return (
+            <mesh
+              key={i}
+              position={data.position}
+              scale={data.scale}
+              castShadow
+              receiveShadow
+            >
+              <sphereGeometry args={[1, 32, 32]} />
+              <MeshTransmissionMaterial
+                samples={10}
+                transmission={1.0}
+                roughness={0}
+                thickness={4}
+                ior={1.5}
+                chromaticAberration={0.06}
+                anisotropy={0.2}
+                distortion={0}
+                distortionScale={0.3}
+                temporalDistortion={0.5}
+                clearcoat={1}
+                attenuationDistance={0.5}
+              />
+            </mesh>
+          );
+        })}
+      </group>
     </>
   );
 }

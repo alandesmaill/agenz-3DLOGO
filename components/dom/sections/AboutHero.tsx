@@ -1,9 +1,8 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { Environment, PerspectiveCamera } from '@react-three/drei';
-import { Physics } from '@react-three/rapier';
 import { FloatingMeshes } from '@/components/canvas/about';
 import { InfiniteText } from '@/components/dom/animations';
 import styles from '@/styles/sections/aboutHero.module.css';
@@ -45,13 +44,11 @@ export default function AboutHero() {
           gl={{ antialias: true, alpha: true }}
         >
           <PerspectiveCamera makeDefault position={[0, 0, 20]} fov={20} />
-          <Physics interpolate timeStep={1 / 60} gravity={[0, 0, 0]}>
-            <FloatingMeshes
-              totalCount={isMobile ? 12 : 18}
-              transparentCount={isMobile ? 3 : 5}
-              isMobile={isMobile}
-            />
-          </Physics>
+          <FloatingMeshes
+            totalCount={isMobile ? 12 : 18}
+            transparentCount={isMobile ? 3 : 5}
+            isMobile={isMobile}
+          />
           <Environment preset="city" />
         </Canvas>
       </div>
