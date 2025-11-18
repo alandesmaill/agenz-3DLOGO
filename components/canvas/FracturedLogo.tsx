@@ -32,13 +32,13 @@ interface NavigationPiece extends PieceData {
   section: string;
 }
 
-// Navigation sections and their target positions (z: 2 brings them closer to camera)
-// U-shaped arrangement - centered and fully visible
+// Navigation sections and their target positions
+// U-shaped arrangement - centered, visible, and appropriately sized
 const NAV_SECTIONS = [
-  { section: 'about', label: 'ABOUT', position: new THREE.Vector3(-1.0, 1.5, 2) },      // Top-left
-  { section: 'works', label: 'WORKS', position: new THREE.Vector3(1.0, 1.5, 2) },       // Top-right
-  { section: 'services', label: 'SERVICES', position: new THREE.Vector3(-1.0, 0.6, 2) }, // Bottom-left
-  { section: 'contact', label: 'CONTACT', position: new THREE.Vector3(1.0, 0.6, 2) },   // Bottom-right
+  { section: 'about', label: 'ABOUT', position: new THREE.Vector3(-1.0, 1.5, 1.0) },      // Top-left
+  { section: 'works', label: 'WORKS', position: new THREE.Vector3(1.0, 1.5, 1.0) },       // Top-right
+  { section: 'services', label: 'SERVICES', position: new THREE.Vector3(-1.0, 0.6, 1.0) }, // Bottom-left
+  { section: 'contact', label: 'CONTACT', position: new THREE.Vector3(1.0, 0.6, 1.0) },   // Bottom-right
 ];
 
 export default function FracturedLogo({
@@ -358,11 +358,11 @@ export default function FracturedLogo({
         delay: 0, // ALL AT ONCE
       });
 
-      // Scale pieces up for emphasis
+      // Keep original scale (no scaling up)
       gsap.to(piece.mesh.scale, {
-        x: piece.originalScale.x * 1.2,
-        y: piece.originalScale.y * 1.2,
-        z: piece.originalScale.z * 1.2,
+        x: piece.originalScale.x * 1.0,
+        y: piece.originalScale.y * 1.0,
+        z: piece.originalScale.z * 1.0,
         duration: animDuration,
         ease: 'power3.out', // SMOOTH like debris
         delay: 0, // ALL AT ONCE
@@ -496,11 +496,11 @@ export default function FracturedLogo({
     if (!isDecomposed || isAnimating) return;
 
     if (isHovering) {
-      // Scale up on hover (from 1.2 to 1.4)
+      // Scale up on hover (from 1.0 to 1.2)
       gsap.to(piece.mesh.scale, {
-        x: piece.originalScale.x * 1.4,
-        y: piece.originalScale.y * 1.4,
-        z: piece.originalScale.z * 1.4,
+        x: piece.originalScale.x * 1.2,
+        y: piece.originalScale.y * 1.2,
+        z: piece.originalScale.z * 1.2,
         duration: 0.3,
         ease: 'back.out(1.7)',
       });
@@ -543,11 +543,11 @@ export default function FracturedLogo({
         onNavigationHover(piece.name, piece.label, { x: screenX, y: screenY });
       }
     } else {
-      // Scale back to decomposed size (1.2)
+      // Scale back to decomposed size (1.0)
       gsap.to(piece.mesh.scale, {
-        x: piece.originalScale.x * 1.2,
-        y: piece.originalScale.y * 1.2,
-        z: piece.originalScale.z * 1.2,
+        x: piece.originalScale.x * 1.0,
+        y: piece.originalScale.y * 1.0,
+        z: piece.originalScale.z * 1.0,
         duration: 0.3,
         ease: 'power2.out',
       });
