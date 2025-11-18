@@ -2,7 +2,6 @@
 
 import { Canvas, Scene, FracturedLogo } from '@/components/canvas';
 import { NavigationLabel, TestSection, AnimatedBackground, LoadingScreen } from '@/components/dom';
-import { AboutSection } from '@/components/dom/sections';
 import { Suspense, useState, useRef, useEffect } from 'react';
 import { useProgress } from '@react-three/drei';
 
@@ -70,7 +69,7 @@ export default function View() {
 
   // Handle navigation hover callback from FracturedLogo
   const handleNavigationHover = (
-    piece: string | null,
+    _piece: string | null,
     label: string | null,
     screenPosition: { x: number; y: number } | null
   ) => {
@@ -148,15 +147,11 @@ export default function View() {
       />
 
       {/* HTML Overlay - Section Display */}
-      {testSection.section === 'about' ? (
-        <AboutSection isVisible={testSection.isVisible} onBack={handleBack} />
-      ) : (
-        <TestSection
-          section={testSection.section}
-          isVisible={testSection.isVisible}
-          onBack={handleBack}
-        />
-      )}
+      <TestSection
+        section={testSection.section}
+        isVisible={testSection.isVisible}
+        onBack={handleBack}
+      />
     </div>
   );
 }

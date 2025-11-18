@@ -1,6 +1,6 @@
 'use client';
 
-import { OrbitControls, Environment, PerspectiveCamera } from '@react-three/drei';
+import { OrbitControls, PerspectiveCamera } from '@react-three/drei';
 import { EffectComposer, Bloom } from '@react-three/postprocessing';
 import { ReactNode } from 'react';
 
@@ -41,9 +41,6 @@ export default function Scene({ children }: SceneProps) {
 
       {/* Rim/back light - separates dark pieces from white background */}
       <directionalLight position={[0, 5, -10]} intensity={0.8} />
-
-      {/* Environment - adds realistic reflections */}
-      <Environment preset="city" />
 
       {/* Children (your 3D objects) */}
       {children}
