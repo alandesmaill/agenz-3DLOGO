@@ -1,0 +1,27 @@
+.root {
+  position: relative;
+  background-color: white;
+  width: 100%;
+  min-height: 300vh;
+}
+
+.text {
+  text-align: center;
+  width: 100%;
+  position: sticky;
+  top: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  font-size: clamp(1.5rem, 4vw, 2.5rem);
+  font-weight: 400;
+  line-height: 1.4;
+  margin: 0;
+  padding: 2rem;
+}
+
+.text > div {
+  perspective: 1000px;
+}

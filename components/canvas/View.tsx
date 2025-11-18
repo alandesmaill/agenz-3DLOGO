@@ -2,6 +2,7 @@
 
 import { Canvas, Scene, FracturedLogo } from '@/components/canvas';
 import { NavigationLabel, TestSection, AnimatedBackground, LoadingScreen } from '@/components/dom';
+import { AboutSection } from '@/components/dom/sections';
 import { Suspense, useState, useRef, useEffect } from 'react';
 import { useProgress } from '@react-three/drei';
 
@@ -146,12 +147,16 @@ export default function View() {
         isVisible={labelData.isVisible}
       />
 
-      {/* HTML Overlay - Test Section Display */}
-      <TestSection
-        section={testSection.section}
-        isVisible={testSection.isVisible}
-        onBack={handleBack}
-      />
+      {/* HTML Overlay - Section Display */}
+      {testSection.section === 'about' ? (
+        <AboutSection isVisible={testSection.isVisible} onBack={handleBack} />
+      ) : (
+        <TestSection
+          section={testSection.section}
+          isVisible={testSection.isVisible}
+          onBack={handleBack}
+        />
+      )}
     </div>
   );
 }

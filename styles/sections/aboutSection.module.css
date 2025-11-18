@@ -1,0 +1,33 @@
+.container {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background-color: white;
+  overflow-y: auto;
+  transition: opacity 0.5s ease-in-out;
+}
+
+.backButton {
+  position: fixed;
+  top: 2rem;
+  right: 2rem;
+  z-index: 101;
+  padding: 1rem 2rem;
+  background: linear-gradient(135deg, #00e92c 0%, #00ffff 100%);
+  color: white;
+  border: none;
+  border-radius: 0.5rem;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.backButton:hover {
+  transform: scale(1.05);
+}
+
+.content {
+  width: 100%;
+  min-height: 100vh;
+}

@@ -15,10 +15,7 @@ interface FracturedLogoProps {
   onNavigationClick?: (section: string) => void;
 }
 
-type GLTFResult = GLTF & {
-  nodes: Record<string, THREE.Mesh>;
-  materials: Record<string, THREE.Material>;
-};
+// Removed custom GLTFResult type - using GLTF from three-stdlib directly
 
 interface PieceData {
   mesh: THREE.Mesh;
@@ -81,7 +78,7 @@ export default function FracturedLogo({
   const collisionScale = isMobile ? 1.5 : 1.0;
 
   // Load the GLTF/GLB model
-  const { scene } = useGLTF(path) as GLTFResult;
+  const { scene } = useGLTF(path);
 
   // Initialize pieces on mount
   useEffect(() => {

@@ -1,0 +1,10 @@
+.title {
+  width: 63%;
+  perspective: 1000px;
+}
+
+@media (max-width: 768px) {
+  .title {
+    width: 100%;
+  }
+}

@@ -1,0 +1,19 @@
+.wrapper {
+  width: 100%;
+  overflow: hidden;
+  background-color: white;
+}
+
+.container {
+  display: flex;
+  gap: 2rem;
+  white-space: nowrap;
+  will-change: transform;
+}
+
+.text {
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  opacity: 0.6;
+}
