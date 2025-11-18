@@ -346,18 +346,6 @@ export default function FracturedLogo({
     // OPTIMIZATION: Respect reduced motion preference
     const animDuration = prefersReducedMotion ? 0.5 : 4.0;
 
-    // Shrink group from 1.5 to 1.0 during decomposition
-    // This keeps navigation pieces at same visual size
-    if (groupRef.current) {
-      gsap.to(groupRef.current.scale, {
-        x: 1.0,
-        y: 1.0,
-        z: 1.0,
-        duration: animDuration,
-        ease: 'power2.inOut',
-      });
-    }
-
     // Animate navigation pieces to FRONT (positive z)
     // NO DELAY - all execute at once
     navigationPieces.forEach((piece) => {
@@ -370,11 +358,11 @@ export default function FracturedLogo({
         delay: 0, // ALL AT ONCE
       });
 
-      // Scale pieces up to compensate for group shrink
+      // Scale pieces up for emphasis
       gsap.to(piece.mesh.scale, {
-        x: piece.originalScale.x * 1.8,
-        y: piece.originalScale.y * 1.8,
-        z: piece.originalScale.z * 1.8,
+        x: piece.originalScale.x * 1.2,
+        y: piece.originalScale.y * 1.2,
+        z: piece.originalScale.z * 1.2,
         duration: animDuration,
         ease: 'power3.out', // SMOOTH like debris
         delay: 0, // ALL AT ONCE
@@ -508,11 +496,11 @@ export default function FracturedLogo({
     if (!isDecomposed || isAnimating) return;
 
     if (isHovering) {
-      // Scale up on hover (from 1.8 to 2.0)
+      // Scale up on hover (from 1.2 to 1.4)
       gsap.to(piece.mesh.scale, {
-        x: piece.originalScale.x * 2.0,
-        y: piece.originalScale.y * 2.0,
-        z: piece.originalScale.z * 2.0,
+        x: piece.originalScale.x * 1.4,
+        y: piece.originalScale.y * 1.4,
+        z: piece.originalScale.z * 1.4,
         duration: 0.3,
         ease: 'back.out(1.7)',
       });
@@ -555,11 +543,11 @@ export default function FracturedLogo({
         onNavigationHover(piece.name, piece.label, { x: screenX, y: screenY });
       }
     } else {
-      // Scale back to decomposed size (1.8)
+      // Scale back to decomposed size (1.2)
       gsap.to(piece.mesh.scale, {
-        x: piece.originalScale.x * 1.8,
-        y: piece.originalScale.y * 1.8,
-        z: piece.originalScale.z * 1.8,
+        x: piece.originalScale.x * 1.2,
+        y: piece.originalScale.y * 1.2,
+        z: piece.originalScale.z * 1.2,
         duration: 0.3,
         ease: 'power2.out',
       });
