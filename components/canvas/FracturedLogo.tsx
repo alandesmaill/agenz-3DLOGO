@@ -33,12 +33,12 @@ interface NavigationPiece extends PieceData {
 }
 
 // Navigation sections and their target positions
-// U-shaped arrangement - centered, visible, and appropriately sized
+// Compact U-shaped arrangement - centered and closely spaced
 const NAV_SECTIONS = [
-  { section: 'about', label: 'ABOUT', position: new THREE.Vector3(-1.0, 1.5, 1.0) },      // Top-left
-  { section: 'works', label: 'WORKS', position: new THREE.Vector3(1.0, 1.5, 1.0) },       // Top-right
-  { section: 'services', label: 'SERVICES', position: new THREE.Vector3(-1.0, 0.6, 1.0) }, // Bottom-left
-  { section: 'contact', label: 'CONTACT', position: new THREE.Vector3(1.0, 0.6, 1.0) },   // Bottom-right
+  { section: 'about', label: 'ABOUT', position: new THREE.Vector3(-0.6, 1.3, 1.0) },      // Top-left
+  { section: 'works', label: 'WORKS', position: new THREE.Vector3(0.6, 1.3, 1.0) },       // Top-right
+  { section: 'services', label: 'SERVICES', position: new THREE.Vector3(-0.6, 0.7, 1.0) }, // Bottom-left
+  { section: 'contact', label: 'CONTACT', position: new THREE.Vector3(0.6, 0.7, 1.0) },   // Bottom-right
 ];
 
 export default function FracturedLogo({
