@@ -4,3 +4,5 @@ export { default as AnimatedBackground } from './AnimatedBackground';
 export { default as LoadingScreen } from './LoadingScreen';
 export { default as Header } from './Header';
 export { default as HoverHint } from './HoverHint';
+export { default as AboutSection } from './AboutSection';
+export { default as InfiniteText } from './InfiniteText';

@@ -21,7 +21,7 @@ export default function Header() {
       <div className="flex items-center gap-3 pointer-events-auto">
         {/* GET IN TOUCH Button - Outline Style */}
         <button
-          className="px-5 py-2.5 text-sm font-medium text-black bg-transparent border border-gray-300 rounded-full hover:bg-gray-100 hover:border-gray-400 transition-all duration-200"
+          className="px-5 py-2.5 text-sm font-bold text-black bg-transparent border border-gray-300 rounded-full hover:bg-gray-100 hover:border-gray-400 transition-all duration-200"
           onClick={() => console.log('Get in touch clicked')}
         >
           GET IN TOUCH
@@ -29,7 +29,7 @@ export default function Header() {
 
         {/* MENU Button - Filled Black Style */}
         <button
-          className="px-6 py-2.5 text-sm font-medium text-white bg-black rounded-full hover:bg-gray-800 transition-all duration-200"
+          className="px-6 py-2.5 text-sm font-bold text-white bg-black rounded-full hover:bg-gray-800 transition-all duration-200"
           onClick={() => console.log('Menu clicked')}
         >
           MENU

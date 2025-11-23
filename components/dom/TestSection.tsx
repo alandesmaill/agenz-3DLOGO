@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import AboutSection from './AboutSection';
 
 interface TestSectionProps {
   section: string | null;
@@ -26,6 +27,11 @@ export default function TestSection({
   }, [isVisible]);
 
   if (!section || !isVisible) return null;
+
+  // Render AboutSection for the "about" section
+  if (section === 'about') {
+    return <AboutSection onBack={onBack} />;
+  }
 
   return (
     <div
