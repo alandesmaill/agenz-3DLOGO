@@ -13,6 +13,7 @@ interface FracturedLogoProps {
   scale?: number | [number, number, number];
   onNavigationHover?: (piece: string | null, label: string | null, screenPosition: { x: number; y: number } | null) => void;
   onNavigationClick?: (section: string) => void;
+  onDecompose?: () => void;
 }
 
 // Removed custom GLTFResult type - using GLTF from three-stdlib directly
@@ -47,6 +48,7 @@ export default function FracturedLogo({
   scale = 1,
   onNavigationHover,
   onNavigationClick,
+  onDecompose,
 }: FracturedLogoProps) {
   const groupRef = useRef<THREE.Group>(null);
   const collisionRef = useRef<THREE.Mesh>(null);
@@ -342,6 +344,11 @@ export default function FracturedLogo({
 
     setIsAnimating(true);
     setIsDecomposed(true);
+
+    // Notify parent that decomposition has started
+    if (onDecompose) {
+      onDecompose();
+    }
 
     // OPTIMIZATION: Respect reduced motion preference
     const animDuration = prefersReducedMotion ? 0.5 : 4.0;

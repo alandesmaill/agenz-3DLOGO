@@ -115,16 +115,17 @@ isAnimating         // Animation lock to prevent conflicts
 #### Interaction Flow
 
 ```
-Assembled State (idle rotation via useFrame)
+Assembled State (group scale 1.5, idle rotation via useFrame)
   ↓ onPointerEnter on global collision box
-Decompose Animation (GSAP timelines)
-  - Nav pieces → target positions (z: 2, front of camera)
-  - Group scale 1.5 → 1.0 (keeps nav pieces same visual size)
-  - Debris scatter randomly with fade (opacity 0.3-0.6)
-  ↓ animation completes (1.5s)
-Floating State (useFrame sine wave motion)
+Decompose Animation (GSAP - 4s duration, all at once)
+  - Nav pieces → target positions (z: 1.0, front of camera)
+  - Nav pieces maintain 1.0x scale
+  - Debris scatter to back (negative z: -0.5 to -1), fade opacity 0.3-0.6
+  ↓ animation completes
+Floating State (permanent - useFrame sine wave motion)
+  - Logo stays decomposed (no auto-reassembly)
   ↓ onPointerEnter on nav piece collision box
-Hover Effect (scale 1.8 → 2.0, emissive glow 0 → 0.5)
+Hover Effect (scale 1.0 → 1.2, cyan emissive glow)
   ↓ onClick on nav piece
 Camera Zoom Animation (GSAP timeline)
   - Camera → piece position
@@ -154,10 +155,10 @@ Located in `FracturedLogo.tsx`:
 
 ```typescript
 const NAV_SECTIONS = [
-  { section: 'about', label: 'ABOUT', position: new THREE.Vector3(-1.1, 1.8, 2) },
-  { section: 'works', label: 'WORKS', position: new THREE.Vector3(1.9, 1.8, 2) },
-  { section: 'services', label: 'SERVICES', position: new THREE.Vector3(-1.1, 0.2, 2) },
-  { section: 'contact', label: 'CONTACT', position: new THREE.Vector3(1.9, 0.2, 2) },
+  { section: 'about', label: 'ABOUT', position: new THREE.Vector3(-0.6, 1.5, 1.0) },      // Top-left
+  { section: 'works', label: 'WORKS', position: new THREE.Vector3(0.6, 1.5, 1.0) },       // Top-right
+  { section: 'services', label: 'SERVICES', position: new THREE.Vector3(-0.6, 0.5, 1.0) }, // Bottom-left
+  { section: 'contact', label: 'CONTACT', position: new THREE.Vector3(0.6, 0.5, 1.0) },   // Bottom-right
 ];
 ```
 
@@ -383,10 +384,10 @@ Edit `Scene.tsx` EffectComposer:
 
 Colors defined in multiple places:
 
-1. **Particle gradients**: `ParticleAssembly.tsx` (if re-added)
-2. **Loading screen**: `LoadingScreen.tsx` gradient stops
-3. **Navigation labels**: `NavigationLabel.tsx` gradient
-4. **Background**: `AnimatedBackground.tsx` gradient orbs
+1. **Loading screen**: `LoadingScreen.tsx` gradient stops
+2. **Navigation labels**: `NavigationLabel.tsx` gradient
+3. **Background**: `AnimatedBackground.tsx` gradient orbs
+4. **Hover glow**: `FracturedLogo.tsx` emissive color (`0x00ffff`)
 
 Brand colors: Cyan `#00ffff`, Green `#00e92c`
 
@@ -445,6 +446,7 @@ Playwright tests verify 60fps target across key scenarios:
 ```bash
 npm run test:perf:headed  # Run with visible browser (accurate GPU)
 npm run test:perf        # Run headless (faster but less accurate)
+npm run test:perf:report # View HTML report from last test run
 ```
 
 **Test scenarios:**
@@ -453,6 +455,12 @@ npm run test:perf        # Run headless (faster but less accurate)
 3. Decomposition animation (target: 55fps avg)
 4. Navigation hover with bloom (target: 55fps avg)
 5. Rapid interactions stress test (target: 50fps avg)
+
+**Performance thresholds** (defined in `tests/helpers/constants.ts`):
+- `TARGET_FPS: 60` - Ideal frame rate
+- `MIN_ACCEPTABLE_FPS: 55` - Minimum for passing tests
+- `CRITICAL_FPS: 50` - Below this indicates problems
+- `MAX_FRAME_DROP_COUNT: 5` - Max allowed frame drops per test
 
 **Note**: Headless mode may show lower FPS due to software rendering. Use `--headed` for accurate WebGL measurements.
 
@@ -463,8 +471,10 @@ npm run test:perf        # Run headless (faster but less accurate)
 - **@react-three/drei** `^9.122.0` - Helper components (useGLTF, OrbitControls, Environment, etc.)
 - **@react-three/postprocessing** `^2.19.1` - Post-processing effects
 - **gsap** `^3.12.5` - Animation library
+- **zustand** `^5.0.8` - State management (available for future use)
 - **next** `14.2.21` - React framework with App Router
 - **react** `^18.3.1` / **react-dom** `^18.3.1` - With overrides in package.json
+- **@playwright/test** `^1.56.1` - E2E and performance testing (dev)
 
 ## Styling Patterns
 

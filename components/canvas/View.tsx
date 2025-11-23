@@ -1,7 +1,7 @@
 'use client';
 
 import { Canvas, Scene, FracturedLogo } from '@/components/canvas';
-import { NavigationLabel, TestSection, AnimatedBackground, LoadingScreen } from '@/components/dom';
+import { NavigationLabel, TestSection, AnimatedBackground, LoadingScreen, Header, HoverHint } from '@/components/dom';
 import { Suspense, useState, useRef, useEffect } from 'react';
 import { useProgress } from '@react-three/drei';
 
@@ -39,6 +39,7 @@ export default function View() {
   const [logoScale, setLogoScale] = useState(1.2);
   const [loadingProgress, setLoadingProgress] = useState(0);
   const [isLoaded, setIsLoaded] = useState(false);
+  const [isDecomposed, setIsDecomposed] = useState(false);
 
   // Responsive scaling
   useEffect(() => {
@@ -114,10 +115,21 @@ export default function View() {
     }, 300);
   };
 
+  // Handle decomposition callback from FracturedLogo
+  const handleDecompose = () => {
+    setIsDecomposed(true);
+  };
+
   return (
     <div ref={containerRef} className="relative w-full h-full">
       {/* Loading Screen */}
       <LoadingScreen progress={loadingProgress} isLoaded={isLoaded} />
+
+      {/* Header with Logo and Buttons */}
+      <Header />
+
+      {/* Hover Hint - disappears when logo decomposes */}
+      <HoverHint isVisible={isLoaded && !isDecomposed} />
 
       {/* Animated Background with Brand Colors */}
       <AnimatedBackground />
@@ -134,6 +146,7 @@ export default function View() {
               scale={logoScale}
               onNavigationHover={handleNavigationHover}
               onNavigationClick={handleNavigationClick}
+              onDecompose={handleDecompose}
             />
           </Scene>
         </Suspense>
