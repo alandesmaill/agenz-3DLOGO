@@ -6,3 +6,5 @@ export { default as Header } from './Header';
 export { default as HoverHint } from './HoverHint';
 export { default as AboutSection } from './AboutSection';
 export { default as InfiniteText } from './InfiniteText';
+export { default as ContactModal } from './ContactModal';
+export { default as MenuOverlay } from './MenuOverlay';

@@ -1,9 +1,10 @@
 'use client';
 
 import { Canvas, Scene, FracturedLogo } from '@/components/canvas';
-import { NavigationLabel, TestSection, AnimatedBackground, LoadingScreen, Header, HoverHint } from '@/components/dom';
-import { Suspense, useState, useRef, useEffect } from 'react';
+import { NavigationLabel, TestSection, AnimatedBackground, LoadingScreen, Header, HoverHint, ContactModal, MenuOverlay } from '@/components/dom';
+import { Suspense, useState, useRef, useEffect, useCallback } from 'react';
 import { useProgress } from '@react-three/drei';
+import { gsap } from 'gsap';
 
 // Loading progress component inside Canvas
 function LoadingManager({ onProgress }: { onProgress: (progress: number) => void }) {
@@ -41,6 +42,13 @@ export default function View() {
   const [isLoaded, setIsLoaded] = useState(false);
   const [isDecomposed, setIsDecomposed] = useState(false);
 
+  // Canvas optimization - unmount when in section view
+  const [canvasActive, setCanvasActive] = useState(true);
+
+  // Modal and Menu state
+  const [contactModalOpen, setContactModalOpen] = useState(false);
+  const [menuOverlayOpen, setMenuOverlayOpen] = useState(false);
+
   // Responsive scaling
   useEffect(() => {
     const updateScale = () => {
@@ -68,6 +76,18 @@ export default function View() {
     }
   }, [loadingProgress]);
 
+  // Unmount canvas when section is visible (optimization)
+  useEffect(() => {
+    if (testSection.isVisible && testSection.section) {
+      // Delay unmount to allow for transition animation
+      const timer = setTimeout(() => {
+        setCanvasActive(false);
+        console.log('Canvas unmounted for performance optimization');
+      }, 800); // Wait for section animation to complete
+      return () => clearTimeout(timer);
+    }
+  }, [testSection.isVisible, testSection.section]);
+
   // Handle navigation hover callback from FracturedLogo
   const handleNavigationHover = (
     _piece: string | null,
@@ -87,38 +107,41 @@ export default function View() {
   };
 
   // Handle navigation click callback - show test section
-  const handleNavigationClick = (section: string) => {
+  const handleNavigationClick = useCallback((section: string) => {
     console.log(`Navigation clicked: ${section}`);
     setTestSection({
       section,
       isVisible: true,
     });
-  };
+  }, []);
 
-  // Handle back button - reset to logo view
-  const handleBack = () => {
-    setTestSection({
-      section: null,
-      isVisible: false,
-    });
-
-    // Reset canvas opacity
-    const canvas = containerRef.current?.querySelector('canvas');
-    if (canvas) {
-      canvas.style.opacity = '1';
-    }
-
-    // Reload page to reset Three.js scene
-    // This is a simple approach for testing - in production you'd want a proper reset function
-    setTimeout(() => {
-      window.location.reload();
-    }, 300);
-  };
+  // Handle back button - reload page for fresh start
+  const handleBack = useCallback(() => {
+    // Reload the page to restart the 3D experience
+    // This is intentional for performance - canvas was unmounted
+    window.location.reload();
+  }, []);
 
   // Handle decomposition callback from FracturedLogo
   const handleDecompose = () => {
     setIsDecomposed(true);
   };
+
+  // Header button handlers
+  const handleGetInTouch = useCallback(() => {
+    setContactModalOpen(true);
+  }, []);
+
+  const handleMenuClick = useCallback(() => {
+    setMenuOverlayOpen(true);
+  }, []);
+
+  // Menu navigation handler
+  const handleMenuNavigate = useCallback((section: string) => {
+    // If logo hasn't decomposed yet, we need to handle this differently
+    // For now, just navigate to the section
+    handleNavigationClick(section);
+  }, [handleNavigationClick]);
 
   return (
     <div ref={containerRef} className="relative w-full h-full">
@@ -126,37 +149,42 @@ export default function View() {
       <LoadingScreen progress={loadingProgress} isLoaded={isLoaded} />
 
       {/* Header with Logo and Buttons */}
-      <Header />
+      <Header
+        onGetInTouch={handleGetInTouch}
+        onMenuClick={handleMenuClick}
+      />
 
       {/* Hover Hint - disappears when logo decomposes */}
-      <HoverHint isVisible={isLoaded && !isDecomposed} />
+      <HoverHint isVisible={isLoaded && !isDecomposed && canvasActive} />
 
-      {/* Animated Background with Brand Colors */}
-      <AnimatedBackground />
+      {/* Animated Background with Brand Colors - hide when canvas unmounted */}
+      {canvasActive && <AnimatedBackground />}
 
-      {/* Three.js Canvas */}
-      <Canvas className="w-full h-full">
-        <Suspense fallback={null}>
-          <LoadingManager onProgress={setLoadingProgress} />
-          <Scene>
-            {/* Interactive Fractured Logo */}
-            <FracturedLogo
-              path="/models/3d-logo.glb"
-              position={[0, 0, 0]}
-              scale={logoScale}
-              onNavigationHover={handleNavigationHover}
-              onNavigationClick={handleNavigationClick}
-              onDecompose={handleDecompose}
-            />
-          </Scene>
-        </Suspense>
-      </Canvas>
+      {/* Three.js Canvas - conditionally rendered for performance */}
+      {canvasActive && (
+        <Canvas className="w-full h-full">
+          <Suspense fallback={null}>
+            <LoadingManager onProgress={setLoadingProgress} />
+            <Scene>
+              {/* Interactive Fractured Logo */}
+              <FracturedLogo
+                path="/models/3d-logo.glb"
+                position={[0, 0, 0]}
+                scale={logoScale}
+                onNavigationHover={handleNavigationHover}
+                onNavigationClick={handleNavigationClick}
+                onDecompose={handleDecompose}
+              />
+            </Scene>
+          </Suspense>
+        </Canvas>
+      )}
 
       {/* HTML Overlay - Navigation Labels */}
       <NavigationLabel
         label={labelData.label}
         position={labelData.position}
-        isVisible={labelData.isVisible}
+        isVisible={labelData.isVisible && canvasActive}
       />
 
       {/* HTML Overlay - Section Display */}
@@ -164,6 +192,19 @@ export default function View() {
         section={testSection.section}
         isVisible={testSection.isVisible}
         onBack={handleBack}
+      />
+
+      {/* Contact Modal */}
+      <ContactModal
+        isOpen={contactModalOpen}
+        onClose={() => setContactModalOpen(false)}
+      />
+
+      {/* Menu Overlay */}
+      <MenuOverlay
+        isOpen={menuOverlayOpen}
+        onClose={() => setMenuOverlayOpen(false)}
+        onNavigate={handleMenuNavigate}
       />
     </div>
   );

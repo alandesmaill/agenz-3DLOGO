@@ -50,7 +50,7 @@ export default function InfiniteText({ text, length = 5, className = '' }: Infin
       {Array.from({ length }, (_, index) => (
         <div
           key={`${index}-${text}`}
-          className={`flex items-center px-4 ${
+          className={`flex items-center px-10 ${
             index % 2 === 0
               ? 'text-gray-400'
               : 'text-transparent [-webkit-text-stroke:1px_rgba(0,0,0,0.3)]'

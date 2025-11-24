@@ -222,7 +222,7 @@ export default function AboutSection({ onBack }: AboutSectionProps) {
   return (
     <section ref={rootRef} className="fixed inset-0 z-50 flex flex-col bg-gray-100">
       {/* Header - matching reference design */}
-      <header className="flex-none flex items-center justify-between px-6 md:px-12 py-4 bg-gray-100 z-10">
+      <header className="flex-none flex items-center justify-between px-6 md:px-12 py-6 bg-gray-100 z-10">
         {/* Logo - Left */}
         <button
           onClick={onBack}
@@ -253,7 +253,7 @@ export default function AboutSection({ onBack }: AboutSectionProps) {
       </header>
 
       {/* Top content area */}
-      <div className="flex-none px-6 md:px-12 pt-6 pb-8 bg-gray-100">
+      <div className="flex-none px-6 md:px-12 pt-4 pb-10 bg-gray-100">
         <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-8">
           {/* Title - Left */}
           <div className="flex flex-col max-w-2xl">
@@ -271,8 +271,8 @@ export default function AboutSection({ onBack }: AboutSectionProps) {
         </div>
       </div>
 
-      {/* 3D Scene with SVG Mask - smaller container for breathing room */}
-      <div className="h-[45vh] md:h-[50vh] relative mx-6 md:mx-12 mb-4 rounded-2xl overflow-hidden">
+      {/* 3D Scene with SVG Mask - flex-1 to fill available space */}
+      <div className="flex-1 min-h-0 relative mx-6 md:mx-12 rounded-2xl overflow-hidden">
         {/* Three.js Canvas */}
         <Canvas
           className="absolute inset-0 w-full h-full"
@@ -323,8 +323,8 @@ export default function AboutSection({ onBack }: AboutSectionProps) {
       </div>
 
       {/* Infinite "Scroll Down" text at bottom */}
-      <div className="flex-none h-12 bg-gray-100 overflow-hidden mx-6 md:mx-12 mb-6">
-        <InfiniteText text="Scroll Down" length={10} />
+      <div className="flex-none h-16 bg-gray-100 overflow-hidden mx-6 md:mx-12 mt-6 mb-8 flex items-center">
+        <InfiniteText text="Scroll Down" length={20} className="h-full" />
       </div>
     </section>
   );
