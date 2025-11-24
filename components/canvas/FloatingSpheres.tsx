@@ -2,7 +2,7 @@
 
 import * as THREE from 'three';
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { InstancedRigidBodies } from '@react-three/rapier';
+import { InstancedRigidBodies, RapierRigidBody } from '@react-three/rapier';
 import { MeshTransmissionMaterial } from '@react-three/drei';
 import { easing } from 'maath';
 import { useFrame } from '@react-three/fiber';
@@ -15,6 +15,9 @@ const r = THREE.MathUtils.randFloatSpread;
 interface FloatingSpheresProps {
   totalCount?: number;
   transparentCount?: number;
+  // Responsive spread controls
+  positionSpread?: { x: number; y: number; z: number };
+  motionSpread?: { x: number; y: number; z: number };
 }
 
 interface SphereInstance {
@@ -25,13 +28,14 @@ interface SphereInstance {
 
 export default function FloatingSpheres({
   totalCount = 18,
-  transparentCount = 5
+  transparentCount = 5,
+  // Default spread values (desktop)
+  positionSpread = { x: 20, y: 10, z: 20 },
+  motionSpread = { x: 40, y: 10, z: 10 },
 }: FloatingSpheresProps) {
-  // Use any type for refs - InstancedRigidBodies populates these directly
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const apiNormal = useRef<any>(null);
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const apiTransparent = useRef<any>(null);
+  // Refs for physics bodies
+  const apiNormal = useRef<RapierRigidBody[]>([]);
+  const apiTransparent = useRef<RapierRigidBody[]>([]);
   const sphereRef = useRef<THREE.InstancedMesh>(null);
 
   const [currentAccentIndex, setCurrentAccentIndex] = useState(0);
@@ -48,21 +52,17 @@ export default function FloatingSpheres({
     const colors = new Float32Array(normalCount * 3);
     const color = new THREE.Color();
 
-    // Initialize refs - InstancedRigidBodies will populate these arrays
-    apiNormal.current = [];
-    apiTransparent.current = [];
-
     for (let i = 0; i < totalCount; i++) {
       const instance: SphereInstance = {
         key: `instance_${i}`,
-        position: [r(20), r(10), r(20)],
+        position: [r(positionSpread.x), r(positionSpread.y), r(positionSpread.z)],
         scale: 1,
       };
 
       factors.push(THREE.MathUtils.randInt(20, 100));
-      xFactors.push(THREE.MathUtils.randFloatSpread(40));
-      yFactors.push(THREE.MathUtils.randFloatSpread(10));
-      zFactors.push(THREE.MathUtils.randFloatSpread(10));
+      xFactors.push(THREE.MathUtils.randFloatSpread(motionSpread.x));
+      yFactors.push(THREE.MathUtils.randFloatSpread(motionSpread.y));
+      zFactors.push(THREE.MathUtils.randFloatSpread(motionSpread.z));
 
       if (i < normalCount) {
         normalInstances.push(instance);
@@ -78,7 +78,7 @@ export default function FloatingSpheres({
     }
 
     return { factors, xFactors, yFactors, zFactors, normalInstances, transparentInstances, colors };
-  }, [normalCount, totalCount]);
+  }, [normalCount, totalCount, positionSpread, motionSpread]);
 
   // Cycle through accent colors every 5 seconds
   useEffect(() => {
@@ -90,9 +90,11 @@ export default function FloatingSpheres({
   }, []);
 
   useFrame((state) => {
+    const delta = state.clock.getDelta();
+
     // Animate normal spheres
-    if (apiNormal.current) {
-      apiNormal.current.forEach((body, i) => {
+    if (apiNormal.current && apiNormal.current.length > 0) {
+      apiNormal.current.forEach((body: RapierRigidBody, i: number) => {
         if (body) {
           const t = factors[i] + state.clock.elapsedTime * 0.25;
 
@@ -116,7 +118,7 @@ export default function FloatingSpheres({
       const newColor = new THREE.Color(accents[currentAccentIndex]);
       for (let i = 7; i < normalCount; i++) {
         const currentColor = new THREE.Color().fromArray(Array.from(colors.slice(i * 3, (i + 1) * 3)));
-        easing.dampC(currentColor, newColor, 0.1, state.delta);
+        easing.dampC(currentColor, newColor, 0.1, delta);
         colors.set(currentColor.toArray(), i * 3);
       }
 
@@ -126,8 +128,8 @@ export default function FloatingSpheres({
     }
 
     // Animate transparent spheres
-    if (apiTransparent.current) {
-      apiTransparent.current.forEach((body, i) => {
+    if (apiTransparent.current && apiTransparent.current.length > 0) {
+      apiTransparent.current.forEach((body: RapierRigidBody, i: number) => {
         if (body) {
           const t = factors[normalCount + i] + state.clock.elapsedTime * 0.25;
 

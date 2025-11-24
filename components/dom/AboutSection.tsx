@@ -7,6 +7,7 @@ import { Physics } from '@react-three/rapier';
 import { gsap } from 'gsap';
 import FloatingSpheres from '@/components/canvas/FloatingSpheres';
 import InfiniteText from './InfiniteText';
+import MenuOverlay from './MenuOverlay';
 
 interface RectPosition {
   index: number;
@@ -102,6 +103,54 @@ export default function AboutSection({ onBack }: AboutSectionProps) {
   const rectRefs = useRef<(SVGRectElement | null)[]>([]);
   const svgRef = useRef<SVGSVGElement>(null);
   const divWrapper = useRef<HTMLDivElement>(null);
+
+  // Responsive detection for sphere settings
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Menu state
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  const handleMenuNavigate = useCallback((section: string) => {
+    // Navigate to section - for now just reload to home if 'home', otherwise log
+    if (section === 'home') {
+      window.location.reload();
+    } else {
+      console.log(`Navigate to: ${section}`);
+    }
+  }, []);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  // Responsive sphere settings
+  const sphereSettings = useMemo(() => {
+    if (isMobile) {
+      return {
+        totalCount: 12,
+        transparentCount: 3,
+        positionSpread: { x: 8, y: 8, z: 8 },
+        motionSpread: { x: 12, y: 8, z: 6 },
+        cameraFov: 35,
+        cameraZ: 18,
+      };
+    }
+    // Desktop defaults
+    return {
+      totalCount: 18,
+      transparentCount: 5,
+      positionSpread: { x: 20, y: 10, z: 20 },
+      motionSpread: { x: 40, y: 10, z: 10 },
+      cameraFov: 20,
+      cameraZ: 20,
+    };
+  }, [isMobile]);
 
   // Initial rectangle positions for the mask effect
   const initialPositions = useMemo<RectPosition[]>(
@@ -245,6 +294,7 @@ export default function AboutSection({ onBack }: AboutSectionProps) {
             GET IN TOUCH
           </a>
           <button
+            onClick={() => setMenuOpen(true)}
             className="px-6 py-2.5 text-sm font-bold text-white bg-black rounded-full hover:bg-gray-800 transition-all duration-200"
           >
             MENU
@@ -279,9 +329,18 @@ export default function AboutSection({ onBack }: AboutSectionProps) {
           style={{ backgroundColor: 'transparent', borderRadius: '1rem' }}
         >
           <Suspense fallback={null}>
-            <PerspectiveCamera makeDefault position={[0, 0, 20]} fov={20} />
+            <PerspectiveCamera
+              makeDefault
+              position={[0, 0, sphereSettings.cameraZ]}
+              fov={sphereSettings.cameraFov}
+            />
             <Physics interpolate timeStep={1 / 60} gravity={[0, 0, 0]}>
-              <FloatingSpheres totalCount={18} transparentCount={5} />
+              <FloatingSpheres
+                totalCount={sphereSettings.totalCount}
+                transparentCount={sphereSettings.transparentCount}
+                positionSpread={sphereSettings.positionSpread}
+                motionSpread={sphereSettings.motionSpread}
+              />
             </Physics>
             <Environment preset="studio" />
             <ambientLight intensity={0.5} />
@@ -326,6 +385,13 @@ export default function AboutSection({ onBack }: AboutSectionProps) {
       <div className="flex-none h-16 bg-gray-100 overflow-hidden mx-6 md:mx-12 mt-6 mb-8 flex items-center">
         <InfiniteText text="Scroll Down" length={20} className="h-full" />
       </div>
+
+      {/* Menu Overlay */}
+      <MenuOverlay
+        isOpen={menuOpen}
+        onClose={() => setMenuOpen(false)}
+        onNavigate={handleMenuNavigate}
+      />
     </section>
   );
 }

@@ -139,13 +139,13 @@ export default function MenuOverlay({ isOpen, onClose, onNavigate }: MenuOverlay
                   }`}
                   style={{ transitionDelay: isAnimating ? `${200 + index * 60}ms` : '0ms' }}
                 >
-                  {/* Number */}
-                  <span className={`text-sm font-mono transition-colors duration-300 ${
+                  {/* Dash indicator */}
+                  <span className={`text-2xl font-bold transition-colors duration-300 ${
                     activeItem === item.section || hoveredItem === item.section
                       ? 'text-cyan-400'
                       : 'text-gray-600'
                   }`}>
-                    {String(index + 1).padStart(2, '0')}
+                    —
                   </span>
 
                   {/* Label */}
@@ -207,7 +207,7 @@ export default function MenuOverlay({ isOpen, onClose, onNavigate }: MenuOverlay
             style={{ transitionDelay: isAnimating ? '650ms' : '0ms' }}
           >
             <p className="text-xs text-gray-600 tracking-wide">
-              &copy; 2024 Agenz. All rights reserved.
+              &copy; 2025 Agenz. All rights reserved.
             </p>
           </div>
         </div>

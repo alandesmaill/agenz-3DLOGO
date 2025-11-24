@@ -148,11 +148,13 @@ export default function View() {
       {/* Loading Screen */}
       <LoadingScreen progress={loadingProgress} isLoaded={isLoaded} />
 
-      {/* Header with Logo and Buttons */}
-      <Header
-        onGetInTouch={handleGetInTouch}
-        onMenuClick={handleMenuClick}
-      />
+      {/* Header with Logo and Buttons - only show after preload */}
+      {isLoaded && (
+        <Header
+          onGetInTouch={handleGetInTouch}
+          onMenuClick={handleMenuClick}
+        />
+      )}
 
       {/* Hover Hint - disappears when logo decomposes */}
       <HoverHint isVisible={isLoaded && !isDecomposed && canvasActive} />
