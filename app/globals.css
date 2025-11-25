@@ -169,6 +169,17 @@ html {
   display: inline-block;
 }
 
+/* SplitType generated words - required for GSAP transforms */
+.word {
+  display: inline-block;
+  white-space: nowrap;
+}
+
+.word:not(:last-child)::after {
+  content: '\00a0'; /* Non-breaking space */
+  display: inline;
+}
+
 /* Prevent text selection during animations */
 .animating {
   user-select: none;
