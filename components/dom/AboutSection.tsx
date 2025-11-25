@@ -8,6 +8,7 @@ import { gsap } from 'gsap';
 import FloatingSpheres from '@/components/canvas/FloatingSpheres';
 import InfiniteText from './InfiniteText';
 import MenuOverlay from './MenuOverlay';
+import ScatteredText from './ScatteredText';
 
 interface RectPosition {
   index: number;
@@ -385,9 +386,9 @@ export default function AboutSection({ onBack }: AboutSectionProps) {
       {/* Large Centered Paragraph Section - Matching GIATS Reference */}
       <section className="min-h-screen flex items-center justify-center px-6 md:px-12 bg-gray-100">
         <div className="max-w-5xl text-center">
-          <p className="text-[32px] md:text-[48px] lg:text-[56px] text-gray-700 leading-[1.5] font-normal">
+          <ScatteredText className="text-[32px] md:text-[48px] lg:text-[56px] text-gray-700 leading-[1.5] font-normal">
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-          </p>
+          </ScatteredText>
         </div>
       </section>
 
