@@ -111,7 +111,6 @@ export default function AboutSection({ onBack }: AboutSectionProps) {
   const [menuOpen, setMenuOpen] = useState(false);
 
   const handleMenuNavigate = useCallback((section: string) => {
-    // Navigate to section - for now just reload to home if 'home', otherwise log
     if (section === 'home') {
       window.location.reload();
     } else {
@@ -141,7 +140,6 @@ export default function AboutSection({ onBack }: AboutSectionProps) {
         cameraZ: 18,
       };
     }
-    // Desktop defaults
     return {
       totalCount: 18,
       transparentCount: 5,
@@ -269,9 +267,9 @@ export default function AboutSection({ onBack }: AboutSectionProps) {
   );
 
   return (
-    <section ref={rootRef} className="fixed inset-0 z-50 flex flex-col bg-gray-100">
-      {/* Header - matching reference design */}
-      <header className="flex-none flex items-center justify-between px-6 md:px-12 py-6 bg-gray-100 z-10">
+    <div ref={rootRef} className="scroll-container bg-gray-100">
+      {/* Header - Fixed */}
+      <header className="fixed top-0 left-0 right-0 flex items-center justify-between px-6 md:px-12 py-6 bg-gray-100/80 backdrop-blur-md z-50">
         {/* Logo - Left */}
         <button
           onClick={onBack}
@@ -285,7 +283,7 @@ export default function AboutSection({ onBack }: AboutSectionProps) {
           />
         </button>
 
-        {/* Right buttons - matching landing page Header */}
+        {/* Right buttons */}
         <div className="flex items-center gap-3">
           <a
             href="mailto:contact@agenz.com"
@@ -302,9 +300,9 @@ export default function AboutSection({ onBack }: AboutSectionProps) {
         </div>
       </header>
 
-      {/* Top content area */}
-      <div className="flex-none px-6 md:px-12 pt-4 pb-10 bg-gray-100">
-        <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-8">
+      {/* Hero Section with 3D Spheres */}
+      <section className="relative min-h-screen pt-24 pb-10 px-6 md:px-12 bg-gray-100">
+        <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-8 mb-10">
           {/* Title - Left */}
           <div className="flex flex-col max-w-2xl">
             <h2 className="text-3xl md:text-5xl lg:text-6xl font-bold tracking-tight text-gray-800 leading-tight">
@@ -319,72 +317,79 @@ export default function AboutSection({ onBack }: AboutSectionProps) {
             </p>
           </div>
         </div>
-      </div>
 
-      {/* 3D Scene with SVG Mask - flex-1 to fill available space */}
-      <div className="flex-1 min-h-0 relative mx-6 md:mx-12 rounded-2xl overflow-hidden">
-        {/* Three.js Canvas */}
-        <Canvas
-          className="absolute inset-0 w-full h-full"
-          style={{ backgroundColor: 'transparent', borderRadius: '1rem' }}
-        >
-          <Suspense fallback={null}>
-            <PerspectiveCamera
-              makeDefault
-              position={[0, 0, sphereSettings.cameraZ]}
-              fov={sphereSettings.cameraFov}
-            />
-            <Physics interpolate timeStep={1 / 60} gravity={[0, 0, 0]}>
-              <FloatingSpheres
-                totalCount={sphereSettings.totalCount}
-                transparentCount={sphereSettings.transparentCount}
-                positionSpread={sphereSettings.positionSpread}
-                motionSpread={sphereSettings.motionSpread}
-              />
-            </Physics>
-            <Environment preset="studio" />
-            <ambientLight intensity={0.5} />
-            <directionalLight position={[10, 10, 5]} intensity={1} />
-          </Suspense>
-        </Canvas>
-
-        {/* SVG Mask Overlay */}
-        <div
-          onMouseEnter={onMouseEnter}
-          onMouseLeave={onMouseLeave}
-          className="absolute inset-0 w-full h-full"
-        >
-          <svg
-            ref={svgRef}
-            width="100%"
-            height="100%"
-            viewBox="0 0 100 100"
-            preserveAspectRatio="none"
-            className="block"
+        {/* 3D Scene with SVG Mask */}
+        <div className="relative h-[60vh] md:h-[70vh] rounded-2xl overflow-hidden">
+          {/* Three.js Canvas */}
+          <Canvas
+            className="absolute inset-0 w-full h-full"
+            style={{ backgroundColor: 'transparent', borderRadius: '1rem' }}
           >
-            {/* Background that gets masked */}
-            <rect
-              x="0"
-              y="0"
-              width="100%"
-              height="100.3%"
-              fill="#f3f4f6"
-              style={{ mask: 'url(#aboutMask)' }}
-            />
-            {/* Mask definition */}
-            <mask id="aboutMask" x="0" y="0">
-              <rect x="0" y="0" width="100%" height="100.3%" fill="white" />
-              {renderRects}
-            </mask>
-          </svg>
-          <div ref={divWrapper} />
-        </div>
-      </div>
+            <Suspense fallback={null}>
+              <PerspectiveCamera
+                makeDefault
+                position={[0, 0, sphereSettings.cameraZ]}
+                fov={sphereSettings.cameraFov}
+              />
+              <Physics interpolate timeStep={1 / 60} gravity={[0, 0, 0]}>
+                <FloatingSpheres
+                  totalCount={sphereSettings.totalCount}
+                  transparentCount={sphereSettings.transparentCount}
+                  positionSpread={sphereSettings.positionSpread}
+                  motionSpread={sphereSettings.motionSpread}
+                />
+              </Physics>
+              <Environment preset="studio" />
+              <ambientLight intensity={0.5} />
+              <directionalLight position={[10, 10, 5]} intensity={1} />
+            </Suspense>
+          </Canvas>
 
-      {/* Infinite "Scroll Down" text at bottom */}
-      <div className="flex-none h-16 bg-gray-100 overflow-hidden mx-6 md:mx-12 mt-6 mb-8 flex items-center">
-        <InfiniteText text="Scroll Down" length={20} className="h-full" />
-      </div>
+          {/* SVG Mask Overlay */}
+          <div
+            onMouseEnter={onMouseEnter}
+            onMouseLeave={onMouseLeave}
+            className="absolute inset-0 w-full h-full"
+          >
+            <svg
+              ref={svgRef}
+              width="100%"
+              height="100%"
+              viewBox="0 0 100 100"
+              preserveAspectRatio="none"
+              className="block"
+            >
+              <rect
+                x="0"
+                y="0"
+                width="100%"
+                height="100.3%"
+                fill="#f3f4f6"
+                style={{ mask: 'url(#aboutMask)' }}
+              />
+              <mask id="aboutMask" x="0" y="0">
+                <rect x="0" y="0" width="100%" height="100.3%" fill="white" />
+                {renderRects}
+              </mask>
+            </svg>
+            <div ref={divWrapper} />
+          </div>
+        </div>
+
+        {/* Infinite "Scroll Down" text */}
+        <div className="h-16 overflow-hidden mt-8 flex items-center">
+          <InfiniteText text="Scroll Down" length={20} className="h-full" />
+        </div>
+      </section>
+
+      {/* Large Centered Paragraph Section - Matching GIATS Reference */}
+      <section className="min-h-screen flex items-center justify-center px-6 md:px-12 bg-gray-100">
+        <div className="max-w-5xl text-center">
+          <p className="text-[32px] md:text-[48px] lg:text-[56px] text-gray-700 leading-[1.5] font-normal">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+          </p>
+        </div>
+      </section>
 
       {/* Menu Overlay */}
       <MenuOverlay
@@ -392,6 +397,6 @@ export default function AboutSection({ onBack }: AboutSectionProps) {
         onClose={() => setMenuOpen(false)}
         onNavigate={handleMenuNavigate}
       />
-    </section>
+    </div>
   );
 }
