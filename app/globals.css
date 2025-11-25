@@ -175,20 +175,36 @@ html {
   -webkit-user-select: none;
 }
 
-/* Custom scrollbar for webkit browsers */
+/* Custom scrollbar - auto-hide with black/gray colors */
 ::-webkit-scrollbar {
-  width: 10px;
+  width: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--background);
+  background: transparent;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: linear-gradient(135deg, var(--brand-green), var(--brand-cyan));
-  border-radius: 5px;
+  background: rgba(0, 0, 0, 0); /* Hidden by default */
+  border-radius: 4px;
+  transition: background 0.3s ease;
 }
 
-::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(135deg, var(--brand-cyan), var(--brand-green));
+/* Show scrollbar on page hover or scroll */
+body:hover ::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.3); /* Semi-transparent black */
+}
+
+body:hover ::-webkit-scrollbar-thumb:hover {
+  background: rgba(60, 60, 60, 0.6); /* Darker gray on hover */
+}
+
+/* Firefox scrollbar support */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: transparent transparent;
+}
+
+body:hover * {
+  scrollbar-color: rgba(0, 0, 0, 0.3) transparent;
 }
