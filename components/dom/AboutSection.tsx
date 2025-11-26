@@ -5,9 +5,14 @@ import { Canvas } from '@react-three/fiber';
 import { Environment, PerspectiveCamera } from '@react-three/drei';
 import { Physics } from '@react-three/rapier';
 import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import FloatingSpheres from '@/components/canvas/FloatingSpheres';
 import InfiniteText from './InfiniteText';
 import MenuOverlay from './MenuOverlay';
+import SmoothScrolling from './SmoothScrolling';
+import AnimatedText from './AnimatedText';
+
+gsap.registerPlugin(ScrollTrigger);
 
 interface RectPosition {
   index: number;
@@ -126,6 +131,32 @@ export default function AboutSection({ onBack }: AboutSectionProps) {
     checkMobile();
     window.addEventListener('resize', checkMobile);
     return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  // Critical: Refresh ScrollTrigger when AboutSection mounts
+  // This ensures animations work when navigating from main page
+  useEffect(() => {
+    console.log('[AboutSection] Component mounted');
+
+    // Scroll to top when section loads
+    window.scrollTo(0, 0);
+
+    // Refresh ScrollTrigger after component and children have rendered
+    const refreshTimer = setTimeout(() => {
+      ScrollTrigger.refresh();
+      console.log('[AboutSection] ScrollTrigger refreshed on mount');
+    }, 600);
+
+    // Force update all triggers
+    const updateTimer = setTimeout(() => {
+      ScrollTrigger.update();
+      console.log('[AboutSection] ScrollTrigger updated');
+    }, 800);
+
+    return () => {
+      clearTimeout(refreshTimer);
+      clearTimeout(updateTimer);
+    };
   }, []);
 
   // Responsive sphere settings
@@ -267,9 +298,10 @@ export default function AboutSection({ onBack }: AboutSectionProps) {
   );
 
   return (
-    <div ref={rootRef} className="scroll-container bg-gray-100">
-      {/* Header - Fixed */}
-      <header className="fixed top-0 left-0 right-0 flex items-center justify-between px-6 md:px-12 py-6 bg-gray-100/80 backdrop-blur-md z-50">
+    <SmoothScrolling>
+      <div ref={rootRef} className="scroll-container bg-gray-100">
+        {/* Header - Fixed */}
+        <header className="fixed top-0 left-0 right-0 flex items-center justify-between px-6 md:px-12 py-6 bg-gray-100/80 backdrop-blur-md z-50">
         {/* Logo - Left */}
         <button
           onClick={onBack}
@@ -382,12 +414,29 @@ export default function AboutSection({ onBack }: AboutSectionProps) {
         </div>
       </section>
 
+      {/* New Content Section */}
+      <section className="min-h-screen bg-white flex items-center justify-center px-6 md:px-12 py-24">
+        <div className="max-w-5xl w-full">
+          <AnimatedText
+            className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-center text-gray-900 leading-tight tracking-tight"
+            splitBy="chars"
+            stagger={0.008}
+            duration={0.6}
+            y={50}
+            triggerStart="top 80%"
+          >
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.
+          </AnimatedText>
+        </div>
+      </section>
+
       {/* Menu Overlay */}
       <MenuOverlay
         isOpen={menuOpen}
         onClose={() => setMenuOpen(false)}
         onNavigate={handleMenuNavigate}
       />
-    </div>
+      </div>
+    </SmoothScrolling>
   );
 }

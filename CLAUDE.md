@@ -73,6 +73,19 @@ All 3D components MUST follow this nesting hierarchy:
   - **Navigation Sections**: Maps to `about`, `works`, `services`, `contact`
   - Debris pieces (non-navigation) scatter randomly and fade during decomposition
 
+- **FloatingSpheres** (`components/canvas/FloatingSpheres.tsx`)
+  - Physics-based sphere system using `@react-three/rapier` for realistic motion
+  - **Two Sphere Types**:
+    - Normal spheres: 7 dark (#1A1A1A) + remaining with cycling accent colors
+    - Transparent glass spheres: MeshTransmissionMaterial with refraction/chromatic aberration
+  - **Color Cycling**: Automatically cycles through brand accents every 5 seconds
+    - Colors: Cyan (#00ffff) → Green (#00e92c) → Teal (#00d4aa) → Blue (#00b8ff)
+  - **Responsive Configuration**:
+    - Mobile: 12 total (3 transparent), tighter spread (8x8x8 position, 12x8x6 motion)
+    - Desktop: 18 total (5 transparent), wider spread (20x10x20 position, 40x10x10 motion)
+  - **Motion Algorithm**: Complex sine/cosine paths with individual timing factors per sphere
+  - **Physics Properties**: High damping (50), low friction (0.1) for smooth floating effect
+
 #### DOM Components (HTML/CSS)
 
 - **LoadingScreen** (`components/dom/LoadingScreen.tsx`)
@@ -91,6 +104,32 @@ All 3D components MUST follow this nesting hierarchy:
 
 - **AnimatedBackground** (`components/dom/AnimatedBackground.tsx`)
   - Multi-layer background with gradient orbs, grid pattern, floating particles
+
+- **AboutSection** (`components/dom/AboutSection.tsx`)
+  - Full-page section displayed when clicking "ABOUT" navigation piece
+  - **Responsive 3D Sphere Scene**: Physics-based FloatingSpheres with adaptive counts
+  - **Animated SVG Mask Overlay**: 7 rectangles that move procedurally across the canvas
+    - Grid-based movement system (6 columns × 2 rows)
+    - Random group animations with collision detection
+    - Continuous GSAP timeline loop with 2-second delays
+    - Fades on hover to reveal full sphere scene
+  - **InfiniteText Component**: Horizontal scrolling "Scroll Down" text banner
+  - **Fixed Header**: Logo button (back navigation) + GET IN TOUCH link + MENU button
+  - **MenuOverlay Integration**: Opens full-screen menu for site navigation
+  - **Responsive Sphere Config**:
+    - Mobile: 12 spheres, narrower camera (FOV 35, Z 18)
+    - Desktop: 18 spheres, wider camera (FOV 20, Z 20)
+
+- **InfiniteText** (`components/dom/InfiniteText.tsx`)
+  - Horizontally scrolling text created by repeating text content
+  - Uses CSS `whitespace-nowrap` and configurable repeat length
+  - Applied in About section for "Scroll Down" indicator
+
+- **MenuOverlay** (`components/dom/MenuOverlay.tsx`)
+  - Full-screen overlay menu with navigation options
+  - GSAP slide-in animation from right side
+  - Includes HOME, ABOUT, WORKS, SERVICES, CONTACT options
+  - Backdrop blur and dark overlay effect
 
 ### FracturedLogo Navigation System - Deep Dive
 
