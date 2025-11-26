@@ -10,3 +10,8 @@ export { default as ContactModal } from './ContactModal';
 export { default as MenuOverlay } from './MenuOverlay';
 export { default as SmoothScrolling } from './SmoothScrolling';
 export { default as AnimatedText } from './AnimatedText';
+export { default as ContactSection } from './ContactSection';
+export { default as ContactForm } from './ContactForm';
+export { default as FormField } from './FormField';
+export { default as FormTextarea } from './FormTextarea';
+export { default as SubmissionSuccess } from './SubmissionSuccess';

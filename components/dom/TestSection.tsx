@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import AboutSection from './AboutSection';
+import ContactSection from './ContactSection';
 
 interface TestSectionProps {
   section: string | null;
@@ -31,6 +32,11 @@ export default function TestSection({
   // Render AboutSection for the "about" section
   if (section === 'about') {
     return <AboutSection onBack={onBack} />;
+  }
+
+  // Render ContactSection for the "contact" section
+  if (section === 'contact') {
+    return <ContactSection onBack={onBack} />;
   }
 
   return (

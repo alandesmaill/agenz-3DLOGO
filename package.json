@@ -12,10 +12,12 @@
     "test:perf:report": "playwright show-report"
   },
   "dependencies": {
+    "@emailjs/browser": "^4.4.1",
     "@react-three/drei": "^9.122.0",
     "@react-three/fiber": "^8.18.0",
     "@react-three/postprocessing": "^2.19.1",
     "@react-three/rapier": "^1.4.0",
+    "@types/react-google-recaptcha": "^2.1.9",
     "clsx": "^2.1.1",
     "gsap": "^3.12.5",
     "lenis": "^1.3.15",
@@ -25,8 +27,10 @@
     "postprocessing": "^6.38.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "react-google-recaptcha": "^3.1.0",
     "split-type": "^0.3.4",
     "three": "^0.169.0",
+    "zod": "^4.1.13",
     "zustand": "^5.0.8"
   },
   "devDependencies": {
