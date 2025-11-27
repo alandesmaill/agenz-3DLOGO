@@ -40,6 +40,13 @@ This is a **Three.js + Next.js + React Three Fiber + GSAP** project featuring an
   - Zod validation with real-time error handling
   - A/B testing framework integrated
   - Confetti animation on successful submission
+- **Service Detail Pages**
+  - `/services/advertising` - Advertising & Social Media service
+  - `/services/video` - Video Production & Music service
+  - `/services/design` - Print & Graphic Design service
+  - `/services/strategy` - Strategic Media Services
+  - Each page includes: Hero, Overview, Features, Case Studies, FAQ, CTA sections
+  - **NO PRICING INFORMATION** - Pricing is forbidden and removed from all pages
 
 ### Critical Three.js Rendering Pattern
 
@@ -224,6 +231,64 @@ All 3D components MUST follow this nesting hierarchy:
   - **Confetti Animation**: Canvas-based confetti particles
   - **Thank You Message**: Confirms submission with brand colors
   - **Call to Action**: "Back to Home" button to return to main page
+
+- **ServicesSection** (`components/dom/ServicesSection.tsx`)
+  - **Bento grid layout** displaying 4 service cards
+  - Data from `/lib/services-data.ts`
+  - GSAP stagger animations (0.1s delay per card)
+  - **NO PRICING** - Pricing field removed entirely from Service interface
+  - **Important**: Never add pricing information anywhere - it is forbidden
+
+- **ServiceCard** (`components/dom/ServiceCard.tsx`)
+  - **3D Effects** (desktop only):
+    - Perspective tilt on mouse move (±10deg rotation)
+    - Magnetic cursor pull (15% strength)
+    - Disabled on mobile for performance
+  - **SVG Icon Animations**:
+    - Continuous float animation (y: -8px, 2s yoyo)
+    - Hover scale + rotation effects
+    - GSAP powered with proper cleanup
+  - **Performance**: 75+ FPS maintained with throttled mouse tracking (16ms)
+  - Uses `forwardRef` with **named function** pattern (not arrow function for SWC compatibility)
+
+#### Service Detail Page Components
+
+All service detail pages follow the ContactSection pattern (simple, content-focused, no 3D backgrounds).
+
+- **ServiceDetailHero** (`components/dom/ServiceDetailHero.tsx`)
+  - Large service number overlay with accent color (opacity: 10%)
+  - AnimatedText for title (character split, 0.02s stagger)
+  - Stats grid (3 cards with liquid glass styling)
+  - Get Started button linking to `/contact`
+
+- **ServiceOverview** (`components/dom/ServiceOverview.tsx`)
+  - Two-column responsive layout
+  - Left: Sticky heading with AnimatedText (word split)
+  - Right: Paragraphs + benefits list with checkmark bullets
+
+- **ServiceFeatureGrid** (`components/dom/ServiceFeatureGrid.tsx`)
+  - 2-column responsive grid of features
+  - Icon float animations (disabled on mobile)
+  - Hover scale effects on icons
+  - 6-8 features per service
+
+- **CaseStudyCarousel** (`components/dom/CaseStudyCarousel.tsx`)
+  - **Auto-play carousel** with 8s per slide
+  - GSAP timeline management with proper cleanup
+  - Manual navigation (prev/next buttons + dot indicators)
+  - Each study includes: client logo, challenge, solution, results metrics, testimonial
+  - 3 case studies per service
+
+- **FAQAccordion** (`components/dom/FAQAccordion.tsx`)
+  - GSAP height animations (scrollHeight calculation)
+  - Icon rotation (0° → 45° for plus-to-X effect)
+  - Multiple items can be open simultaneously
+  - Smooth expand/collapse with 0.4s duration
+
+- **ServiceCTA** (`components/dom/ServiceCTA.tsx`)
+  - Simple call-to-action section
+  - Centered heading + description
+  - Button linking to `/contact` page
 
 ### A/B Testing Framework
 
@@ -795,6 +860,29 @@ npx playwright test tests/quick-verify.spec.ts       # Quick verification
 - **Mocking**: EmailJS API calls mocked to prevent actual email sending during tests
 - **Run command**: `npx playwright test tests/contact-form.spec.ts`
 
+**6. `tests/services-performance.spec.ts`** - Services Section Performance
+- **6 comprehensive tests** for service cards with 3D effects:
+  1. **Page load**: Service section load & card reveal animations (target: 60fps avg)
+  2. **Scroll performance**: Smooth scroll through entire services section (target: 60fps avg)
+  3. **Card hover effects**: Icon animations + hover states (target: 60fps avg)
+  4. **3D tilt performance**: Circular mouse motion across card (target: 60fps avg)
+  5. **Mobile performance**: Touch interactions with effects disabled (target: 55fps avg)
+  6. **Memory leak detection**: 50 hover interactions, max 10MB increase
+- **Results**: Achieved 75+ FPS average (exceeding 60fps target)
+- **Run command**: `npx playwright test tests/services-performance.spec.ts --headed`
+
+**7. `tests/service-detail-performance.spec.ts`** - Service Detail Pages Performance
+- **8 comprehensive tests** across 4 service pages:
+  1. **Page load**: All 4 services tested (target: 60fps avg each)
+  2. **Smooth scroll**: Full page scroll with Lenis (target: 60fps avg)
+  3. **AnimatedText**: Character reveal animations (target: 60fps avg)
+  4. **FAQ accordion**: Open/close interactions (target: 60fps avg)
+  5. **Carousel navigation**: Auto-play + manual controls (target: 60fps avg)
+  6. **Mobile performance**: Responsive layouts (target: 55fps avg)
+  7. **Memory leak detection**: Sequential page loads, max 50MB increase
+  8. **Feature grid**: Icon float animations (target: 60fps avg)
+- **Run command**: `npx playwright test tests/service-detail-performance.spec.ts --headed`
+
 **Performance thresholds** (defined in `tests/helpers/constants.ts`):
 - `TARGET_FPS: 60` - Ideal frame rate
 - `MIN_ACCEPTABLE_FPS: 55` - Minimum for passing tests
@@ -914,3 +1002,32 @@ The contact form is **already built and functional**. If environment variables a
 - `NEXT_PUBLIC_*` variables are exposed to the browser (public keys only)
 - Private keys are only accessible server-side (API routes)
 - reCAPTCHA verification happens server-side for security
+
+## CRITICAL: No Pricing Policy
+
+**⚠️ PRICING INFORMATION IS STRICTLY FORBIDDEN ⚠️**
+
+The user has explicitly stated that pricing information must NEVER appear anywhere on the website. This is a hard requirement.
+
+### What Was Removed
+
+1. **`pricing` field** removed from Service interface in `/lib/services-data.ts`
+2. **All pricing values** deleted from all 4 service objects:
+   - Advertising: `'Starting at $2,500/month'` - REMOVED
+   - Video: `'Starting at $5,000/project'` - REMOVED
+   - Design: `'Starting at $3,500'` - REMOVED
+   - Strategy: `'Custom Pricing'` - REMOVED
+3. **Pricing badge rendering** deleted from ServiceCard component (13 lines removed)
+
+### What to Do if Asked to Add Pricing
+
+**DO NOT ADD PRICING INFORMATION.** If the user asks:
+1. Politely remind them that pricing is forbidden per their previous explicit instruction
+2. Suggest alternatives:
+   - "Contact for Quote" CTA button
+   - "Schedule Consultation" link
+   - Service highlights or benefits instead
+
+### Exceptions
+
+The only cost-related mentions that remain are in FAQ sections of service detail pages (e.g., "$50,000+ monthly budget" in strategy FAQs). These are **educational context about client budgets**, not service pricing, and are acceptable.

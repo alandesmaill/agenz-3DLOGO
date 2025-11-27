@@ -1,0 +1,9 @@
+<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Palette/brush icon for Print & Graphic Design -->
+  <path d="M32 14C19 14 10 22 10 32C10 38 14 42 18 42C20 42 22 40 22 38C22 36 20 34 20 32C20 27.5 25 24 32 24C39 24 44 27.5 44 32C44 38 40 44 32 44C28 44 24 42 24 42" stroke="#00d4aa" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="24" cy="28" r="2.5" fill="#00d4aa"/>
+  <circle cx="32" cy="24" r="2.5" fill="#00d4aa"/>
+  <circle cx="40" cy="28" r="2.5" fill="#00d4aa"/>
+  <circle cx="42" cy="36" r="2.5" fill="#00d4aa"/>
+  <path d="M30 42L28 50C27.5 52 28.5 54 30 54C31.5 54 32.5 52 32 50L30 42Z" stroke="#00d4aa" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="#00d4aa" fill-opacity="0.2"/>
+</svg>
