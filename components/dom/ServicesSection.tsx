@@ -29,10 +29,15 @@ export default function ServicesSection({ onBack }: ServicesSectionProps) {
   // Handle menu navigation
   const handleMenuNavigate = (section: string) => {
     if (section === 'home') {
-      window.location.reload();
-    } else {
-      console.log(`Navigate to: ${section}`);
+      window.location.href = '/';
+    } else if (section === 'about') {
+      window.location.href = '/about';
+    } else if (section === 'services') {
+      window.location.href = '/services';
+    } else if (section === 'contact') {
+      window.location.href = '/contact';
     }
+    // Note: 'works' section removed - route doesn't exist
   };
 
   // Critical: Refresh ScrollTrigger when ServicesSection mounts

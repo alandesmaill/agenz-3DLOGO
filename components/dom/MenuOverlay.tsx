@@ -11,9 +11,9 @@ interface MenuOverlayProps {
 const NAV_ITEMS = [
   { label: 'Home', section: 'home', isHome: true },
   { label: 'About', section: 'about' },
-  { label: 'Works', section: 'works' },
   { label: 'Services', section: 'services' },
   { label: 'Contact', section: 'contact' },
+  // Note: 'Works' removed - route doesn't exist
 ];
 
 const SOCIAL_LINKS = [
