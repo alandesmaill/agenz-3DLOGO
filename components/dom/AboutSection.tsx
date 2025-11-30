@@ -12,6 +12,7 @@ import MenuOverlay from './MenuOverlay';
 import SmoothScrolling from './SmoothScrolling';
 import AnimatedText from './AnimatedText';
 import Footer from './Footer';
+import Header from './Header';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -302,36 +303,11 @@ export default function AboutSection({ onBack }: AboutSectionProps) {
     <SmoothScrolling>
       <div ref={rootRef} className="scroll-container bg-gray-100">
         {/* Header - Fixed */}
-        <header className="fixed top-0 left-0 right-0 flex items-center justify-between px-6 md:px-12 py-6 bg-gray-100/80 backdrop-blur-md z-50">
-        {/* Logo - Left */}
-        <button
-          onClick={onBack}
-          className="flex items-center gap-2 hover:opacity-70 transition-opacity"
-          aria-label="Go back"
-        >
-          <img
-            src="/Agenz-logo-black.svg"
-            alt="Agenz logo"
-            className="h-8 w-auto"
-          />
-        </button>
-
-        {/* Right buttons */}
-        <div className="flex items-center gap-3">
-          <a
-            href="mailto:contact@agenz.com"
-            className="hidden md:flex px-5 py-2.5 text-sm font-bold text-black bg-transparent border border-gray-300 rounded-full hover:bg-gray-100 hover:border-gray-400 transition-all duration-200"
-          >
-            GET IN TOUCH
-          </a>
-          <button
-            onClick={() => setMenuOpen(true)}
-            className="px-6 py-2.5 text-sm font-bold text-white bg-black rounded-full hover:bg-gray-800 transition-all duration-200"
-          >
-            MENU
-          </button>
-        </div>
-      </header>
+        <Header
+          onLogoClick={onBack}
+          onGetInTouch={() => window.location.href = '/contact'}
+          onMenuClick={() => setMenuOpen(true)}
+        />
 
       {/* Hero Section with 3D Spheres */}
       <section className="relative min-h-screen pt-24 pb-10 px-6 md:px-12 bg-gray-100">

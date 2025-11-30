@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import SmoothScrolling from '@/components/dom/SmoothScrolling';
 import ServiceDetailHero from '@/components/dom/ServiceDetailHero';
 import ServiceOverview from '@/components/dom/ServiceOverview';
@@ -9,6 +9,8 @@ import CaseStudyCarousel from '@/components/dom/CaseStudyCarousel';
 import FAQAccordion from '@/components/dom/FAQAccordion';
 import ServiceCTA from '@/components/dom/ServiceCTA';
 import Footer from '@/components/dom/Footer';
+import Header from '@/components/dom/Header';
+import MenuOverlay from '@/components/dom/MenuOverlay';
 import { serviceDetailsData } from '@/lib/service-details-data';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -17,6 +19,7 @@ gsap.registerPlugin(ScrollTrigger);
 
 export default function AdvertisingPage() {
   const service = serviceDetailsData.advertising;
+  const [menuOpen, setMenuOpen] = useState(false);
 
   // Scroll to top and refresh ScrollTrigger on mount
   useEffect(() => {
@@ -34,8 +37,14 @@ export default function AdvertisingPage() {
   }, []);
 
   return (
-    <SmoothScrolling>
-      <main className="relative min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100">
+    <>
+      <Header
+        onLogoClick={() => window.location.href = '/'}
+        onGetInTouch={() => window.location.href = '/contact'}
+        onMenuClick={() => setMenuOpen(true)}
+      />
+      <SmoothScrolling>
+        <main className="relative min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100">
         {/* Hero Section */}
         <section className="relative py-20 md:py-32 px-6 md:px-12 overflow-hidden">
           <ServiceDetailHero
@@ -99,5 +108,23 @@ export default function AdvertisingPage() {
         <Footer />
       </main>
     </SmoothScrolling>
+
+    {/* Menu Overlay */}
+    <MenuOverlay
+      isOpen={menuOpen}
+      onClose={() => setMenuOpen(false)}
+      onNavigate={(section) => {
+        if (section === 'home') {
+          window.location.href = '/';
+        } else if (section === 'about') {
+          window.location.href = '/about';
+        } else if (section === 'services') {
+          window.location.href = '/services';
+        } else if (section === 'contact') {
+          window.location.href = '/contact';
+        }
+      }}
+    />
+  </>
   );
 }
