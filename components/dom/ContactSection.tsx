@@ -4,6 +4,7 @@ import { useState, useCallback } from 'react';
 import MenuOverlay from './MenuOverlay';
 import ContactForm from './ContactForm';
 import SubmissionSuccess from './SubmissionSuccess';
+import Footer from './Footer';
 
 interface ContactSectionProps {
   onBack?: () => void;
@@ -101,6 +102,9 @@ export default function ContactSection({ onBack }: ContactSectionProps) {
         onClose={() => setMenuOpen(false)}
         onNavigate={handleMenuNavigate}
       />
+
+      {/* Footer */}
+      <Footer />
     </div>
   );
 }

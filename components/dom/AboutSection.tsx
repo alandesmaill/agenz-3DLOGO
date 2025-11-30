@@ -11,6 +11,7 @@ import InfiniteText from './InfiniteText';
 import MenuOverlay from './MenuOverlay';
 import SmoothScrolling from './SmoothScrolling';
 import AnimatedText from './AnimatedText';
+import Footer from './Footer';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -436,6 +437,9 @@ export default function AboutSection({ onBack }: AboutSectionProps) {
         onClose={() => setMenuOpen(false)}
         onNavigate={handleMenuNavigate}
       />
+
+      {/* Footer */}
+      <Footer />
       </div>
     </SmoothScrolling>
   );

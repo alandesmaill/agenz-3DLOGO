@@ -8,6 +8,7 @@ import ServiceFeatureGrid from '@/components/dom/ServiceFeatureGrid';
 import CaseStudyCarousel from '@/components/dom/CaseStudyCarousel';
 import FAQAccordion from '@/components/dom/FAQAccordion';
 import ServiceCTA from '@/components/dom/ServiceCTA';
+import Footer from '@/components/dom/Footer';
 import { serviceDetailsData } from '@/lib/service-details-data';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -93,6 +94,9 @@ export default function DesignPage() {
             accentColor={service.accentColor}
           />
         </section>
+
+        {/* Footer */}
+        <Footer />
       </main>
     </SmoothScrolling>
   );

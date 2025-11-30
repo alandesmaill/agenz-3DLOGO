@@ -154,9 +154,9 @@ export const serviceDetailsData: Record<string, ServiceDetail> = {
         challenge: 'TechFlow, a B2B SaaS startup, struggled to generate qualified leads through their LinkedIn presence. Their engagement rate was below 1%, and content wasn\'t resonating with decision-makers.',
         solution: 'We developed a thought leadership strategy featuring executive interviews, industry insights, and customer success stories. Implemented LinkedIn Ads with precision targeting for IT directors and CTOs, plus weekly educational webinars.',
         results: [
-          { value: '340%', label: 'Engagement Increase' },
-          { value: '150', label: 'Qualified Leads/Month' },
-          { value: '8x', label: 'ROI on Ad Spend' },
+          { metric: 'engagement', value: '340%', label: 'Engagement Increase' },
+          { metric: 'qualified-leads', value: '150', label: 'Qualified Leads/Month' },
+          { metric: 'roi', value: '8x', label: 'ROI on Ad Spend' },
         ],
         testimonial: {
           quote: 'The team transformed our LinkedIn from a static profile into our #1 lead generation channel. The strategic approach and data-driven optimization delivered results beyond our expectations.',
@@ -171,9 +171,9 @@ export const serviceDetailsData: Record<string, ServiceDetail> = {
         challenge: 'Luxe Hotels wanted to attract younger travelers (25-40) to their boutique properties but their Instagram presence felt outdated and wasn\'t driving bookings.',
         solution: 'Created a visual storytelling strategy showcasing unique experiences, local culture, and behind-the-scenes content. Launched Instagram Stories and Reels series featuring guest testimonials and staff recommendations. Implemented Instagram Shopping for direct booking links.',
         results: [
-          { value: '250%', label: 'Follower Growth' },
-          { value: '45%', label: 'Booking Increase' },
-          { value: '12%', label: 'Engagement Rate' },
+          { metric: 'follower-growth', value: '250%', label: 'Follower Growth' },
+          { metric: 'bookings', value: '45%', label: 'Booking Increase' },
+          { metric: 'engagement-rate', value: '12%', label: 'Engagement Rate' },
         ],
         testimonial: {
           quote: 'Our Instagram transformed into a vibrant community of travelers who genuinely connect with our brand. The booking impact was immediate and sustained.',
@@ -188,9 +188,9 @@ export const serviceDetailsData: Record<string, ServiceDetail> = {
         challenge: 'Organics Co. faced fierce competition in the organic supplements market. Their social ads weren\'t profitable, with a high cost per acquisition and low conversion rates.',
         solution: 'Developed a content strategy focused on education rather than hard selling. Created carousel ads showcasing product benefits with scientific backing, UGC content from real customers, and retargeting campaigns with limited-time offers.',
         results: [
-          { value: '65%', label: 'Lower CPA' },
-          { value: '3.2x', label: 'ROAS' },
-          { value: '180%', label: 'Conversion Rate Increase' },
+          { metric: 'cpa-reduction', value: '65%', label: 'Lower CPA' },
+          { metric: 'roas', value: '3.2x', label: 'ROAS' },
+          { metric: 'conversion-rate', value: '180%', label: 'Conversion Rate Increase' },
         ],
         testimonial: {
           quote: 'For the first time, our social advertising is genuinely profitable. The creative strategy and targeting precision made all the difference.',
@@ -322,9 +322,9 @@ export const serviceDetailsData: Record<string, ServiceDetail> = {
         challenge: 'StartupXYZ needed a compelling product launch video to secure Series A funding and attract early adopters, but their previous video attempts felt generic and failed to convey their innovation.',
         solution: 'We developed a 2-minute narrative-driven video showcasing real customers using the product to solve real problems. Shot on location across 3 cities, featuring customer interviews, product demos, and a custom orchestral soundtrack that built tension and excitement.',
         results: [
-          { value: '$5M', label: 'Funding Secured' },
-          { value: '2M+', label: 'Video Views' },
-          { value: '12,000', label: 'Signups in 30 Days' },
+          { metric: 'funding', value: '$5M', label: 'Funding Secured' },
+          { metric: 'video-views', value: '2M+', label: 'Video Views' },
+          { metric: 'signups', value: '12,000', label: 'Signups in 30 Days' },
         ],
         testimonial: {
           quote: 'The video didn\'t just explain our product—it made investors feel our vision. The custom music gave it an emotional weight that stock tracks could never achieve.',
@@ -339,9 +339,9 @@ export const serviceDetailsData: Record<string, ServiceDetail> = {
         challenge: 'Luxe Hotels wanted a brand film that captured the essence of their boutique properties—intimate, culturally rich, and experiential—to differentiate from corporate hotel chains.',
         solution: 'Created a 5-minute cinematic brand film featuring real guests, local chefs, and cultural experiences at their flagship property. Used drone footage for sweeping vistas, intimate interviews, and a jazz-inspired original score that reflected the location\'s artistic heritage.',
         results: [
-          { value: '🏆', label: 'Vimeo Staff Pick' },
-          { value: '500K+', label: 'Organic Views' },
-          { value: '35%', label: 'Booking Increase' },
+          { metric: 'award', value: '🏆', label: 'Vimeo Staff Pick' },
+          { metric: 'organic-views', value: '500K+', label: 'Organic Views' },
+          { metric: 'bookings', value: '35%', label: 'Booking Increase' },
         ],
         testimonial: {
           quote: 'This film captures the soul of our brand better than anything we\'ve ever created. It\'s not just marketing—it\'s art that happens to drive bookings.',
@@ -356,9 +356,9 @@ export const serviceDetailsData: Record<string, ServiceDetail> = {
         challenge: 'EcoTech needed to explain their complex solar technology to residential customers who found technical jargon overwhelming and intimidating.',
         solution: 'Produced a series of 5 educational videos (60-90 seconds each) using motion graphics, simple analogies, and real customer installations. Each video focused on one concern: cost, installation, maintenance, savings, and environmental impact.',
         results: [
-          { value: '180%', label: 'Conversion Rate Increase' },
-          { value: '5 Videos', label: 'Complete Series' },
-          { value: '45 sec', label: 'Avg Watch Time' },
+          { metric: 'conversion-rate', value: '180%', label: 'Conversion Rate Increase' },
+          { metric: 'video-count', value: '5 Videos', label: 'Complete Series' },
+          { metric: 'watch-time', value: '45 sec', label: 'Avg Watch Time' },
         ],
         testimonial: {
           quote: 'These videos turned our most complex selling point into our biggest advantage. Prospects now arrive at sales calls already educated and ready to buy.',
@@ -490,9 +490,9 @@ export const serviceDetailsData: Record<string, ServiceDetail> = {
         challenge: 'Organics Co.\'s packaging looked outdated compared to competitors. Their products were getting lost on shelves, and the brand didn\'t communicate the premium quality of their organic ingredients.',
         solution: 'Designed a complete packaging system featuring minimalist aesthetics, earth-tone colors, and tactile finishes (soft-touch lamination, embossing). Emphasized ingredient transparency with illustrated botanical elements. Created cohesive design across 12 product lines.',
         results: [
-          { value: '65%', label: 'Shelf Appeal Increase' },
-          { value: '40%', label: 'Sales Growth' },
-          { value: '🏆', label: 'Packaging Award' },
+          { metric: 'shelf-appeal', value: '65%', label: 'Shelf Appeal Increase' },
+          { metric: 'sales-growth', value: '40%', label: 'Sales Growth' },
+          { metric: 'award', value: '🏆', label: 'Packaging Award' },
         ],
         testimonial: {
           quote: 'Our new packaging transformed our brand perception overnight. Customers now see us as the premium option, and retail buyers are actively seeking us out.',
@@ -507,9 +507,9 @@ export const serviceDetailsData: Record<string, ServiceDetail> = {
         challenge: 'TechFlow\'s brand identity felt generic and dated. They looked like every other SaaS company with blue/gray branding and couldn\'t differentiate in a crowded market.',
         solution: 'Created a bold, modern brand identity featuring vibrant gradients, geometric patterns, and dynamic typography. Developed comprehensive brand guidelines including presentation templates, social media assets, and email signatures. The identity conveyed innovation while maintaining B2B credibility.',
         results: [
-          { value: 'Complete', label: 'Brand Transformation' },
-          { value: '50+', label: 'Assets Delivered' },
-          { value: '90%', label: 'Brand Recognition' },
+          { metric: 'brand-transformation', value: 'Complete', label: 'Brand Transformation' },
+          { metric: 'assets-delivered', value: '50+', label: 'Assets Delivered' },
+          { metric: 'brand-recognition', value: '90%', label: 'Brand Recognition' },
         ],
         testimonial: {
           quote: 'The rebrand gave our sales team the confidence they needed. We finally look like the innovative company we are, not just another SaaS tool.',
@@ -524,9 +524,9 @@ export const serviceDetailsData: Record<string, ServiceDetail> = {
         challenge: 'Cascade Music Festival needed to create buzz for their inaugural event and attract both attendees and sponsors without an established brand presence.',
         solution: 'Designed a vibrant, psychedelic-inspired brand identity with custom typography and fluid illustrations representing music\'s movement. Created poster series, social media graphics, sponsor packages, and environmental signage. The design became instantly recognizable and shareable.',
         results: [
-          { value: '8,000', label: 'Tickets Sold' },
-          { value: '15', label: 'Major Sponsors' },
-          { value: 'Viral', label: 'Social Reach' },
+          { metric: 'tickets-sold', value: '8,000', label: 'Tickets Sold' },
+          { metric: 'sponsors', value: '15', label: 'Major Sponsors' },
+          { metric: 'social-reach', value: 'Viral', label: 'Social Reach' },
         ],
         testimonial: {
           quote: 'The design work didn\'t just market the festival—it became part of the experience. People wanted the posters as art pieces.',
@@ -658,9 +658,9 @@ export const serviceDetailsData: Record<string, ServiceDetail> = {
         challenge: 'StartupXYZ was spending $200K/month across Google, Facebook, and LinkedIn with poor attribution and rising acquisition costs. They couldn\'t identify which channels drove actual revenue.',
         solution: 'Implemented comprehensive attribution modeling connecting ad spend to closed deals. Shifted budget from broad awareness campaigns to high-intent search and retargeting. Introduced programmatic display for remarketing and reduced CPC through bid optimization.',
         results: [
-          { value: '45%', label: 'Lower CAC' },
-          { value: '2x', label: 'Lead Volume' },
-          { value: '180%', label: 'ROI Improvement' },
+          { metric: 'cac-reduction', value: '45%', label: 'Lower CAC' },
+          { metric: 'lead-volume', value: '2x', label: 'Lead Volume' },
+          { metric: 'roi', value: '180%', label: 'ROI Improvement' },
         ],
         testimonial: {
           quote: 'For the first time, we have complete visibility into our media performance. The cost reductions alone paid for their services 3x over.',
@@ -675,9 +675,9 @@ export const serviceDetailsData: Record<string, ServiceDetail> = {
         challenge: 'Regional Auto Group needed to drive showroom traffic across 8 dealerships in 3 markets but their TV and radio campaigns weren\'t trackable or optimized.',
         solution: 'Created a multi-channel strategy combining local TV during prime automotive shopping times, targeted radio during commute hours, digital retargeting for website visitors, and geo-fenced mobile ads near competitor dealerships. Implemented call tracking and unique URLs for attribution.',
         results: [
-          { value: '60%', label: 'Showroom Traffic Increase' },
-          { value: '320', label: 'Vehicles Sold (Attributed)' },
-          { value: '$2.8M', label: 'Revenue Impact' },
+          { metric: 'traffic', value: '60%', label: 'Showroom Traffic Increase' },
+          { metric: 'vehicles-sold', value: '320', label: 'Vehicles Sold (Attributed)' },
+          { metric: 'revenue', value: '$2.8M', label: 'Revenue Impact' },
         ],
         testimonial: {
           quote: 'They transformed our scattershot approach into a precision instrument. We know exactly which ads drive sales and can prove ROI to our CFO.',
@@ -692,9 +692,9 @@ export const serviceDetailsData: Record<string, ServiceDetail> = {
         challenge: 'A national healthcare provider needed to launch urgent care centers in 12 new markets with limited brand awareness and strict compliance requirements.',
         solution: 'Developed market-specific strategies combining out-of-home advertising (billboards near hospitals and urgent cares), local search optimization, healthcare directory listings, and geo-targeted social campaigns. All creative met HIPAA and medical advertising regulations.',
         results: [
-          { value: '12/12', label: 'Markets Launched' },
-          { value: '75,000', label: 'Patient Visits (Year 1)' },
-          { value: '8 Months', label: 'Break-Even Timeline' },
+          { metric: 'markets-launched', value: '12/12', label: 'Markets Launched' },
+          { metric: 'patient-visits', value: '75,000', label: 'Patient Visits (Year 1)' },
+          { metric: 'break-even', value: '8 Months', label: 'Break-Even Timeline' },
         ],
         testimonial: {
           quote: 'Their multi-market expertise and compliance knowledge were invaluable. Every location exceeded patient volume projections by 20%+.',
