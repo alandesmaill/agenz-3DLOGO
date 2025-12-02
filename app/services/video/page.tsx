@@ -6,7 +6,6 @@ import ServiceDetailHero from '@/components/dom/ServiceDetailHero';
 import ServiceOverview from '@/components/dom/ServiceOverview';
 import ServiceFeatureGrid from '@/components/dom/ServiceFeatureGrid';
 import CaseStudyCarousel from '@/components/dom/CaseStudyCarousel';
-import FAQAccordion from '@/components/dom/FAQAccordion';
 import ServiceCTA from '@/components/dom/ServiceCTA';
 import Footer from '@/components/dom/Footer';
 import Header from '@/components/dom/Header';
@@ -86,11 +85,6 @@ export default function VideoPage() {
             caseStudies={service.caseStudies}
             accentColor={service.accentColor}
           />
-        </section>
-
-        {/* FAQ Section */}
-        <section className="relative py-16 md:py-24 px-6 md:px-12">
-          <FAQAccordion faqs={service.faqs} accentColor={service.accentColor} />
         </section>
 
         {/* CTA Section */}
