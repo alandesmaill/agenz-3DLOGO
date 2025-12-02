@@ -8,6 +8,7 @@ import Footer from '@/components/dom/Footer';
 import ServiceCTA from '@/components/dom/ServiceCTA';
 import AnimatedText from '@/components/dom/AnimatedText';
 import HorizontalGallery from '@/components/dom/HorizontalGallery';
+import ClientLogos from '@/components/dom/ClientLogos';
 import { getAllPortfolio } from '@/lib/works-data';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -41,13 +42,13 @@ export default function WorksPage() {
         onMenuClick={() => setMenuOpen(true)}
       />
       <SmoothScrolling>
-        <main className="relative min-h-screen bg-gradient-to-br from-black via-gray-900 to-black">
+        <main className="relative min-h-screen bg-gray-100">
           {/* Hero Section */}
-          <section className="relative py-32 md:py-48 px-6 md:px-12 overflow-hidden">
+          <section className="relative py-16 md:py-24 px-6 md:px-12 overflow-hidden">
             <div className="max-w-6xl mx-auto text-center">
               {/* Title */}
               <AnimatedText
-                className="text-5xl md:text-7xl lg:text-8xl font-['Gibson'] font-bold text-white mb-6"
+                className="text-5xl md:text-7xl lg:text-8xl font-['Gibson'] font-bold text-gray-900 mb-6"
                 splitBy="chars"
                 stagger={0.02}
                 duration={0.5}
@@ -58,7 +59,7 @@ export default function WorksPage() {
 
               {/* Description */}
               <AnimatedText
-                className="text-lg md:text-xl text-white/70 max-w-3xl mx-auto font-['Gibson']"
+                className="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto font-['Gibson']"
                 splitBy="words"
                 stagger={0.015}
                 duration={0.4}
@@ -69,8 +70,8 @@ export default function WorksPage() {
               </AnimatedText>
             </div>
 
-            {/* Gradient Orb Background */}
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gradient-to-r from-cyan-500/20 to-green-500/20 rounded-full blur-3xl -z-10" />
+            {/* Subtle accent gradient background */}
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gradient-to-r from-cyan-500/5 to-green-500/5 rounded-full blur-3xl -z-10" />
           </section>
 
           {/* Horizontal Gallery Section */}
@@ -78,8 +79,13 @@ export default function WorksPage() {
             <HorizontalGallery items={portfolioItems} />
           </section>
 
+          {/* Client Logos Section */}
+          <section className="relative py-12 md:py-16 px-6 md:px-12">
+            <ClientLogos />
+          </section>
+
           {/* CTA Section */}
-          <section className="relative py-24 md:py-32 px-6 md:px-12">
+          <section className="relative py-16 md:py-20 px-6 md:px-12">
             <ServiceCTA
               heading="Ready to Create Something Unforgettable?"
               description="Let's discuss your project and explore how we can transform your brand through strategic design, engaging content, and compelling storytelling."
