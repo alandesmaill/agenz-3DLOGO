@@ -45,6 +45,13 @@ export default function TestSection({
     return <ServicesSection onBack={onBack} />;
   }
 
+  // Redirect to /works page for the "works" section
+  if (section === 'works') {
+    // Navigate to standalone works page
+    window.location.href = '/works';
+    return null;
+  }
+
   return (
     <div
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm transition-opacity duration-500"

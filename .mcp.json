@@ -1,0 +1,25 @@
+{
+  "mcpServers": {
+    "ide": {
+      "type": "builtin",
+      "description": "IDE diagnostics and code awareness"
+    },
+    "github": {
+      "command": "node",
+      "args": [
+        "node_modules/@modelcontextprotocol/server-github/dist/index.js"
+      ],
+      "env": {
+        "GITHUB_PERSONAL_ACCESS_TOKEN": "${GITHUB_TOKEN}"
+      },
+      "description": "GitHub repository management, PRs, issues, and CI/CD integration"
+    },
+    "puppeteer": {
+      "command": "node",
+      "args": [
+        "node_modules/@modelcontextprotocol/server-puppeteer/dist/index.js"
+      ],
+      "description": "Browser automation for testing and web scraping"
+    }
+  }
+}
