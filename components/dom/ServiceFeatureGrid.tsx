@@ -67,7 +67,7 @@ export default function ServiceFeatureGrid({
           {/* Icon container with float animation */}
           <div className="mb-6">
             <div
-              ref={(el) => (iconRefs.current[index] = el)}
+              ref={(el) => { iconRefs.current[index] = el; }}
               className="
                 w-16 h-16 md:w-20 md:h-20
                 rounded-2xl

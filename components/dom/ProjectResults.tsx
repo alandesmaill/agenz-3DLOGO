@@ -72,7 +72,7 @@ export default function ProjectResults({
         {results.map((result, index) => (
           <div
             key={index}
-            ref={(el) => (cardRefs.current[index] = el)}
+            ref={(el) => { cardRefs.current[index] = el; }}
             className="
               p-8 md:p-10
               rounded-3xl

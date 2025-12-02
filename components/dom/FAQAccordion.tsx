@@ -124,7 +124,7 @@ export default function FAQAccordion({ faqs, accentColor }: FAQAccordionProps) {
 
                 {/* Plus/X icon */}
                 <div
-                  ref={(el) => (iconRefs.current[index] = el)}
+                  ref={(el) => { iconRefs.current[index] = el; }}
                   className="
                     flex-shrink-0
                     w-8 h-8
@@ -154,7 +154,7 @@ export default function FAQAccordion({ faqs, accentColor }: FAQAccordionProps) {
 
               {/* Answer content (animated) */}
               <div
-                ref={(el) => (contentRefs.current[index] = el)}
+                ref={(el) => { contentRefs.current[index] = el; }}
                 id={`faq-answer-${index}`}
                 className="overflow-hidden"
                 style={{ height: 0, opacity: 0 }}

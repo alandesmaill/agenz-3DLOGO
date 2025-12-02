@@ -35,7 +35,7 @@ export default function ProjectTestimonial({
           className="absolute top-8 left-8 md:top-12 md:left-12 text-6xl md:text-8xl font-serif opacity-10 select-none pointer-events-none"
           style={{ color: accentColor }}
         >
-          "
+          &ldquo;
         </div>
 
         {/* Quote */}

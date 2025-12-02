@@ -50,7 +50,7 @@ export default function ServiceOverview({
             className="text-xl font-['Gibson'] font-bold text-gray-900 mb-6"
             style={{ color: accentColor }}
           >
-            What's Included:
+            What&apos;s Included:
           </h4>
           <ul className="space-y-4">
             {benefits.map((benefit, index) => (

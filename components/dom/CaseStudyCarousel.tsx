@@ -123,7 +123,7 @@ export default function CaseStudyCarousel({
           {caseStudies.map((caseStudy, index) => (
             <div
               key={index}
-              ref={(el) => (slideRefs.current[index] = el)}
+              ref={(el) => { slideRefs.current[index] = el; }}
               className="absolute inset-0 w-full"
               style={{
                 opacity: index === activeIndex ? 1 : 0,
@@ -213,7 +213,7 @@ export default function CaseStudyCarousel({
                 {/* Testimonial */}
                 <div className="border-l-4 pl-6" style={{ borderColor: accentColor }}>
                   <p className="text-lg font-['Gibson'] italic text-gray-700 mb-4 leading-relaxed">
-                    "{caseStudy.testimonial.quote}"
+                    &ldquo;{caseStudy.testimonial.quote}&rdquo;
                   </p>
                   <div>
                     <div className="font-['Gibson'] font-bold text-gray-900">

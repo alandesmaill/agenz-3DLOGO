@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { notFound } from 'next/navigation';
 import SmoothScrolling from '@/components/dom/SmoothScrolling';
 import Header from '@/components/dom/Header';
@@ -27,6 +27,21 @@ export default function PortfolioDetailPage({ params }: { params: { id: string }
   if (!portfolio) {
     notFound();
   }
+
+  // Menu navigation handler
+  const handleMenuNavigate = useCallback((section: string) => {
+    if (section === 'home') {
+      window.location.href = '/';
+    } else if (section === 'about') {
+      window.location.href = '/about';
+    } else if (section === 'works') {
+      window.location.href = '/works';
+    } else if (section === 'services') {
+      window.location.href = '/services';
+    } else if (section === 'contact') {
+      window.location.href = '/contact';
+    }
+  }, []);
 
   // Scroll to top and refresh ScrollTrigger on mount
   useEffect(() => {
@@ -134,19 +149,7 @@ export default function PortfolioDetailPage({ params }: { params: { id: string }
       <MenuOverlay
         isOpen={menuOpen}
         onClose={() => setMenuOpen(false)}
-        onNavigate={(section) => {
-          if (section === 'home') {
-            window.location.href = '/';
-          } else if (section === 'about') {
-            window.location.href = '/about';
-          } else if (section === 'works') {
-            window.location.href = '/works';
-          } else if (section === 'services') {
-            window.location.href = '/services';
-          } else if (section === 'contact') {
-            window.location.href = '/contact';
-          }
-        }}
+        onNavigate={handleMenuNavigate}
       />
     </>
   );
