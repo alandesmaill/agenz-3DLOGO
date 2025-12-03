@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, ReactNode } from 'react';
+import { useEffect, useRef, useState, ReactNode } from 'react';
 import Lenis from 'lenis';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -14,9 +14,26 @@ interface SmoothScrollingProps {
 
 export default function SmoothScrolling({ children, className }: SmoothScrollingProps) {
   const lenisRef = useRef<Lenis | null>(null);
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
-    // Initialize Lenis with optimal settings
+    // Detect mobile devices
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+
+    // On mobile, use native scroll instead of Lenis
+    if (window.innerWidth < 768) {
+      document.body.style.overflow = 'auto';
+      return () => {
+        window.removeEventListener('resize', checkMobile);
+      };
+    }
+
+    // Desktop: Initialize Lenis with optimal settings
     const lenis = new Lenis({
       lerp: 0.1,              // Smooth interpolation (lower = smoother)
       duration: 1.2,          // Scroll duration
@@ -57,6 +74,7 @@ export default function SmoothScrolling({ children, className }: SmoothScrolling
       gsap.ticker.remove((time) => {
         lenis.raf(time * 1000);
       });
+      window.removeEventListener('resize', checkMobile);
     };
   }, []);
 

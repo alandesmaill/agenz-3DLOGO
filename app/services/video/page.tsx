@@ -58,7 +58,7 @@ export default function VideoPage() {
         onMenuClick={() => setMenuOpen(true)}
       />
       <SmoothScrolling>
-        <main className="relative min-h-screen bg-gray-100">
+        <main className="scrollable-page relative min-h-screen bg-gray-100">
         {/* Hero Section */}
         <section className="relative py-20 md:py-32 px-6 md:px-12 overflow-hidden">
           <ServiceDetailHero

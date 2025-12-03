@@ -43,6 +43,33 @@ export default function ContactForm({ onSuccess }: ContactFormProps) {
   const recaptchaRef = useRef<ReCAPTCHA>(null);
   const formRef = useRef<HTMLFormElement>(null);
 
+  // Check if reCAPTCHA is properly configured
+  const recaptchaSiteKey = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY;
+  const isRecaptchaConfigured = recaptchaSiteKey &&
+    recaptchaSiteKey !== 'your_recaptcha_site_key_here' &&
+    recaptchaSiteKey !== '';
+
+  // If not configured, show configuration notice instead of broken form
+  if (!isRecaptchaConfigured) {
+    return (
+      <div className="relative max-w-3xl mx-auto px-4">
+        <div className="relative backdrop-blur-xl bg-white/10 rounded-3xl p-8 border border-white/20">
+          <h3 className="text-2xl font-bold text-gray-900 mb-4">
+            Contact Form Configuration Required
+          </h3>
+          <p className="text-gray-600 mb-4">
+            The contact form requires reCAPTCHA configuration.
+            Please set up your environment variables in Vercel.
+          </p>
+          <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+            <p className="text-sm text-yellow-800">
+              <strong>Admin:</strong> Configure NEXT_PUBLIC_RECAPTCHA_SITE_KEY in Vercel dashboard
+            </p>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   // Validation functions
   const validateEmail = (email: string): string | undefined => {

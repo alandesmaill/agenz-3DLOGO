@@ -44,6 +44,7 @@
 }
 
 :root {
+  color-scheme: light only;
   --background: #f3f4f6;
   --foreground: #1a1a1a;
   --white: #ffffff;
@@ -56,6 +57,25 @@
   /* Layout */
   --layout-margin: 2rem;
   --layout-columns-gap: 1rem;
+}
+
+/* Prevent dark mode from system preferences */
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: light only;
+    --background: #f3f4f6;
+    --foreground: #1a1a1a;
+  }
+
+  body {
+    background: #f3f4f6 !important;
+    color: #1a1a1a !important;
+  }
+
+  /* Override any inherited dark mode styles */
+  * {
+    color-scheme: light only;
+  }
 }
 
 * {
@@ -87,6 +107,22 @@ body:has(.scroll-container) {
   height: auto;
   background: #f3f4f6;  /* bg-gray-100 */
   color: #1a1a1a;      /* Dark text */
+}
+
+/* Enable scroll for service routes and other scrollable pages */
+body:has(main.scrollable-page) {
+  overflow: auto;
+  height: auto;
+  background: #f3f4f6;
+  color: #1a1a1a;
+}
+
+/* Force enable scroll on mobile for all non-landing pages */
+@media (max-width: 768px) {
+  body:not(:has(.canvas-container)) {
+    overflow: auto !important;
+    height: auto !important;
+  }
 }
 
 canvas {

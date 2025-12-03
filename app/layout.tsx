@@ -88,7 +88,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className="light">
+      <head>
+        <meta name="color-scheme" content="light" />
+      </head>
       <body>{children}</body>
     </html>
   );

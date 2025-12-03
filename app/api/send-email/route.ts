@@ -16,15 +16,24 @@ const contactSchema = z.object({
  */
 async function verifyCaptcha(token: string): Promise<boolean> {
   try {
+    const secretKey = process.env.RECAPTCHA_SECRET_KEY;
+
+    // Check if secret key is configured
+    if (!secretKey || secretKey.includes('your_')) {
+      console.error('[API] reCAPTCHA secret key not configured');
+      return false;
+    }
+
     const response = await fetch('https://www.google.com/recaptcha/api/siteverify', {
       method: 'POST',
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      body: `secret=${process.env.RECAPTCHA_SECRET_KEY}&response=${token}`,
+      body: `secret=${secretKey}&response=${token}`,
     });
 
     const data = await response.json();
     return data.success && data.score > 0.5; // reCAPTCHA v3 score threshold
   } catch (error) {
+    console.error('[API] reCAPTCHA verification error:', error);
     return false;
   }
 }
