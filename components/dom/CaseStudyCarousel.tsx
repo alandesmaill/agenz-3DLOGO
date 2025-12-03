@@ -119,7 +119,7 @@ export default function CaseStudyCarousel({
       {/* Carousel container */}
       <div className="relative">
         {/* Slides */}
-        <div className="relative min-h-[700px] sm:min-h-[650px] md:min-h-[500px]">
+        <div className="relative min-h-[800px] sm:min-h-[700px] md:min-h-[550px]">
           {caseStudies.map((caseStudy, index) => (
             <div
               key={index}
@@ -211,7 +211,7 @@ export default function CaseStudyCarousel({
                 </div>
 
                 {/* Testimonial */}
-                <div className="border-l-4 pl-6" style={{ borderColor: accentColor }}>
+                <div className="border-l-4 pl-6 mb-6 md:mb-4" style={{ borderColor: accentColor }}>
                   <p className="text-lg font-['Gibson'] italic text-gray-700 mb-4 leading-relaxed">
                     &ldquo;{caseStudy.testimonial.quote}&rdquo;
                   </p>

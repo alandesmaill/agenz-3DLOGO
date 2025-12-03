@@ -95,7 +95,7 @@ export default function AdvertisingPage() {
         </section>
 
         {/* Case Studies Section */}
-        <section className="relative py-16 md:py-24 px-6 md:px-12">
+        <section className="relative py-16 md:py-24 px-6 md:px-12 mb-8 md:mb-0">
           <CaseStudyCarousel
             caseStudies={service.caseStudies}
             accentColor={service.accentColor}
