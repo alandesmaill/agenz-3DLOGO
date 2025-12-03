@@ -48,12 +48,12 @@ export default function ServiceFeatureGrid({
   }, [isMobile]);
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 md:gap-8">
       {features.map((feature, index) => (
         <div
           key={index}
           className="
-            p-6 md:p-8
+            p-4 sm:p-6 md:p-8
             rounded-2xl
             bg-gray-100/80 backdrop-blur-xl
             border border-white/30
@@ -69,7 +69,7 @@ export default function ServiceFeatureGrid({
             <div
               ref={(el) => { iconRefs.current[index] = el; }}
               className="
-                w-16 h-16 md:w-20 md:h-20
+                w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20
                 rounded-2xl
                 flex items-center justify-center
                 transition-transform duration-300

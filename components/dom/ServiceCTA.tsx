@@ -20,7 +20,7 @@ export default function ServiceCTA({
   return (
     <div className="text-center max-w-3xl mx-auto">
       {/* Heading */}
-      <h2 className="text-4xl md:text-5xl font-['Gibson'] font-bold text-gray-900 mb-6">
+      <h2 className="text-3xl sm:text-4xl md:text-5xl font-['Gibson'] font-bold text-gray-900 mb-6">
         {heading}
       </h2>
 
@@ -34,7 +34,7 @@ export default function ServiceCTA({
         href={buttonLink}
         className="
           inline-flex items-center gap-3
-          px-10 py-5
+          px-6 sm:px-8 md:px-10 py-4 sm:py-5
           bg-gray-900 text-white
           font-['Gibson'] font-bold text-lg
           rounded-full

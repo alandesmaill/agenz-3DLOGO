@@ -102,7 +102,7 @@ export default function FAQAccordion({ faqs, accentColor }: FAQAccordionProps) {
                 onClick={() => handleToggle(index)}
                 className="
                   w-full
-                  px-6 md:px-8 py-5 md:py-6
+                  px-4 sm:px-6 md:px-8 py-4 sm:py-5 md:py-6
                   flex items-center justify-between gap-4
                   text-left
                   transition-colors duration-200
@@ -159,7 +159,7 @@ export default function FAQAccordion({ faqs, accentColor }: FAQAccordionProps) {
                 className="overflow-hidden"
                 style={{ height: 0, opacity: 0 }}
               >
-                <div className="px-6 md:px-8 pb-5 md:pb-6">
+                <div className="px-4 sm:px-6 md:px-8 pb-4 sm:pb-5 md:pb-6">
                   <p className="font-['Gibson'] text-gray-700 leading-relaxed">
                     {faq.answer}
                   </p>

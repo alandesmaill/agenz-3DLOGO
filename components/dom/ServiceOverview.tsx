@@ -16,9 +16,9 @@ export default function ServiceOverview({
   accentColor,
 }: ServiceOverviewProps) {
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-start">
       {/* Left column: Heading */}
-      <div className="lg:sticky lg:top-32">
+      <div className="md:sticky md:top-32">
         <AnimatedText
           className="text-3xl md:text-4xl lg:text-5xl font-['Gibson'] font-bold text-gray-900 leading-tight"
           splitBy="words"

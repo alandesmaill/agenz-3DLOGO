@@ -28,8 +28,8 @@ export default function ServiceDetailHero({
       {/* Large service number overlay */}
       <div
         className="
-          absolute -top-12 -left-4 md:-left-12
-          text-[140px] md:text-[200px] lg:text-[240px]
+          absolute -top-12 -left-2 sm:-left-4 md:-left-8 lg:-left-12
+          text-[100px] sm:text-[120px] md:text-[160px] lg:text-[200px]
           font-['Gibson'] font-bold
           opacity-10
           leading-none
@@ -65,7 +65,7 @@ export default function ServiceDetailHero({
         </p>
 
         {/* Stats grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 mb-10">
           {stats.map((stat, index) => (
             <div
               key={index}

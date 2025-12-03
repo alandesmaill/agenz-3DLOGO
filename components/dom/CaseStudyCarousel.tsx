@@ -119,7 +119,7 @@ export default function CaseStudyCarousel({
       {/* Carousel container */}
       <div className="relative">
         {/* Slides */}
-        <div className="relative min-h-[600px] md:min-h-[500px]">
+        <div className="relative min-h-[700px] sm:min-h-[650px] md:min-h-[500px]">
           {caseStudies.map((caseStudy, index) => (
             <div
               key={index}
@@ -130,7 +130,7 @@ export default function CaseStudyCarousel({
                 pointerEvents: index === activeIndex ? 'auto' : 'none',
               }}
             >
-              <div className="p-8 md:p-12 rounded-3xl bg-gray-100/80 backdrop-blur-xl border border-white/30 shadow-2xl">
+              <div className="p-4 sm:p-6 md:p-8 lg:p-12 rounded-3xl bg-gray-100/80 backdrop-blur-xl border border-white/30 shadow-2xl">
                 {/* Client info */}
                 <div className="flex items-center gap-4 mb-8">
                   <div
@@ -190,14 +190,14 @@ export default function CaseStudyCarousel({
                   >
                     Results
                   </h4>
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4">
                     {caseStudy.results.map((result, idx) => (
                       <div
                         key={idx}
                         className="p-4 rounded-xl bg-gradient-to-br from-white/50 to-white/30 border border-white/40"
                       >
                         <div
-                          className="text-3xl font-['Gibson'] font-bold mb-1"
+                          className="text-2xl sm:text-3xl md:text-4xl font-['Gibson'] font-bold mb-1"
                           style={{ color: accentColor }}
                         >
                           {result.value}
