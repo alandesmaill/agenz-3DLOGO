@@ -89,7 +89,7 @@ export default function FAQAccordion({ faqs, accentColor }: FAQAccordionProps) {
               key={index}
               className="
                 rounded-2xl
-                bg-white/80 backdrop-blur-xl
+                bg-gray-100/80 backdrop-blur-xl
                 border border-white/30
                 shadow-lg
                 overflow-hidden
@@ -106,7 +106,7 @@ export default function FAQAccordion({ faqs, accentColor }: FAQAccordionProps) {
                   flex items-center justify-between gap-4
                   text-left
                   transition-colors duration-200
-                  hover:bg-white/50
+                  hover:bg-gray-100/50
                 "
                 aria-expanded={isOpen}
                 aria-controls={`faq-answer-${index}`}

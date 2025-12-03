@@ -42,21 +42,17 @@ export default function ServicesSection({ onBack }: ServicesSectionProps) {
 
   // Critical: Refresh ScrollTrigger when ServicesSection mounts
   useEffect(() => {
-    console.log('[ServicesSection] Component mounted');
-
     // Scroll to top when section loads
     window.scrollTo(0, 0);
 
     // Refresh ScrollTrigger after component and children have rendered
     const refreshTimer = setTimeout(() => {
       ScrollTrigger.refresh();
-      console.log('[ServicesSection] ScrollTrigger refreshed on mount');
     }, 600);
 
     // Force update all triggers
     const updateTimer = setTimeout(() => {
       ScrollTrigger.update();
-      console.log('[ServicesSection] ScrollTrigger updated');
     }, 800);
 
     return () => {

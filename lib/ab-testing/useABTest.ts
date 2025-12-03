@@ -32,6 +32,5 @@ export function useTrackConversion() {
   return () => {
     // TODO: Implement conversion tracking with your analytics service
     // Example: analytics.track('form_submission', { variant });
-    console.log('[ABTest] Conversion tracked for variant:', variant);
   };
 }

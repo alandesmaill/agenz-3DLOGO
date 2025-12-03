@@ -58,7 +58,7 @@ export default function LoadingScreen({ progress, isLoaded }: LoadingScreenProps
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-white"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-gray-100"
       style={{
         opacity,
         transition: 'opacity 0.8s ease-out',
@@ -119,7 +119,7 @@ export default function LoadingScreen({ progress, isLoaded }: LoadingScreenProps
         {/* Minimal progress indicator */}
         <div className="mt-8 flex flex-col items-center gap-3">
           {/* Progress bar */}
-          <div className="w-[200px] h-[2px] bg-gray-200 rounded-full overflow-hidden">
+          <div className="w-[200px] h-[2px] bg-gray-300 rounded-full overflow-hidden">
             <div
               className="h-full bg-black rounded-full"
               style={{

@@ -130,7 +130,7 @@ export default function CaseStudyCarousel({
                 pointerEvents: index === activeIndex ? 'auto' : 'none',
               }}
             >
-              <div className="p-8 md:p-12 rounded-3xl bg-white/80 backdrop-blur-xl border border-white/30 shadow-2xl">
+              <div className="p-8 md:p-12 rounded-3xl bg-gray-100/80 backdrop-blur-xl border border-white/30 shadow-2xl">
                 {/* Client info */}
                 <div className="flex items-center gap-4 mb-8">
                   <div
@@ -238,7 +238,7 @@ export default function CaseStudyCarousel({
               w-12 h-12
               rounded-full
               flex items-center justify-center
-              bg-white/80 backdrop-blur-xl
+              bg-gray-100/80 backdrop-blur-xl
               border border-white/30
               shadow-lg hover:shadow-2xl
               transition-all duration-300
@@ -293,7 +293,7 @@ export default function CaseStudyCarousel({
               w-12 h-12
               rounded-full
               flex items-center justify-center
-              bg-white/80 backdrop-blur-xl
+              bg-gray-100/80 backdrop-blur-xl
               border border-white/30
               shadow-lg hover:shadow-2xl
               transition-all duration-300

@@ -78,7 +78,7 @@ export default function ClientLogos() {
             ref={(el) => {
               logoRefs.current[index] = el;
             }}
-            className="group relative aspect-square rounded-xl bg-white shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden"
+            className="group relative aspect-square rounded-xl bg-gray-100 shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden"
           >
             {/* Logo Image */}
             <div className="relative w-full h-full p-6 flex items-center justify-center">

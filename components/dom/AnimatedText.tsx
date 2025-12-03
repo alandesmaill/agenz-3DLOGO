@@ -44,8 +44,6 @@ export default function AnimatedText({
       return;
     }
 
-    console.log('[AnimatedText] Initializing animation');
-
     // Small delay to ensure DOM is ready and Lenis is initialized
     const initTimer = setTimeout(() => {
       if (!textRef.current) return;
@@ -65,11 +63,8 @@ export default function AnimatedText({
         splitText.lines;
 
       if (!elements || elements.length === 0) {
-        console.warn('[AnimatedText] No elements found to animate');
         return;
       }
-
-      console.log(`[AnimatedText] Split ${elements.length} ${splitBy}`);
 
       // Set initial state
       gsap.set(elements, {
@@ -87,7 +82,6 @@ export default function AnimatedText({
           toggleActions: once ? 'play none none none' : 'play none none reverse',
           invalidateOnRefresh: true, // Recalculate on refresh
           // markers: true, // Uncomment for debugging
-          onEnter: () => console.log('[AnimatedText] ScrollTrigger entered'),
         },
       });
 
@@ -107,7 +101,6 @@ export default function AnimatedText({
       // Refresh ScrollTrigger after animation is set up
       setTimeout(() => {
         ScrollTrigger.refresh();
-        console.log('[AnimatedText] ScrollTrigger refreshed after setup');
       }, 100);
     }, 200); // Wait for DOM to be ready
 

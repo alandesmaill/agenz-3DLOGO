@@ -143,21 +143,17 @@ export default function AboutSection({ onBack }: AboutSectionProps) {
   // Critical: Refresh ScrollTrigger when AboutSection mounts
   // This ensures animations work when navigating from main page
   useEffect(() => {
-    console.log('[AboutSection] Component mounted');
-
     // Scroll to top when section loads
     window.scrollTo(0, 0);
 
     // Refresh ScrollTrigger after component and children have rendered
     const refreshTimer = setTimeout(() => {
       ScrollTrigger.refresh();
-      console.log('[AboutSection] ScrollTrigger refreshed on mount');
     }, 600);
 
     // Force update all triggers
     const updateTimer = setTimeout(() => {
       ScrollTrigger.update();
-      console.log('[AboutSection] ScrollTrigger updated');
     }, 800);
 
     return () => {
@@ -397,7 +393,7 @@ export default function AboutSection({ onBack }: AboutSectionProps) {
       </section>
 
       {/* New Content Section */}
-      <section className="min-h-screen bg-white flex items-center justify-center px-6 md:px-12 py-24">
+      <section className="min-h-screen bg-gray-100 flex items-center justify-center px-6 md:px-12 py-24">
         <div className="max-w-5xl w-full">
           <AnimatedText
             className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-center text-gray-900 leading-tight tracking-tight"

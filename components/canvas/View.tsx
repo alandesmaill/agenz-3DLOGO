@@ -82,7 +82,6 @@ export default function View() {
       // Delay unmount to allow for transition animation
       const timer = setTimeout(() => {
         setCanvasActive(false);
-        console.log('Canvas unmounted for performance optimization');
       }, 800); // Wait for section animation to complete
       return () => clearTimeout(timer);
     }
@@ -108,7 +107,6 @@ export default function View() {
 
   // Handle navigation click callback - show test section
   const handleNavigationClick = useCallback((section: string) => {
-    console.log(`Navigation clicked: ${section}`);
     setTestSection({
       section,
       isVisible: true,

@@ -10,7 +10,7 @@ interface HeaderProps {
 
 export default function Header({ onGetInTouch, onMenuClick, onLogoClick }: HeaderProps) {
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 px-6 py-4 md:px-10 md:py-6 flex items-center justify-between pointer-events-none bg-white/80 backdrop-blur-md">
+    <header className="fixed top-0 left-0 right-0 z-50 px-6 py-4 md:px-10 md:py-6 flex items-center justify-between pointer-events-none bg-gray-100/80 backdrop-blur-md">
       {/* Logo - Top Left */}
       <div className="pointer-events-auto">
         {onLogoClick ? (

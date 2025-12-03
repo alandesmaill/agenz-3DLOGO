@@ -50,7 +50,7 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
     >
       {/* Modal Card */}
       <div
-        className={`relative bg-white rounded-3xl p-8 md:p-12 max-w-lg w-full mx-4 shadow-2xl transition-all duration-300 ${
+        className={`relative bg-gray-100 rounded-3xl p-8 md:p-12 max-w-lg w-full mx-4 shadow-2xl transition-all duration-300 ${
           isAnimating ? 'opacity-100 scale-100 translate-y-0' : 'opacity-0 scale-95 translate-y-4'
         }`}
         onClick={(e) => e.stopPropagation()}

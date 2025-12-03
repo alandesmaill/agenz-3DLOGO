@@ -29,7 +29,6 @@ export default function ContactSection({ onBack }: ContactSectionProps) {
   }, []);
 
   const handleSuccess = useCallback(() => {
-    console.log('[ContactSection] Form submitted successfully');
     setSubmitSuccess(true);
   }, []);
 

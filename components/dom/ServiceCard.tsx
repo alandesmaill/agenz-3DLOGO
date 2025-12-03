@@ -25,7 +25,7 @@ const ServiceCard = forwardRef<HTMLDivElement, ServiceCardProps>(
         className={cn(
           // Base styling
           'relative overflow-hidden rounded-3xl',
-          'backdrop-blur-xl bg-white/80 border border-white/30',
+          'backdrop-blur-xl bg-gray-100/80 border border-white/30',
           'p-8 md:p-10 lg:p-12',
           'group cursor-pointer',
           // Fixed aspect ratio - perfect squares

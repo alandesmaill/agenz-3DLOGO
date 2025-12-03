@@ -67,7 +67,7 @@ export default function FormField({
         <div
           className={`
             relative rounded-2xl transition-all duration-300
-            ${isFocused ? 'bg-white/15' : 'bg-white/10'}
+            ${isFocused ? 'bg-gray-200/40' : 'bg-gray-200/30'}
             backdrop-blur-xl
             ${error ? 'border-2 border-red-400/50 shadow-lg shadow-red-500/20' : 'border border-white/20'}
           `}

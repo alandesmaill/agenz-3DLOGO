@@ -97,7 +97,7 @@ export default function PortfolioDetailHero({
               className="
                 p-6 md:p-8
                 rounded-2xl
-                bg-white/80 backdrop-blur-xl
+                bg-gray-100/80 backdrop-blur-xl
                 border border-white/30
                 shadow-lg hover:shadow-2xl
                 transition-all duration-300

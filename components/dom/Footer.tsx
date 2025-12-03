@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { Instagram, Linkedin, Twitter, Facebook, ArrowRight } from 'lucide-react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -42,6 +43,8 @@ const socialLinks: SocialLink[] = [
 
 const quickLinks = [
   { name: 'About', href: '/about' },
+  { name: 'Works', href: '/works' },
+  { name: 'Services', href: '/services' },
   { name: 'Contact', href: '/contact' },
 ];
 
@@ -106,9 +109,15 @@ export default function Footer() {
             {/* Column 1: Brand Identity */}
             <div className="space-y-6 text-center md:text-left">
               {/* Logo */}
-              <h2 className="text-3xl font-bold text-white tracking-tight">
-                AGENZ
-              </h2>
+              <div className="flex justify-center md:justify-start">
+                <Image
+                  src="/Agenz-logo-white.svg"
+                  alt="Agenz Logo"
+                  width={150}
+                  height={50}
+                  className="h-10 w-auto"
+                />
+              </div>
 
               {/* Tagline with gradient */}
               <p className="text-sm font-medium bg-gradient-to-r from-cyan-400/80 to-green-400/80 bg-clip-text text-transparent">
@@ -232,13 +241,12 @@ export default function Footer() {
               {/* Legal Links */}
               <div className="flex gap-6">
                 {legalLinks.map((link) => (
-                  <Link
+                  <span
                     key={link.name}
-                    href={link.href}
-                    className="hover:text-white transition-colors duration-300"
+                    className="text-gray-500 cursor-not-allowed"
                   >
                     {link.name}
-                  </Link>
+                  </span>
                 ))}
               </div>
             </div>

@@ -22,7 +22,7 @@ export default function ProjectTestimonial({
           relative
           p-10 md:p-16
           rounded-3xl
-          bg-white/80 backdrop-blur-xl
+          bg-gray-100/80 backdrop-blur-xl
           border border-white/30
           shadow-2xl
         "

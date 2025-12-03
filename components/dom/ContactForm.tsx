@@ -173,8 +173,6 @@ export default function ContactForm({ onSuccess }: ContactFormProps) {
         throw new Error('Captcha verification failed');
       }
 
-      console.log('[ContactForm] Submitting form...');
-
       // Submit to API
       const response = await fetch('/api/send-email', {
         method: 'POST',
@@ -185,8 +183,6 @@ export default function ContactForm({ onSuccess }: ContactFormProps) {
       const result = await response.json();
 
       if (!response.ok) {
-        console.error('[ContactForm] Submission failed:', result);
-
         // Handle field-specific errors
         if (result.details) {
           setErrors(result.details);
@@ -197,15 +193,12 @@ export default function ContactForm({ onSuccess }: ContactFormProps) {
         return;
       }
 
-      console.log('[ContactForm] Submission successful!');
-
       // Success! Trigger success animation
       setTimeout(() => {
         onSuccess();
       }, 500);
 
     } catch (error) {
-      console.error('[ContactForm] Network error:', error);
       setErrors({
         general: 'Network error. Please check your connection and try again.',
       });

@@ -23,10 +23,8 @@ async function verifyCaptcha(token: string): Promise<boolean> {
     });
 
     const data = await response.json();
-    console.log('[API] reCAPTCHA verification:', data.success ? 'passed' : 'failed');
     return data.success && data.score > 0.5; // reCAPTCHA v3 score threshold
   } catch (error) {
-    console.error('[API] reCAPTCHA verification error:', error);
     return false;
   }
 }
@@ -49,7 +47,6 @@ async function sendEmailJS(templateId: string, params: any) {
 
   if (!response.ok) {
     const errorText = await response.text();
-    console.error('[API] EmailJS error:', errorText);
     throw new Error(`EmailJS API failed: ${response.status}`);
   }
 
@@ -60,20 +57,16 @@ async function sendEmailJS(templateId: string, params: any) {
  * POST handler for contact form submissions
  */
 export async function POST(request: NextRequest) {
-  console.log('[API] Received contact form submission');
-
   try {
     // Parse request body
     const body = await request.json();
 
     // Validate input
     const validated = contactSchema.parse(body);
-    console.log('[API] Validation passed for:', validated.email);
 
     // Verify reCAPTCHA
     const captchaValid = await verifyCaptcha(validated.captchaToken);
     if (!captchaValid) {
-      console.warn('[API] Captcha verification failed for:', validated.email);
       return NextResponse.json(
         { error: 'Captcha verification failed. Please try again.' },
         { status: 400 }
@@ -94,14 +87,12 @@ export async function POST(request: NextRequest) {
       ip_address: ipAddress,
     };
 
-    console.log('[API] Sending notification email...');
     // Send main notification email to site owner
     await sendEmailJS(
       process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID!,
       emailParams
     );
 
-    console.log('[API] Sending auto-reply email...');
     // Send auto-reply to user
     await sendEmailJS(
       process.env.NEXT_PUBLIC_EMAILJS_AUTOREPLY_TEMPLATE_ID!,
@@ -112,10 +103,8 @@ export async function POST(request: NextRequest) {
       }
     );
 
-    console.log('[API] Emails sent successfully');
     return NextResponse.json({ success: true });
   } catch (error) {
-    console.error('[API] Email send error:', error);
 
     // Handle validation errors
     if (error instanceof z.ZodError) {

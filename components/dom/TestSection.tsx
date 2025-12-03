@@ -57,7 +57,7 @@ export default function TestSection({
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm transition-opacity duration-500"
       style={{ opacity }}
     >
-      <div className="bg-white rounded-2xl shadow-2xl p-12 max-w-2xl w-full mx-4 transform transition-all duration-500">
+      <div className="bg-gray-100 rounded-2xl shadow-2xl p-12 max-w-2xl w-full mx-4 transform transition-all duration-500">
         {/* Section Title */}
         <h1 className="text-6xl font-bold text-gray-900 mb-6 uppercase tracking-tight">
           {section}

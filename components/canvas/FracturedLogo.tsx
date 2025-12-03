@@ -98,8 +98,6 @@ export default function FracturedLogo({
       }
     });
 
-    console.log(`Found ${allMeshes.length} meshes in the model`);
-
     // OPTIMIZATION: Calculate bounding box volume efficiently
     interface MeshWithVolume {
       mesh: THREE.Mesh;
@@ -134,11 +132,6 @@ export default function FracturedLogo({
     // Sort by volume (largest first) and take top 4
     meshesWithVolume.sort((a, b) => b.volume - a.volume);
     const largestFour = meshesWithVolume.slice(0, 4);
-
-    console.log('4 Largest pieces by volume:');
-    largestFour.forEach((item, idx) => {
-      console.log(`  ${idx + 1}. ${item.name} - Volume: ${item.volume.toFixed(4)}`);
-    });
 
     // Separate navigation pieces from debris
     const navPieces: NavigationPiece[] = [];
@@ -223,15 +216,11 @@ export default function FracturedLogo({
           label: config.label,
           section: config.section,
         });
-
-        console.log(`  → Assigned to: ${config.label} (${config.section})`);
       } else {
         // This is a debris piece
         debris.push(pieceData);
       }
     });
-
-    console.log(`Navigation pieces: ${navPieces.length}, Debris pieces: ${debris.length}`);
 
     setNavigationPieces(navPieces);
     setDebrisPieces(debris);
@@ -584,8 +573,6 @@ export default function FracturedLogo({
 
   // Navigation piece click handler with camera zoom animation
   const handleNavPieceClick = (piece: NavigationPiece) => {
-    console.log(`Navigating to: ${piece.section.toUpperCase()}`);
-
     // Store original camera position for potential reset
     const originalCameraPos = camera.position.clone();
 
@@ -649,8 +636,6 @@ export default function FracturedLogo({
       // Kill all tracked tweens
       tweensRef.current.forEach((tween) => tween.kill());
       tweensRef.current = [];
-
-      console.log('GSAP animations cleaned up');
     };
   }, []);
 

@@ -29,13 +29,8 @@ export function ABTestProvider({ children, forceVariant }: ABTestProviderProps) 
 
     const selectedVariant = { layout, cta, style };
 
-    // Log variant selection for analytics (optional)
-    if (typeof window !== 'undefined') {
-      console.log('[ABTest] Variant selected:', selectedVariant);
-
-      // TODO: Track variant selection with your analytics service
-      // Example: analytics.track('ab_test_variant_assigned', selectedVariant);
-    }
+    // TODO: Track variant selection with your analytics service
+    // Example: analytics.track('ab_test_variant_assigned', selectedVariant);
 
     return selectedVariant;
   }, [forceVariant]);

@@ -38,19 +38,15 @@ export default function SmoothScrolling({ children, className }: SmoothScrolling
 
     gsap.ticker.lagSmoothing(0);
 
-    console.log('[SmoothScrolling] Lenis initialized');
-
     // Critical: Refresh ScrollTrigger after Lenis is ready
     // This fixes dynamic mounting when navigating from main page
     const refreshTimer = setTimeout(() => {
       ScrollTrigger.refresh();
-      console.log('[SmoothScrolling] ScrollTrigger refreshed after Lenis init');
     }, 500);
 
     // Additional refresh after content settles
     const lateRefreshTimer = setTimeout(() => {
       ScrollTrigger.refresh();
-      console.log('[SmoothScrolling] Late ScrollTrigger refresh complete');
     }, 1000);
 
     // Cleanup on unmount
@@ -61,7 +57,6 @@ export default function SmoothScrolling({ children, className }: SmoothScrolling
       gsap.ticker.remove((time) => {
         lenis.raf(time * 1000);
       });
-      console.log('[SmoothScrolling] Cleanup complete');
     };
   }, []);
 

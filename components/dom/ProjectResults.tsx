@@ -76,7 +76,7 @@ export default function ProjectResults({
             className="
               p-8 md:p-10
               rounded-3xl
-              bg-white/80 backdrop-blur-xl
+              bg-gray-100/80 backdrop-blur-xl
               border border-white/30
               shadow-lg hover:shadow-2xl
               transition-all duration-300
