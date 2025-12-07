@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import StructuredData from "@/components/StructuredData";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -87,10 +88,29 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const organizationSchema = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "AGENZ",
+    "description": "Creative digital agency specializing in advertising, video production, graphic design, and strategic media services.",
+    "url": "https://agenz.com",
+    "logo": "https://agenz.com/logo.png",
+    "contactPoint": {
+      "@type": "ContactPoint",
+      "contactType": "Customer Service",
+      "email": "hello@agenz.com",
+      "telephone": "+1-234-567-890"
+    },
+    "sameAs": [
+      // Add social media links here when available
+    ]
+  };
+
   return (
     <html lang="en" className="light">
       <head>
         <meta name="color-scheme" content="light" />
+        <StructuredData data={organizationSchema} />
       </head>
       <body>{children}</body>
     </html>
