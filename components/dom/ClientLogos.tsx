@@ -8,16 +8,17 @@ import AnimatedText from './AnimatedText';
 
 gsap.registerPlugin(ScrollTrigger);
 
-// Placeholder client data (user will replace with real logos)
+// Real client logos
 const clientLogos = [
-  { id: 1, name: 'Client 1', image: '/images/clients/client-1.svg' },
-  { id: 2, name: 'Client 2', image: '/images/clients/client-2.svg' },
-  { id: 3, name: 'Client 3', image: '/images/clients/client-3.svg' },
-  { id: 4, name: 'Client 4', image: '/images/clients/client-4.svg' },
-  { id: 5, name: 'Client 5', image: '/images/clients/client-5.svg' },
-  { id: 6, name: 'Client 6', image: '/images/clients/client-6.svg' },
-  { id: 7, name: 'Client 7', image: '/images/clients/client-7.svg' },
-  { id: 8, name: 'Client 8', image: '/images/clients/client-8.svg' },
+  { id: 1, name: 'Fibernet', image: '/images/clients/fibernet.svg' },
+  { id: 2, name: 'iQ Labs', image: '/images/clients/iq-labs.svg' },
+  { id: 3, name: 'iQ Online', image: '/images/clients/iq-online.svg' },
+  { id: 4, name: 'KurdsatTowers', image: '/images/clients/kurdsat-towers.svg' },
+  { id: 5, name: 'MJ Holding', image: '/images/clients/mj-holding.svg' },
+  { id: 6, name: 'Optiq', image: '/images/clients/optiq.svg' },
+  { id: 7, name: 'RoverCity', image: '/images/clients/rover-city.svg' },
+  { id: 8, name: 'VQ', image: '/images/clients/vq.svg' },
+  { id: 9, name: 'WhiteTowers', image: '/images/clients/white-towers.svg' },
 ];
 
 export default function ClientLogos() {
@@ -70,8 +71,8 @@ export default function ClientLogos() {
         </AnimatedText>
       </div>
 
-      {/* Logo Grid - 2x2 on mobile, 2x4 on desktop */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
+      {/* Logo Grid - 2 columns on mobile, 3x3 on desktop */}
+      <div className="grid grid-cols-2 md:grid-cols-3 gap-6 md:gap-8">
         {clientLogos.map((client, index) => (
           <div
             key={client.id}
