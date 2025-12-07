@@ -64,6 +64,8 @@ export default function FracturedLogo({
   // OPTIMIZATION: Track GSAP timelines for cleanup
   const timelinesRef = useRef<gsap.core.Timeline[]>([]);
   const tweensRef = useRef<gsap.core.Tween[]>([]);
+  // Track hover tweens per piece to prevent animation conflicts
+  const hoverTweensRef = useRef<Map<string, gsap.core.Tween[]>>(new Map());
 
   // OPTIMIZATION: Detect reduced motion preference for accessibility
   const prefersReducedMotion = useMemo(() => {
@@ -345,7 +347,7 @@ export default function FracturedLogo({
     // Animate navigation pieces to FRONT (positive z)
     // NO DELAY - all execute at once
     navigationPieces.forEach((piece) => {
-      gsap.to(piece.mesh.position, {
+      const posTween = gsap.to(piece.mesh.position, {
         x: piece.targetPosition.x,
         y: piece.targetPosition.y,
         z: piece.targetPosition.z, // Already set to z:2 in NAV_SECTIONS
@@ -353,9 +355,10 @@ export default function FracturedLogo({
         ease: 'power3.out', // SMOOTH like debris
         delay: 0, // ALL AT ONCE
       });
+      tweensRef.current.push(posTween);
 
       // Keep original scale (no scaling up)
-      gsap.to(piece.mesh.scale, {
+      const scaleTween = gsap.to(piece.mesh.scale, {
         x: piece.originalScale.x * 1.0,
         y: piece.originalScale.y * 1.0,
         z: piece.originalScale.z * 1.0,
@@ -363,6 +366,7 @@ export default function FracturedLogo({
         ease: 'power3.out', // SMOOTH like debris
         delay: 0, // ALL AT ONCE
       });
+      tweensRef.current.push(scaleTween);
     });
 
     // Animate debris pieces to BACK (negative z)
@@ -378,7 +382,7 @@ export default function FracturedLogo({
       // PUSH TO BACK: negative z between -0.5 and -1 (very close, just behind nav)
       const targetZ = piece.originalPosition.z - (0.5 + Math.random() * 0.5);
 
-      gsap.to(piece.mesh.position, {
+      const posTween = gsap.to(piece.mesh.position, {
         x: targetX,
         y: targetY,
         z: targetZ, // NEGATIVE Z = BACK
@@ -386,9 +390,10 @@ export default function FracturedLogo({
         ease: 'power3.out',
         delay: 0, // ALL AT ONCE
       });
+      tweensRef.current.push(posTween);
 
       // Random rotation
-      gsap.to(piece.mesh.rotation, {
+      const rotTween = gsap.to(piece.mesh.rotation, {
         x: piece.originalRotation.x + (Math.random() - 0.5) * Math.PI * 2,
         y: piece.originalRotation.y + (Math.random() - 0.5) * Math.PI * 2,
         z: piece.originalRotation.z + (Math.random() - 0.5) * Math.PI * 2,
@@ -396,14 +401,16 @@ export default function FracturedLogo({
         ease: 'power3.out',
         delay: 0, // ALL AT ONCE
       });
+      tweensRef.current.push(rotTween);
 
       // Fade out debris
       if (piece.mesh.material instanceof THREE.MeshStandardMaterial) {
-        gsap.to(piece.mesh.material, {
+        const opacityTween = gsap.to(piece.mesh.material, {
           opacity: 0.3 + Math.random() * 0.3, // 0.3-0.6
           duration: animDuration,
           delay: 0, // ALL AT ONCE
         });
+        tweensRef.current.push(opacityTween);
       }
     });
 
@@ -412,69 +419,6 @@ export default function FracturedLogo({
     setTimeout(() => {
       setIsAnimating(false);
     }, totalDelay);
-  };
-
-  // Handle recomposition animation
-  const handleRecompose = () => {
-    if (isAnimating || !isDecomposed) return;
-
-    setIsAnimating(true);
-    setIsDecomposed(false);
-
-    // Clear any active hover labels
-    if (onNavigationHover) {
-      onNavigationHover(null, null, null);
-    }
-
-    // Return navigation pieces to original positions
-    navigationPieces.forEach((piece) => {
-      gsap.to(piece.mesh.position, {
-        x: piece.originalPosition.x,
-        y: piece.originalPosition.y,
-        z: piece.originalPosition.z,
-        duration: 1.2,
-        ease: 'power2.inOut',
-      });
-
-      gsap.to(piece.mesh.scale, {
-        x: piece.originalScale.x,
-        y: piece.originalScale.y,
-        z: piece.originalScale.z,
-        duration: 1.2,
-        ease: 'power2.inOut',
-      });
-    });
-
-    // Return debris pieces to original positions
-    debrisPieces.forEach((piece) => {
-      gsap.to(piece.mesh.position, {
-        x: piece.originalPosition.x,
-        y: piece.originalPosition.y,
-        z: piece.originalPosition.z,
-        duration: 1.2,
-        ease: 'power2.inOut',
-      });
-
-      gsap.to(piece.mesh.rotation, {
-        x: piece.originalRotation.x,
-        y: piece.originalRotation.y,
-        z: piece.originalRotation.z,
-        duration: 1.2,
-        ease: 'power2.inOut',
-      });
-
-      // Restore opacity
-      if (piece.mesh.material instanceof THREE.MeshStandardMaterial) {
-        gsap.to(piece.mesh.material, {
-          opacity: 1,
-          duration: 1.2,
-        });
-      }
-    });
-
-    setTimeout(() => {
-      setIsAnimating(false);
-    }, 1200);
   };
 
   // Global hover handlers
@@ -491,15 +435,22 @@ export default function FracturedLogo({
   const handleNavPieceHover = (piece: NavigationPiece, isHovering: boolean) => {
     if (!isDecomposed || isAnimating) return;
 
+    // Kill previous hover tweens for this piece to prevent conflicts
+    const prevTweens = hoverTweensRef.current.get(piece.name) || [];
+    prevTweens.forEach(t => t.kill());
+    const newTweens: gsap.core.Tween[] = [];
+
     if (isHovering) {
       // Scale up on hover (from 1.0 to 1.2)
-      gsap.to(piece.mesh.scale, {
+      const scaleTween = gsap.to(piece.mesh.scale, {
         x: piece.originalScale.x * 1.2,
         y: piece.originalScale.y * 1.2,
         z: piece.originalScale.z * 1.2,
         duration: 0.3,
         ease: 'back.out(1.7)',
       });
+      newTweens.push(scaleTween);
+      tweensRef.current.push(scaleTween);
 
       // Add glow effect with bloom
       if (piece.mesh.material instanceof THREE.MeshStandardMaterial) {
@@ -507,19 +458,23 @@ export default function FracturedLogo({
         const originalEmissive = piece.mesh.material.emissive.clone();
         const glowColor = new THREE.Color(0x00ffff); // Cyan glow
 
-        gsap.to(piece.mesh.material.emissive, {
+        const emissiveTween = gsap.to(piece.mesh.material.emissive, {
           r: glowColor.r,
           g: glowColor.g,
           b: glowColor.b,
           duration: 0.3,
           ease: 'power2.out',
         });
+        newTweens.push(emissiveTween);
+        tweensRef.current.push(emissiveTween);
 
-        gsap.to(piece.mesh.material, {
+        const intensityTween = gsap.to(piece.mesh.material, {
           emissiveIntensity: 0.5, // Gentle glow (reduced from 2.5)
           duration: 0.3,
           ease: 'power2.out',
         });
+        newTweens.push(intensityTween);
+        tweensRef.current.push(intensityTween);
       }
 
       // Get world position and convert to screen coordinates
@@ -540,35 +495,44 @@ export default function FracturedLogo({
       }
     } else {
       // Scale back to decomposed size (1.0)
-      gsap.to(piece.mesh.scale, {
+      const scaleTween = gsap.to(piece.mesh.scale, {
         x: piece.originalScale.x * 1.0,
         y: piece.originalScale.y * 1.0,
         z: piece.originalScale.z * 1.0,
         duration: 0.3,
         ease: 'power2.out',
       });
+      newTweens.push(scaleTween);
+      tweensRef.current.push(scaleTween);
 
       // Remove glow effect
       if (piece.mesh.material instanceof THREE.MeshStandardMaterial) {
-        gsap.to(piece.mesh.material.emissive, {
+        const emissiveTween = gsap.to(piece.mesh.material.emissive, {
           r: 0,
           g: 0,
           b: 0,
           duration: 0.3,
           ease: 'power2.out',
         });
+        newTweens.push(emissiveTween);
+        tweensRef.current.push(emissiveTween);
 
-        gsap.to(piece.mesh.material, {
+        const intensityTween = gsap.to(piece.mesh.material, {
           emissiveIntensity: 0,
           duration: 0.3,
           ease: 'power2.out',
         });
+        newTweens.push(intensityTween);
+        tweensRef.current.push(intensityTween);
       }
 
       if (onNavigationHover) {
         onNavigationHover(null, null, null);
       }
     }
+
+    // Store new tweens for this piece
+    hoverTweensRef.current.set(piece.name, newTweens);
   };
 
   // Navigation piece click handler with camera zoom animation
