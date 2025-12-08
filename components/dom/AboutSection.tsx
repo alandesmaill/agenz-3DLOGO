@@ -1,118 +1,40 @@
 'use client';
 
-import { useCallback, useMemo, useRef, useState, useEffect, Suspense } from 'react';
-import { Canvas } from '@react-three/fiber';
-import { Environment, PerspectiveCamera } from '@react-three/drei';
-import { Physics } from '@react-three/rapier';
+import { useCallback, useRef, useState, useEffect } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import FloatingSpheres from '@/components/canvas/FloatingSpheres';
-import InfiniteText from './InfiniteText';
+import Image from 'next/image';
+import Link from 'next/link';
 import MenuOverlay from './MenuOverlay';
 import SmoothScrolling from './SmoothScrolling';
 import AnimatedText from './AnimatedText';
 import Footer from './Footer';
 import Header from './Header';
+import { aboutContent } from '@/lib/about-content';
+import { aboutGradients } from '@/lib/about-gradients';
 
 gsap.registerPlugin(ScrollTrigger);
-
-interface RectPosition {
-  index: number;
-  x: string;
-  y: string;
-}
 
 interface AboutSectionProps {
   onBack?: () => void;
 }
 
-// Helper functions for rectangle animation
-const moveRect = (rect: RectPosition, direction: string, gridWidth: number, gridHeight: number) => {
-  const moveMap: { [key: string]: () => void } = {
-    left: () => {
-      rect.x = `${(parseFloat(rect.x) - gridWidth).toFixed(2)}%`;
-    },
-    right: () => {
-      rect.x = `${(parseFloat(rect.x) + gridWidth).toFixed(2)}%`;
-    },
-    up: () => {
-      rect.y = `${(parseFloat(rect.y) - gridHeight).toFixed(2)}%`;
-    },
-    down: () => {
-      rect.y = `${(parseFloat(rect.y) + gridHeight).toFixed(2)}%`;
-    },
-  };
-  moveMap[direction]?.();
-};
-
-const arePositionsEqual = (pos1: RectPosition, pos2: RectPosition) =>
-  pos1.x === pos2.x && pos1.y === pos2.y;
-
-const isPositionOccupied = (rects: RectPosition[], pos: RectPosition) =>
-  rects.some((rect) => arePositionsEqual(rect, pos));
-
-const performMoves = (rectangles: RectPosition[], gridWidth: number, gridHeight: number) => {
-  const totalGroups = Math.floor(Math.random() * 8) + 1;
-  const allMovements: { index: number; x: string; y: string }[][] = [];
-
-  for (let i = 0; i < totalGroups; i++) {
-    const validMoves: { index: number; x: string; y: string }[] = [];
-    const togetherMoves = Math.floor(Math.random() * 3) + 1;
-
-    for (let k = 0; k < togetherMoves; k++) {
-      const randomRectIndex =
-        k === 0 || validMoves.length === 0
-          ? Math.floor(Math.random() * rectangles.length)
-          : rectangles.findIndex(
-              (_, idx) => !validMoves.some((move) => move.index === idx)
-            );
-
-      if (randomRectIndex === -1) break;
-
-      const rect = { ...rectangles[randomRectIndex] };
-      const originalPosition = { ...rectangles[randomRectIndex] };
-      let validMove = false;
-
-      ['left', 'right', 'up', 'down'].forEach((direction) => {
-        if (validMove) return;
-
-        moveRect(rect, direction, gridWidth, gridHeight);
-        const newPosition = { ...rect };
-
-        const { x, y } = { x: parseFloat(newPosition.x), y: parseFloat(newPosition.y) };
-        if (
-          x > -0.5 &&
-          x < 90 &&
-          y > -0.5 &&
-          y < 90 &&
-          !isPositionOccupied(rectangles, newPosition)
-        ) {
-          validMove = true;
-          validMoves.push({ index: newPosition.index, x: newPosition.x, y: newPosition.y });
-          Object.assign(rectangles[newPosition.index], newPosition);
-        } else {
-          Object.assign(rect, originalPosition);
-        }
-      });
-    }
-
-    if (validMoves.length > 0) {
-      allMovements.push(validMoves);
-    }
-  }
-
-  return allMovements;
-};
+// Client logos data
+const clientLogos = [
+  { id: 1, name: 'Fibernet', image: '/images/clients/fibernet.svg' },
+  { id: 2, name: 'iQ Labs', image: '/images/clients/iq-labs.svg' },
+  { id: 3, name: 'iQ Online', image: '/images/clients/iq-online.svg' },
+  { id: 4, name: 'KurdsatTowers', image: '/images/clients/kurdsat-towers.svg' },
+  { id: 5, name: 'MJ Holding', image: '/images/clients/mj-holding.svg' },
+  { id: 6, name: 'Optiq', image: '/images/clients/optiq.svg' },
+  { id: 7, name: 'RoverCity', image: '/images/clients/rover-city.svg' },
+  { id: 8, name: 'VQ', image: '/images/clients/vq.svg' },
+  { id: 9, name: 'WhiteTowers', image: '/images/clients/white-towers.svg' },
+];
 
 export default function AboutSection({ onBack }: AboutSectionProps) {
-  const [timeline, setTimeline] = useState<gsap.core.Timeline | null>(null);
   const rootRef = useRef<HTMLDivElement>(null);
-  const rectRefs = useRef<(SVGRectElement | null)[]>([]);
-  const svgRef = useRef<SVGSVGElement>(null);
-  const divWrapper = useRef<HTMLDivElement>(null);
-
-  // Responsive detection for sphere settings
-  const [isMobile, setIsMobile] = useState(false);
+  const statsRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   // Menu state
   const [menuOpen, setMenuOpen] = useState(false);
@@ -127,31 +49,16 @@ export default function AboutSection({ onBack }: AboutSectionProps) {
     } else if (section === 'contact') {
       window.location.href = '/contact';
     }
-    // Note: 'works' section removed - route doesn't exist
-  }, []);
-
-  useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
-
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
   // Critical: Refresh ScrollTrigger when AboutSection mounts
-  // This ensures animations work when navigating from main page
   useEffect(() => {
-    // Scroll to top when section loads
     window.scrollTo(0, 0);
 
-    // Refresh ScrollTrigger after component and children have rendered
     const refreshTimer = setTimeout(() => {
       ScrollTrigger.refresh();
     }, 600);
 
-    // Force update all triggers
     const updateTimer = setTimeout(() => {
       ScrollTrigger.update();
     }, 800);
@@ -162,261 +69,226 @@ export default function AboutSection({ onBack }: AboutSectionProps) {
     };
   }, []);
 
-  // Responsive sphere settings
-  const sphereSettings = useMemo(() => {
-    if (isMobile) {
-      return {
-        totalCount: 12,
-        transparentCount: 3,
-        positionSpread: { x: 8, y: 8, z: 8 },
-        motionSpread: { x: 12, y: 8, z: 6 },
-        cameraFov: 35,
-        cameraZ: 18,
-      };
-    }
-    return {
-      totalCount: 18,
-      transparentCount: 5,
-      positionSpread: { x: 20, y: 10, z: 20 },
-      motionSpread: { x: 40, y: 10, z: 10 },
-      cameraFov: 20,
-      cameraZ: 20,
-    };
-  }, [isMobile]);
+  // Stats count-up animation
+  useEffect(() => {
+    if (statsRefs.current.length === 0) return;
 
-  // Initial rectangle positions for the mask effect
-  const initialPositions = useMemo<RectPosition[]>(
-    () => [
-      { index: 0, x: '0.00%', y: '50.00%' },
-      { index: 1, x: '16.67%', y: '0.00%' },
-      { index: 2, x: '33.34%', y: '0.00%' },
-      { index: 3, x: '50.01%', y: '0.00%' },
-      { index: 4, x: '66.68%', y: '50.00%' },
-      { index: 5, x: '83.35%', y: '50.00%' },
-      { index: 6, x: '33.34%', y: '50.00%' },
-    ],
-    []
-  );
+    const animations: gsap.core.Tween[] = [];
 
-  const gridWidth = 16.67;
-  const gridHeight = 50.0;
+    statsRefs.current.forEach((statRef, index) => {
+      if (!statRef) return;
 
-  const animateRectangles = useCallback(
-    (movements: { index: number; x: string; y: string }[][]) => {
-      const tl = gsap.timeline({
-        onComplete: () => {
-          const newMovements = performMoves([...initialPositions], gridWidth, gridHeight);
-          setTimeline(animateRectangles(newMovements));
+      const stat = aboutContent.mission.stats[index];
+      const numericValue = parseInt(stat.value.replace(/\D/g, ''), 10);
+      const suffix = stat.value.replace(/\d/g, '');
+
+      const obj = { value: 0 };
+
+      const animation = gsap.to(obj, {
+        value: numericValue,
+        duration: 2,
+        ease: 'power2.out',
+        scrollTrigger: {
+          trigger: statRef,
+          start: 'top 80%',
+          once: true,
+        },
+        onUpdate: () => {
+          if (statRef) {
+            statRef.textContent = Math.floor(obj.value) + suffix;
+          }
         },
       });
 
-      movements.forEach((movementGroup, groupIndex) => {
-        movementGroup.forEach(({ index, x, y }, rectIndex) => {
-          const rect = rectRefs.current[index];
-          if (!rect) return;
-
-          if (groupIndex === 0 && rectIndex === 0) {
-            tl.to(
-              rect,
-              {
-                ease: 'power2.inOut',
-                duration: 1,
-                attr: { x, y },
-                delay: 2,
-              },
-              0
-            );
-          } else if (rectIndex === 0) {
-            tl.to(
-              rect,
-              {
-                ease: 'power2.inOut',
-                duration: 1,
-                attr: { x, y },
-                delay: 0,
-              },
-              '>'
-            );
-          } else {
-            tl.to(
-              rect,
-              {
-                ease: 'power2.inOut',
-                duration: 1,
-                attr: { x, y },
-                delay: 0,
-              },
-              '<'
-            );
-          }
-        });
-      });
-
-      return tl;
-    },
-    [initialPositions]
-  );
-
-  useEffect(() => {
-    if (timeline) {
-      timeline.kill();
-    }
-
-    const newTimeline = animateRectangles(performMoves([...initialPositions], gridWidth, gridHeight));
-    setTimeline(newTimeline);
+      animations.push(animation);
+    });
 
     return () => {
-      if (timeline) {
-        timeline.kill();
-      }
-      newTimeline.kill();
+      animations.forEach((anim) => anim.kill());
     };
-  }, [animateRectangles, initialPositions]);
-
-  const onMouseEnter = () => {
-    if (svgRef.current) gsap.to(svgRef.current, { autoAlpha: 0, duration: 0.3 });
-    if (divWrapper.current) gsap.to(divWrapper.current, { autoAlpha: 0, duration: 0.3 });
-  };
-
-  const onMouseLeave = () => {
-    if (svgRef.current) gsap.to(svgRef.current, { autoAlpha: 1, duration: 0.3 });
-    if (divWrapper.current) gsap.to(divWrapper.current, { autoAlpha: 1, duration: 0.3 });
-  };
-
-  const renderRects = useMemo(
-    () =>
-      initialPositions.map(({ index, x, y }) => (
-        <rect
-          key={index}
-          ref={(ref) => {
-            rectRefs.current[index] = ref;
-          }}
-          x={x}
-          y={y}
-          width={`${gridWidth}%`}
-          height={`${gridHeight}%`}
-        />
-      )),
-    [initialPositions]
-  );
+  }, []);
 
   return (
     <SmoothScrolling>
-      <div ref={rootRef} className="scroll-container bg-gray-100">
+      <div ref={rootRef} className="scroll-container">
         {/* Header - Fixed */}
         <Header
           onLogoClick={onBack}
-          onGetInTouch={() => window.location.href = '/contact'}
+          onGetInTouch={() => (window.location.href = '/contact')}
           onMenuClick={() => setMenuOpen(true)}
         />
 
-      {/* Hero Section with 3D Spheres */}
-      <section className="relative min-h-screen pt-24 pb-10 px-6 md:px-12 bg-gray-100">
-        <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-8 mb-10">
-          {/* Title - Left */}
-          <div className="flex flex-col max-w-2xl">
-            <h2 className="text-3xl md:text-5xl lg:text-6xl font-bold tracking-tight text-gray-800 leading-tight">
-              WE CREATE PURPOSEFUL CREATIVE WORK THAT WORKS
-            </h2>
-          </div>
+        {/* 1. Hero Section - Full Screen */}
+        <section className="relative h-screen w-full flex items-center justify-center overflow-hidden">
+          {/* CSS Gradient Background */}
+          <div className="absolute inset-0" style={{ background: aboutGradients.hero }} />
 
-          {/* Description - Right */}
-          <div className="max-w-sm">
-            <p className="text-sm md:text-base text-gray-500 leading-relaxed font-medium">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+          {/* Content */}
+          <div className="relative z-10 max-w-6xl mx-auto px-6 text-center">
+            <AnimatedText
+              className="text-white text-4xl md:text-6xl lg:text-7xl xl:text-8xl font-bold mb-6 leading-tight"
+              splitBy="words"
+              stagger={0.05}
+              duration={0.8}
+              y={50}
+            >
+              {aboutContent.hero.headline}
+            </AnimatedText>
+
+            <p className="text-white/90 text-lg md:text-xl max-w-2xl mx-auto">
+              {aboutContent.hero.subheading}
             </p>
           </div>
-        </div>
+        </section>
 
-        {/* 3D Scene with SVG Mask */}
-        <div className="relative h-[60vh] md:h-[70vh] rounded-2xl overflow-hidden">
-          {/* Three.js Canvas */}
-          <Canvas
-            className="absolute inset-0 w-full h-full"
-            style={{ backgroundColor: 'transparent', borderRadius: '1rem' }}
-          >
-            <Suspense fallback={null}>
-              <PerspectiveCamera
-                makeDefault
-                position={[0, 0, sphereSettings.cameraZ]}
-                fov={sphereSettings.cameraFov}
-              />
-              <Physics interpolate timeStep={1 / 60} gravity={[0, 0, 0]}>
-                <FloatingSpheres
-                  totalCount={sphereSettings.totalCount}
-                  transparentCount={sphereSettings.transparentCount}
-                  positionSpread={sphereSettings.positionSpread}
-                  motionSpread={sphereSettings.motionSpread}
-                />
-              </Physics>
-              <Environment preset="studio" />
-              <ambientLight intensity={0.5} />
-              <directionalLight position={[10, 10, 5]} intensity={1} />
-            </Suspense>
-          </Canvas>
+        {/* 2. Mission Section - Full Screen Split Layout */}
+        <section className="relative min-h-screen w-full flex items-center py-24 md:py-0">
+          {/* CSS Gradient Background */}
+          <div className="absolute inset-0" style={{ background: aboutGradients.mission }} />
 
-          {/* SVG Mask Overlay */}
-          <div
-            onMouseEnter={onMouseEnter}
-            onMouseLeave={onMouseLeave}
-            className="absolute inset-0 w-full h-full"
-          >
-            <svg
-              ref={svgRef}
-              width="100%"
-              height="100%"
-              viewBox="0 0 100 100"
-              preserveAspectRatio="none"
-              className="block"
-            >
-              <rect
-                x="0"
-                y="0"
-                width="100%"
-                height="100.3%"
-                fill="#f3f4f6"
-                style={{ mask: 'url(#aboutMask)' }}
-              />
-              <mask id="aboutMask" x="0" y="0">
-                <rect x="0" y="0" width="100%" height="100.3%" fill="white" />
-                {renderRects}
-              </mask>
-            </svg>
-            <div ref={divWrapper} />
+          {/* Content Grid */}
+          <div className="relative z-10 max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            {/* Left: Mission Text */}
+            <div>
+              <div className="backdrop-blur-xl bg-white/10 rounded-3xl p-8 md:p-12 border border-white/20">
+                <h2 className="text-white text-xl font-bold mb-4 uppercase tracking-wider">
+                  Our Mission
+                </h2>
+                <AnimatedText
+                  className="text-white text-2xl md:text-3xl lg:text-4xl font-light leading-relaxed"
+                  splitBy="words"
+                  stagger={0.03}
+                  duration={0.8}
+                  y={30}
+                  triggerStart="top 75%"
+                >
+                  {aboutContent.mission.statement}
+                </AnimatedText>
+              </div>
+            </div>
+
+            {/* Right: Stats Grid */}
+            <div className="grid grid-cols-2 gap-6">
+              {aboutContent.mission.stats.map((stat, index) => (
+                <div
+                  key={stat.label}
+                  className="backdrop-blur-xl bg-white/10 rounded-2xl p-6 border border-white/20 text-center"
+                >
+                  <div
+                    ref={(el) => {
+                      statsRefs.current[index] = el;
+                    }}
+                    className="text-4xl md:text-5xl font-bold text-white mb-2"
+                  >
+                    0+
+                  </div>
+                  <div className="text-white/80 text-xs md:text-sm uppercase tracking-wider">
+                    {stat.label}
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
-        </div>
+        </section>
 
-        {/* Infinite "Scroll Down" text */}
-        <div className="h-16 overflow-hidden mt-8 flex items-center">
-          <InfiniteText text="Scroll Down" length={20} className="h-full" />
-        </div>
-      </section>
+        {/* 3. Team Section - Simple Placeholder */}
+        <section className="relative py-24 md:py-32 bg-gray-100">
+          <div className="max-w-7xl mx-auto px-6 text-center">
+            <AnimatedText
+              className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900"
+              splitBy="words"
+              stagger={0.05}
+              duration={0.8}
+              y={40}
+              triggerStart="top 80%"
+            >
+              {aboutContent.team.headline}
+            </AnimatedText>
+            <p className="text-gray-600 text-lg mt-6">{aboutContent.team.subheading}</p>
+          </div>
+        </section>
 
-      {/* New Content Section */}
-      <section className="min-h-screen bg-gray-100 flex items-center justify-center px-6 md:px-12 py-24">
-        <div className="max-w-5xl w-full">
-          <AnimatedText
-            className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-center text-gray-900 leading-tight tracking-tight"
-            splitBy="chars"
-            stagger={0.008}
-            duration={0.6}
-            y={50}
-            triggerStart="top 80%"
-          >
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.
-          </AnimatedText>
-        </div>
-      </section>
+        {/* 4. Clients Marquee Section */}
+        <section className="relative py-24 md:py-32 bg-white overflow-hidden">
+          <div className="max-w-7xl mx-auto px-6">
+            <h2 className="text-center text-4xl md:text-5xl font-bold mb-16 text-gray-900">
+              Trusted By
+            </h2>
 
-      {/* Menu Overlay */}
-      <MenuOverlay
-        isOpen={menuOpen}
-        onClose={() => setMenuOpen(false)}
-        onNavigate={handleMenuNavigate}
-      />
+            {/* Scrolling Marquee Container */}
+            <div className="relative overflow-hidden">
+              <div className="flex gap-8 md:gap-12 animate-marquee hover:[animation-play-state:paused]">
+                {/* Render logos twice for seamless loop */}
+                {[...clientLogos, ...clientLogos].map((logo, idx) => (
+                  <div
+                    key={`${logo.id}-${idx}`}
+                    className="flex-shrink-0 w-24 md:w-32 h-16 md:h-24 flex items-center justify-center grayscale hover:grayscale-0 transition-all duration-300"
+                  >
+                    <Image
+                      src={logo.image}
+                      alt={logo.name}
+                      width={128}
+                      height={96}
+                      className="object-contain w-full h-full"
+                    />
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
 
-      {/* Footer */}
-      <Footer />
+          <style jsx>{`
+            @keyframes marquee {
+              0% {
+                transform: translateX(0);
+              }
+              100% {
+                transform: translateX(-50%);
+              }
+            }
+
+            .animate-marquee {
+              animation: marquee 30s linear infinite;
+            }
+          `}</style>
+        </section>
+
+        {/* 5. CTA Section - Full Screen Finale */}
+        <section className="relative h-screen flex items-center justify-center">
+          {/* CSS Gradient Background */}
+          <div className="absolute inset-0" style={{ background: aboutGradients.cta }} />
+
+          {/* Content */}
+          <div className="relative z-10 text-center px-6">
+            <AnimatedText
+              className="text-white text-5xl md:text-6xl lg:text-7xl font-bold mb-8"
+              splitBy="words"
+              stagger={0.05}
+              duration={0.8}
+              y={50}
+              triggerStart="top 80%"
+            >
+              {aboutContent.cta.headline}
+            </AnimatedText>
+
+            <Link
+              href="/contact"
+              className="inline-block px-12 py-5 text-xl font-bold text-black bg-white rounded-full hover:scale-105 transition-transform duration-300 shadow-2xl"
+            >
+              {aboutContent.cta.buttonText}
+            </Link>
+          </div>
+        </section>
+
+        {/* Menu Overlay */}
+        <MenuOverlay
+          isOpen={menuOpen}
+          onClose={() => setMenuOpen(false)}
+          onNavigate={handleMenuNavigate}
+        />
+
+        {/* Footer */}
+        <Footer />
       </div>
     </SmoothScrolling>
   );
