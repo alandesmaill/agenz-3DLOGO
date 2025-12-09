@@ -85,8 +85,8 @@ export default function Footer() {
       );
 
       // Staggered columns animation (left to right wave effect)
-      const columns = footerRef.current.querySelectorAll('.footer-column');
-      if (columns.length > 0) {
+      const columns = footerRef.current?.querySelectorAll('.footer-column');
+      if (columns && columns.length > 0) {
         gsap.fromTo(
           columns,
           { opacity: 0, y: 30 },
@@ -106,8 +106,8 @@ export default function Footer() {
       }
 
       // Parallax effect on background
-      const background = footerRef.current.querySelector('.footer-background');
-      if (background) {
+      const background = footerRef.current?.querySelector('.footer-background');
+      if (background && footerRef.current) {
         gsap.to(background, {
           yPercent: -20,
           ease: 'none',
