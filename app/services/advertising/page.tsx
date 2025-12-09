@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import SmoothScrolling from '@/components/dom/SmoothScrolling';
 import ServiceDetailHero from '@/components/dom/ServiceDetailHero';
 import ServiceOverview from '@/components/dom/ServiceOverview';
@@ -19,21 +19,6 @@ gsap.registerPlugin(ScrollTrigger);
 export default function AdvertisingPage() {
   const service = serviceDetailsData.advertising;
   const [menuOpen, setMenuOpen] = useState(false);
-
-  // Menu navigation handler
-  const handleMenuNavigate = useCallback((section: string) => {
-    if (section === 'home') {
-      window.location.href = '/';
-    } else if (section === 'about') {
-      window.location.href = '/about';
-    } else if (section === 'works') {
-      window.location.href = '/works';
-    } else if (section === 'services') {
-      window.location.href = '/services';
-    } else if (section === 'contact') {
-      window.location.href = '/contact';
-    }
-  }, []);
 
   // Scroll to top and refresh ScrollTrigger on mount
   useEffect(() => {
@@ -122,7 +107,6 @@ export default function AdvertisingPage() {
     <MenuOverlay
       isOpen={menuOpen}
       onClose={() => setMenuOpen(false)}
-      onNavigate={handleMenuNavigate}
     />
   </>
   );

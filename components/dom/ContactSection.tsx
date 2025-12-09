@@ -15,19 +15,6 @@ export default function ContactSection({ onBack }: ContactSectionProps) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(false);
 
-  const handleMenuNavigate = useCallback((section: string) => {
-    if (section === 'home') {
-      window.location.href = '/';
-    } else if (section === 'about') {
-      window.location.href = '/about';
-    } else if (section === 'services') {
-      window.location.href = '/services';
-    } else if (section === 'contact') {
-      window.location.href = '/contact';
-    }
-    // Note: 'works' section removed - route doesn't exist
-  }, []);
-
   const handleSuccess = useCallback(() => {
     setSubmitSuccess(true);
   }, []);
@@ -80,7 +67,6 @@ export default function ContactSection({ onBack }: ContactSectionProps) {
       <MenuOverlay
         isOpen={menuOpen}
         onClose={() => setMenuOpen(false)}
-        onNavigate={handleMenuNavigate}
       />
 
       {/* Footer */}

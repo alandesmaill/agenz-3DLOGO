@@ -26,20 +26,6 @@ export default function ServicesSection({ onBack }: ServicesSectionProps) {
   const [menuOpen, setMenuOpen] = useState(false);
   const { isMobile } = useResponsive();
 
-  // Handle menu navigation
-  const handleMenuNavigate = (section: string) => {
-    if (section === 'home') {
-      window.location.href = '/';
-    } else if (section === 'about') {
-      window.location.href = '/about';
-    } else if (section === 'services') {
-      window.location.href = '/services';
-    } else if (section === 'contact') {
-      window.location.href = '/contact';
-    }
-    // Note: 'works' section removed - route doesn't exist
-  };
-
   // Critical: Refresh ScrollTrigger when ServicesSection mounts
   useEffect(() => {
     // Scroll to top when section loads
@@ -152,7 +138,7 @@ export default function ServicesSection({ onBack }: ServicesSectionProps) {
         </section>
 
         {/* Menu Overlay */}
-        <MenuOverlay isOpen={menuOpen} onClose={() => setMenuOpen(false)} onNavigate={handleMenuNavigate} />
+        <MenuOverlay isOpen={menuOpen} onClose={() => setMenuOpen(false)} />
       </div>
     </SmoothScrolling>
   );

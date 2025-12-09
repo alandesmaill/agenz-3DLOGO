@@ -134,13 +134,6 @@ export default function View() {
     setMenuOverlayOpen(true);
   }, []);
 
-  // Menu navigation handler
-  const handleMenuNavigate = useCallback((section: string) => {
-    // If logo hasn't decomposed yet, we need to handle this differently
-    // For now, just navigate to the section
-    handleNavigationClick(section);
-  }, [handleNavigationClick]);
-
   return (
     <div ref={containerRef} className="relative w-full h-full">
       {/* Loading Screen */}
@@ -204,7 +197,6 @@ export default function View() {
       <MenuOverlay
         isOpen={menuOverlayOpen}
         onClose={() => setMenuOverlayOpen(false)}
-        onNavigate={handleMenuNavigate}
       />
     </div>
   );

@@ -39,18 +39,6 @@ export default function AboutSection({ onBack }: AboutSectionProps) {
   // Menu state
   const [menuOpen, setMenuOpen] = useState(false);
 
-  const handleMenuNavigate = useCallback((section: string) => {
-    if (section === 'home') {
-      window.location.href = '/';
-    } else if (section === 'about') {
-      window.location.href = '/about';
-    } else if (section === 'services') {
-      window.location.href = '/services';
-    } else if (section === 'contact') {
-      window.location.href = '/contact';
-    }
-  }, []);
-
   // Critical: Refresh ScrollTrigger when AboutSection mounts
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -284,7 +272,6 @@ export default function AboutSection({ onBack }: AboutSectionProps) {
         <MenuOverlay
           isOpen={menuOpen}
           onClose={() => setMenuOpen(false)}
-          onNavigate={handleMenuNavigate}
         />
 
         {/* Footer */}

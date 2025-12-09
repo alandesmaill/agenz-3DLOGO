@@ -1,13 +1,13 @@
 'use client';
 
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import SmoothScrolling from '@/components/dom/SmoothScrolling';
 import Header from '@/components/dom/Header';
 import MenuOverlay from '@/components/dom/MenuOverlay';
 import Footer from '@/components/dom/Footer';
 import ServiceCTA from '@/components/dom/ServiceCTA';
 import AnimatedText from '@/components/dom/AnimatedText';
-import HorizontalGallery from '@/components/dom/HorizontalGallery';
+import FullScreenProjectShowcase from '@/components/dom/FullScreenProjectShowcase';
 import ClientLogos from '@/components/dom/ClientLogos';
 import { getAllPortfolio } from '@/lib/works-data';
 import { gsap } from 'gsap';
@@ -18,21 +18,6 @@ gsap.registerPlugin(ScrollTrigger);
 export default function WorksPage() {
   const [menuOpen, setMenuOpen] = useState(false);
   const portfolioItems = getAllPortfolio();
-
-  // Menu navigation handler
-  const handleMenuNavigate = useCallback((section: string) => {
-    if (section === 'home') {
-      window.location.href = '/';
-    } else if (section === 'about') {
-      window.location.href = '/about';
-    } else if (section === 'works') {
-      window.location.href = '/works';
-    } else if (section === 'services') {
-      window.location.href = '/services';
-    } else if (section === 'contact') {
-      window.location.href = '/contact';
-    }
-  }, []);
 
   // Scroll to top and refresh ScrollTrigger on mount
   useEffect(() => {
@@ -89,10 +74,12 @@ export default function WorksPage() {
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gradient-to-r from-cyan-500/5 to-green-500/5 rounded-full blur-3xl -z-10" />
           </section>
 
-          {/* Horizontal Gallery Section */}
-          <section className="relative">
-            <HorizontalGallery items={portfolioItems} />
-          </section>
+          {/* Portfolio Showcase - Full-Screen Projects */}
+          <div className="relative bg-white">
+            {portfolioItems.map((item, index) => (
+              <FullScreenProjectShowcase key={item.id} item={item} index={index} />
+            ))}
+          </div>
 
           {/* Client Logos Section */}
           <section className="relative py-12 md:py-16 px-6 md:px-12">
@@ -119,7 +106,6 @@ export default function WorksPage() {
       <MenuOverlay
         isOpen={menuOpen}
         onClose={() => setMenuOpen(false)}
-        onNavigate={handleMenuNavigate}
       />
     </>
   );
