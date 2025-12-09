@@ -257,3 +257,109 @@ body:hover ::-webkit-scrollbar-thumb:hover {
 body:hover * {
   scrollbar-color: rgba(0, 0, 0, 0.3) transparent;
 }
+
+/* =============================================
+   Morph Animation System for Works Section
+   ============================================= */
+
+/* Performance optimization for morph elements */
+.morph-element {
+  will-change: transform, opacity, border-radius;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  perspective: 1000px;
+  -webkit-perspective: 1000px;
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+}
+
+/* Smooth hover interaction for morphing elements */
+.morph-element:hover {
+  transform: scale(1.02) translateZ(0);
+  transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* Remove hover effect on mobile for performance */
+@media (max-width: 768px) {
+  .morph-element:hover {
+    transform: none;
+  }
+}
+
+/* Respect reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  .morph-element {
+    will-change: auto !important;
+  }
+
+  .morph-element:hover {
+    transform: none !important;
+    transition: none !important;
+  }
+}
+
+/* =============================================
+   Footer Animation System
+   ============================================= */
+
+/* Animated gradient movement */
+@keyframes gradient {
+  0%, 100% {
+    transform: translateX(0) translateY(0);
+  }
+  50% {
+    transform: translateX(-20px) translateY(-20px);
+  }
+}
+
+/* Slow floating animation for background orbs */
+@keyframes float-slow {
+  0%, 100% {
+    transform: translateY(0) translateX(0);
+  }
+  50% {
+    transform: translateY(-30px) translateX(30px);
+  }
+}
+
+/* Slower floating animation for background orbs */
+@keyframes float-slower {
+  0%, 100% {
+    transform: translateY(0) translateX(0);
+  }
+  50% {
+    transform: translateY(30px) translateX(-30px);
+  }
+}
+
+/* Apply animations with timing */
+.animate-gradient {
+  animation: gradient 15s ease-in-out infinite;
+}
+
+.animate-float-slow {
+  animation: float-slow 20s ease-in-out infinite;
+}
+
+.animate-float-slower {
+  animation: float-slower 25s ease-in-out infinite;
+}
+
+/* Performance optimization for footer animations */
+.footer-background {
+  will-change: transform;
+  backface-visibility: hidden;
+}
+
+.footer-column {
+  will-change: opacity, transform;
+}
+
+/* Respect reduced motion for footer animations */
+@media (prefers-reduced-motion: reduce) {
+  .animate-gradient,
+  .animate-float-slow,
+  .animate-float-slower {
+    animation: none !important;
+  }
+}

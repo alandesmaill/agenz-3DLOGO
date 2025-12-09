@@ -1,19 +1,33 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { servicesData } from '@/lib/services-data';
 
 interface MenuOverlayProps {
   isOpen: boolean;
   onClose: () => void;
-  onNavigate: (section: string) => void;
 }
 
-const NAV_ITEMS = [
-  { label: 'Home', section: 'home', isHome: true },
-  { label: 'About', section: 'about' },
-  { label: 'Works', section: 'works' },
-  { label: 'Services', section: 'services' },
-  { label: 'Contact', section: 'contact' },
+interface NavItem {
+  label: string;
+  path: string;
+  submenu?: { label: string; path: string }[];
+}
+
+const NAV_ITEMS: NavItem[] = [
+  { label: 'Home', path: '/' },
+  { label: 'About', path: '/about' },
+  { label: 'Works', path: '/works' },
+  {
+    label: 'Services',
+    path: '/services',
+    submenu: servicesData.map(service => ({
+      label: service.title,
+      path: service.ctaLink,
+    })),
+  },
+  { label: 'Contact', path: '/contact' },
 ];
 
 const SOCIAL_LINKS = [
@@ -23,11 +37,14 @@ const SOCIAL_LINKS = [
   { label: 'Dribbble', href: 'https://dribbble.com' },
 ];
 
-export default function MenuOverlay({ isOpen, onClose, onNavigate }: MenuOverlayProps) {
+export default function MenuOverlay({ isOpen, onClose }: MenuOverlayProps) {
+  const router = useRouter();
   const [isVisible, setIsVisible] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
-  const [activeItem, setActiveItem] = useState<string | null>('home');
   const [hoveredItem, setHoveredItem] = useState<string | null>(null);
+  const [expandedItem, setExpandedItem] = useState<string | null>(null);
+
+  const isServicesExpanded = expandedItem === 'services';
 
   useEffect(() => {
     if (isOpen) {
@@ -38,6 +55,7 @@ export default function MenuOverlay({ isOpen, onClose, onNavigate }: MenuOverlay
       });
     } else {
       setIsAnimating(false);
+      setExpandedItem(null); // Reset accordion when closing
       document.body.style.overflow = '';
       const timer = setTimeout(() => {
         setIsVisible(false);
@@ -61,19 +79,24 @@ export default function MenuOverlay({ isOpen, onClose, onNavigate }: MenuOverlay
     return () => window.removeEventListener('keydown', handleEscape);
   }, [isOpen, onClose]);
 
-  const handleNavClick = (item: typeof NAV_ITEMS[0]) => {
-    setActiveItem(item.section);
-    onClose();
-
-    if (item.isHome) {
-      setTimeout(() => {
-        window.location.reload();
-      }, 300);
+  const handleItemClick = (item: NavItem) => {
+    if (item.submenu) {
+      // Toggle accordion for Services
+      setExpandedItem(isServicesExpanded ? null : 'services');
     } else {
+      // Navigate to route
+      onClose();
       setTimeout(() => {
-        onNavigate(item.section);
+        router.push(item.path);
       }, 300);
     }
+  };
+
+  const handleSubmenuClick = (path: string) => {
+    onClose();
+    setTimeout(() => {
+      router.push(path);
+    }, 300);
   };
 
   if (!isVisible) return null;
@@ -115,8 +138,8 @@ export default function MenuOverlay({ isOpen, onClose, onNavigate }: MenuOverlay
           </svg>
         </button>
 
-        {/* Content - Top aligned */}
-        <div className="relative h-full flex flex-col justify-start pt-28 sm:pt-32 px-8 sm:px-12">
+        {/* Content - Top aligned with scroll */}
+        <div className="relative h-full overflow-y-auto flex flex-col justify-start pt-28 sm:pt-32 px-8 sm:px-12">
           {/* Sitemap Section */}
           <div
             className={`mb-12 sm:mb-16 transition-all duration-500 ${
@@ -129,41 +152,83 @@ export default function MenuOverlay({ isOpen, onClose, onNavigate }: MenuOverlay
             </h3>
             <nav className="flex flex-col gap-3 sm:gap-4">
               {NAV_ITEMS.map((item, index) => (
-                <button
-                  key={item.section}
-                  onClick={() => handleNavClick(item)}
-                  onMouseEnter={() => setHoveredItem(item.section)}
-                  onMouseLeave={() => setHoveredItem(null)}
-                  className={`text-left transition-all duration-300 group flex items-center gap-4 ${
-                    isAnimating ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-4'
-                  }`}
-                  style={{ transitionDelay: isAnimating ? `${200 + index * 60}ms` : '0ms' }}
-                >
-                  {/* Dash indicator */}
-                  <span className={`text-2xl font-bold transition-colors duration-300 ${
-                    activeItem === item.section || hoveredItem === item.section
-                      ? 'text-cyan-400'
-                      : 'text-gray-600'
-                  }`}>
-                    —
-                  </span>
+                <div key={item.path}>
+                  {/* Main navigation item */}
+                  <button
+                    onClick={() => handleItemClick(item)}
+                    onMouseEnter={() => setHoveredItem(item.path)}
+                    onMouseLeave={() => setHoveredItem(null)}
+                    className={`w-full text-left transition-all duration-300 group flex items-center gap-4 ${
+                      isAnimating ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-4'
+                    }`}
+                    style={{ transitionDelay: isAnimating ? `${200 + index * 60}ms` : '0ms' }}
+                  >
+                    {/* Dash indicator */}
+                    <span className={`text-2xl font-bold transition-colors duration-300 ${
+                      hoveredItem === item.path || (item.submenu && isServicesExpanded)
+                        ? 'text-cyan-400'
+                        : 'text-gray-600'
+                    }`}>
+                      —
+                    </span>
 
-                  {/* Label */}
-                  <span className={`text-3xl sm:text-4xl font-bold tracking-tight transition-all duration-300 ${
-                    activeItem === item.section
-                      ? 'text-white'
-                      : hoveredItem === item.section
+                    {/* Label */}
+                    <span className={`text-3xl sm:text-4xl font-bold tracking-tight transition-all duration-300 ${
+                      hoveredItem === item.path
                         ? 'text-white translate-x-2'
                         : 'text-gray-400'
-                  }`}>
-                    {item.label}
-                  </span>
+                    }`}>
+                      {item.label}
+                    </span>
 
-                  {/* Animated line for active item */}
-                  {activeItem === item.section && (
-                    <span className="flex-1 h-px bg-gradient-to-r from-cyan-400 to-transparent ml-2" />
+                    {/* Chevron icon for Services */}
+                    {item.submenu && (
+                      <svg
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        className={`text-gray-400 transition-transform duration-400 ml-2 ${
+                          isServicesExpanded ? 'rotate-180' : 'rotate-0'
+                        }`}
+                      >
+                        <polyline points="6 9 12 15 18 9" />
+                      </svg>
+                    )}
+                  </button>
+
+                  {/* Submenu (accordion) */}
+                  {item.submenu && (
+                    <div
+                      className={`overflow-hidden transition-all duration-400 ${
+                        isServicesExpanded ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
+                      }`}
+                    >
+                      <div className="pl-8 pt-3 flex flex-col gap-2">
+                        {item.submenu.map((subItem, subIndex) => (
+                          <button
+                            key={subItem.path}
+                            onClick={() => handleSubmenuClick(subItem.path)}
+                            onMouseEnter={() => setHoveredItem(subItem.path)}
+                            onMouseLeave={() => setHoveredItem(null)}
+                            className={`text-left text-lg font-medium text-gray-400 hover:text-cyan-400 transition-all duration-300 py-1 ${
+                              isServicesExpanded ? 'translate-y-0' : '-translate-y-2'
+                            }`}
+                            style={{
+                              transitionDelay: isServicesExpanded ? `${30 * subIndex}ms` : '0ms',
+                            }}
+                          >
+                            {subItem.label}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
                   )}
-                </button>
+                </div>
               ))}
             </nav>
           </div>

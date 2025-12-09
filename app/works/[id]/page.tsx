@@ -1,12 +1,13 @@
 'use client';
 
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { notFound } from 'next/navigation';
 import SmoothScrolling from '@/components/dom/SmoothScrolling';
 import Header from '@/components/dom/Header';
 import MenuOverlay from '@/components/dom/MenuOverlay';
 import Footer from '@/components/dom/Footer';
-import PortfolioDetailHero from '@/components/dom/PortfolioDetailHero';
+import FullScreenHero from '@/components/dom/FullScreenHero';
+import ImageGrid from '@/components/dom/ImageGrid';
 import ProjectOverview from '@/components/dom/ProjectOverview';
 import BeforeAfterShowcase from '@/components/dom/BeforeAfterShowcase';
 import ProjectGallery from '@/components/dom/ProjectGallery';
@@ -14,6 +15,7 @@ import ProjectResults from '@/components/dom/ProjectResults';
 import ProjectTestimonial from '@/components/dom/ProjectTestimonial';
 import RelatedProjects from '@/components/dom/RelatedProjects';
 import { getPortfolioById } from '@/lib/works-data';
+import { getProjectGradient } from '@/lib/works-placeholders';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
@@ -28,32 +30,38 @@ export default function PortfolioDetailPage({ params }: { params: { id: string }
     notFound();
   }
 
-  // Menu navigation handler
-  const handleMenuNavigate = useCallback((section: string) => {
-    if (section === 'home') {
-      window.location.href = '/';
-    } else if (section === 'about') {
-      window.location.href = '/about';
-    } else if (section === 'works') {
-      window.location.href = '/works';
-    } else if (section === 'services') {
-      window.location.href = '/services';
-    } else if (section === 'contact') {
-      window.location.href = '/contact';
-    }
-  }, []);
 
   // Scroll to top and refresh ScrollTrigger on mount
   useEffect(() => {
     window.scrollTo(0, 0);
 
-    setTimeout(() => {
-      ScrollTrigger.refresh();
-    }, 600);
+    // Check if coming from morph transition
+    const transition = sessionStorage.getItem('works-page-transition');
 
-    setTimeout(() => {
-      ScrollTrigger.update();
-    }, 800);
+    if (transition) {
+      // Coming from morph - refresh immediately and earlier
+      setTimeout(() => {
+        ScrollTrigger.refresh();
+      }, 100);
+
+      setTimeout(() => {
+        ScrollTrigger.update();
+      }, 300);
+
+      // Additional refresh to ensure all triggers are set up
+      setTimeout(() => {
+        ScrollTrigger.refresh();
+      }, 500);
+    } else {
+      // Normal navigation - use existing timers
+      setTimeout(() => {
+        ScrollTrigger.refresh();
+      }, 600);
+
+      setTimeout(() => {
+        ScrollTrigger.update();
+      }, 800);
+    }
   }, []);
 
   return (
@@ -65,20 +73,16 @@ export default function PortfolioDetailPage({ params }: { params: { id: string }
       />
       <SmoothScrolling>
         <main className="relative min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100">
-          {/* Hero Section */}
-          <section className="relative py-20 md:py-32 px-6 md:px-12 overflow-hidden">
-            <PortfolioDetailHero
-              clientName={portfolio.clientName}
-              projectTitle={portfolio.projectTitle}
-              year={portfolio.year}
-              category={portfolio.category}
-              coverImage={portfolio.hero.coverImage}
-              tagline={portfolio.hero.tagline}
-              description={portfolio.hero.description}
-              stats={portfolio.hero.stats}
-              accentColor={portfolio.accentColor}
-            />
-          </section>
+          {/* Hero Section - Full Screen */}
+          <FullScreenHero
+            clientName={portfolio.clientName}
+            projectTitle={portfolio.projectTitle}
+            year={portfolio.year}
+            category={portfolio.category}
+            accentColor={portfolio.accentColor}
+            gradient={getProjectGradient(portfolio.id, 'hero')}
+            projectId={portfolio.id}
+          />
 
           {/* Overview Section */}
           <section className="relative py-16 md:py-24 px-6 md:px-12">
@@ -110,6 +114,20 @@ export default function PortfolioDetailPage({ params }: { params: { id: string }
               accentColor={portfolio.accentColor}
             />
           </section>
+
+          {/* Image Grid - Visual Showcase */}
+          <ImageGrid
+            images={[
+              getProjectGradient(portfolio.id, 'gallery', 0),
+              getProjectGradient(portfolio.id, 'gallery', 1),
+              getProjectGradient(portfolio.id, 'gallery', 2),
+            ]}
+            captions={[
+              portfolio.gallery[0]?.alt || 'Project showcase image 1',
+              portfolio.gallery[1]?.alt || 'Project showcase image 2',
+              portfolio.gallery[2]?.alt || 'Project showcase image 3',
+            ]}
+          />
 
           {/* Results Section */}
           <section className="relative py-16 md:py-24 px-6 md:px-12">
@@ -149,7 +167,6 @@ export default function PortfolioDetailPage({ params }: { params: { id: string }
       <MenuOverlay
         isOpen={menuOpen}
         onClose={() => setMenuOpen(false)}
-        onNavigate={handleMenuNavigate}
       />
     </>
   );

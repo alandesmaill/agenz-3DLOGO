@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useRef, useState, useEffect } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Image from 'next/image';
@@ -38,18 +38,6 @@ export default function AboutSection({ onBack }: AboutSectionProps) {
 
   // Menu state
   const [menuOpen, setMenuOpen] = useState(false);
-
-  const handleMenuNavigate = useCallback((section: string) => {
-    if (section === 'home') {
-      window.location.href = '/';
-    } else if (section === 'about') {
-      window.location.href = '/about';
-    } else if (section === 'services') {
-      window.location.href = '/services';
-    } else if (section === 'contact') {
-      window.location.href = '/contact';
-    }
-  }, []);
 
   // Critical: Refresh ScrollTrigger when AboutSection mounts
   useEffect(() => {
@@ -284,7 +272,6 @@ export default function AboutSection({ onBack }: AboutSectionProps) {
         <MenuOverlay
           isOpen={menuOpen}
           onClose={() => setMenuOpen(false)}
-          onNavigate={handleMenuNavigate}
         />
 
         {/* Footer */}
