@@ -55,6 +55,33 @@ export default function SmoothScrolling({ children, className }: SmoothScrolling
 
     gsap.ticker.lagSmoothing(0);
 
+    // Check if coming from morph transition
+    const transition = sessionStorage.getItem('works-page-transition');
+
+    if (transition) {
+      // Coming from morph - force immediate scroll to top and refresh
+      lenis.scrollTo(0, { immediate: true });
+
+      // Faster refresh for morph transitions
+      const morphRefreshTimer = setTimeout(() => {
+        ScrollTrigger.refresh();
+      }, 100);
+
+      const morphLateRefreshTimer = setTimeout(() => {
+        ScrollTrigger.refresh();
+      }, 300);
+
+      return () => {
+        clearTimeout(morphRefreshTimer);
+        clearTimeout(morphLateRefreshTimer);
+        lenis.destroy();
+        gsap.ticker.remove((time) => {
+          lenis.raf(time * 1000);
+        });
+        window.removeEventListener('resize', checkMobile);
+      };
+    }
+
     // Critical: Refresh ScrollTrigger after Lenis is ready
     // This fixes dynamic mounting when navigating from main page
     const refreshTimer = setTimeout(() => {
