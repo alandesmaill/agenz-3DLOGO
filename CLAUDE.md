@@ -33,6 +33,11 @@ This is a **Three.js + Next.js + React Three Fiber + GSAP** project featuring an
   - Used for testing and direct access
   - Same content as clicking ABOUT in main navigation
   - Includes smooth scroll and text animations
+- **`/works`** (app/works/page.tsx) - Portfolio showcase page
+  - Full-height hero featuring TechFlow Brand Transformation project
+  - WorksPageHero component with gradient background, large watermark, and stats grid
+  - FullScreenProjectShowcase for all portfolio items with morph animations
+  - Client logos section and CTA
 - **`/contact`** (app/contact/page.tsx) - Direct route to Contact form
   - Award-winning contact form with liquid glass design
   - EmailJS integration for sending emails
@@ -289,6 +294,31 @@ All service detail pages follow the ContactSection pattern (simple, content-focu
   - Simple call-to-action section
   - Centered heading + description
   - Button linking to `/contact` page
+
+#### Works/Portfolio Page Components
+
+- **WorksPageHero** (`components/dom/WorksPageHero.tsx`)
+  - **Full-height hero** (100vh, min 600px) featuring TechFlow Brand Transformation
+  - **Background layers**:
+    - Gradient from getProjectGradient() (purple gradient for TechFlow)
+    - Optional cover image with 40% opacity
+    - Dark gradient overlay for text contrast
+  - **Large watermark**: Client name in 12-18vw responsive text (white/10% opacity)
+  - **Content at bottom**:
+    - Category badge + year with backdrop blur
+    - AnimatedText for title (word split, 0.05s stagger)
+    - Tagline text
+    - Stats grid (3 columns with glassmorphism)
+    - "Explore Portfolio" button with smooth scroll to portfolio section
+  - **Scroll indicator**: Animated bouncing arrow
+  - Pattern mirrors FullScreenHero from service pages
+
+- **FullScreenProjectShowcase** (`components/dom/FullScreenProjectShowcase.tsx`)
+  - **Dual-panel layout**: 70% image, 30% sticky text panel
+  - **Image section**: Rounded card with 4:3 aspect ratio, gradient fallback
+  - **Text panel**: Category badge, title, client name, description, "View Project" button
+  - **Morph animation**: 1.15s transition from grid position to full-screen hero
+  - Used for displaying all portfolio items in sequence
 
 ### A/B Testing Framework
 

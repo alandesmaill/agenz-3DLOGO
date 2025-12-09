@@ -66,31 +66,62 @@ export default function Footer() {
   useEffect(() => {
     if (!footerRef.current) return;
 
-    // Scroll-triggered fade-in animation
-    gsap.fromTo(
-      footerRef.current,
-      { opacity: 0, y: 50 },
-      {
-        opacity: 1,
-        y: 0,
-        duration: 0.8,
-        ease: 'power2.out',
-        scrollTrigger: {
-          trigger: footerRef.current,
-          start: 'top 90%',
-          once: true,
-        },
-      }
-    );
-
-    return () => {
-      // Cleanup ScrollTrigger instances
-      ScrollTrigger.getAll().forEach((trigger) => {
-        if (trigger.vars.trigger === footerRef.current) {
-          trigger.kill();
+    const ctx = gsap.context(() => {
+      // Main footer entrance animation
+      gsap.fromTo(
+        footerRef.current,
+        { opacity: 0, y: 50 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 1.2,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: footerRef.current,
+            start: 'top 90%',
+            once: true,
+          },
         }
-      });
-    };
+      );
+
+      // Staggered columns animation (left to right wave effect)
+      const columns = footerRef.current.querySelectorAll('.footer-column');
+      if (columns.length > 0) {
+        gsap.fromTo(
+          columns,
+          { opacity: 0, y: 30 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.8,
+            stagger: 0.15,
+            ease: 'power2.out',
+            scrollTrigger: {
+              trigger: footerRef.current,
+              start: 'top 85%',
+              once: true,
+            },
+          }
+        );
+      }
+
+      // Parallax effect on background
+      const background = footerRef.current.querySelector('.footer-background');
+      if (background) {
+        gsap.to(background, {
+          yPercent: -20,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: footerRef.current,
+            start: 'top bottom',
+            end: 'bottom top',
+            scrub: true,
+          },
+        });
+      }
+    }, footerRef);
+
+    return () => ctx.revert();
   }, []);
 
   return (
@@ -98,43 +129,44 @@ export default function Footer() {
       ref={footerRef}
       className="relative bg-black border-t border-white/10 overflow-hidden"
     >
-      {/* Subtle gradient glow background */}
-      <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/10 via-transparent to-green-500/10 blur-3xl pointer-events-none" />
+      {/* Animated gradient mesh background */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="footer-background absolute inset-0 bg-gradient-to-br from-cyan-500/10 via-transparent to-green-500/10 blur-3xl animate-gradient" />
+        <div className="absolute top-0 right-0 w-96 h-96 bg-green-500/10 rounded-full blur-3xl animate-float-slow" />
+        <div className="absolute bottom-0 left-0 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl animate-float-slower" />
+      </div>
 
       {/* Glass overlay */}
       <div className="relative bg-white/5 backdrop-blur-2xl">
         <div className="max-w-7xl mx-auto px-6 lg:px-8 py-16 lg:py-20">
-          {/* Main Footer Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 lg:gap-16">
-            {/* Column 1: Brand Identity */}
-            <div className="space-y-6 text-center md:text-left">
-              {/* Logo */}
-              <div className="flex justify-center md:justify-start">
-                <Image
-                  src="/Agenz-logo-white.svg"
-                  alt="Agenz Logo"
-                  width={150}
-                  height={50}
-                  className="h-10 w-auto"
-                />
-              </div>
-
-              {/* Tagline with gradient */}
-              <p className="text-sm font-medium bg-gradient-to-r from-cyan-400/80 to-green-400/80 bg-clip-text text-transparent">
-                Creative Excellence. Digital Innovation.
-              </p>
-
-              {/* Description */}
-              <p className="text-gray-400 text-sm leading-relaxed max-w-xs mx-auto md:mx-0">
-                agency specializing in advertising, video
-                production, design, and strategic media services that drive
-                measurable results.
-              </p>
+          {/* Top: Brand Banner */}
+          <div className="text-center space-y-4 mb-12">
+            {/* Logo */}
+            <div className="flex justify-center">
+              <Image
+                src="/Agenz-logo-white.svg"
+                alt="Agenz Logo"
+                width={150}
+                height={50}
+                className="h-10 w-auto transition-all duration-300 hover:scale-105"
+              />
             </div>
 
-            {/* Column 2: Navigation & Services */}
-            <div className="space-y-8 text-center md:text-left">
-              {/* Quick Links */}
+            {/* Tagline with gradient */}
+            <p className="text-lg font-medium bg-gradient-to-r from-cyan-400 to-green-400 bg-clip-text text-transparent">
+              Creative Excellence. Digital Innovation.
+            </p>
+
+            {/* Description */}
+            <p className="text-gray-400 text-sm leading-relaxed max-w-2xl mx-auto">
+              agency specializing in advertising, video production, design, and strategic media services that drive measurable results.
+            </p>
+          </div>
+
+          {/* Main Footer Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-12">
+            {/* Column 1: Quick Links */}
+            <div className="footer-column space-y-6 text-center md:text-left">
               <div>
                 <h3 className="text-white font-semibold mb-4 text-sm uppercase tracking-wider">
                   Quick Links
@@ -144,17 +176,22 @@ export default function Footer() {
                     <li key={link.name}>
                       <Link
                         href={link.href}
-                        className="text-gray-400 text-sm transition-all duration-300 hover:text-white hover:translate-x-1 inline-flex items-center gap-2 group"
+                        className="relative text-gray-400 text-sm transition-all duration-300 hover:text-white inline-flex items-center gap-2 group"
                       >
-                        <span>{link.name}</span>
-                        <ArrowRight className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                        <span className="relative">
+                          {link.name}
+                          <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-cyan-400 to-green-400 group-hover:w-full transition-all duration-300" />
+                        </span>
+                        <ArrowRight className="w-3 h-3 opacity-0 group-hover:opacity-100 translate-x-0 group-hover:translate-x-1 transition-all duration-300" />
                       </Link>
                     </li>
                   ))}
                 </ul>
               </div>
+            </div>
 
-              {/* Services */}
+            {/* Column 2: Services */}
+            <div className="footer-column space-y-6 text-center md:text-left">
               <div>
                 <h3 className="text-white font-semibold mb-4 text-sm uppercase tracking-wider">
                   Services
@@ -164,10 +201,13 @@ export default function Footer() {
                     <li key={link.name}>
                       <Link
                         href={link.href}
-                        className="text-gray-400 text-sm transition-all duration-300 hover:text-white hover:translate-x-1 inline-flex items-center gap-2 group"
+                        className="relative text-gray-400 text-sm transition-all duration-300 hover:text-white inline-flex items-center gap-2 group"
                       >
-                        <span>{link.name}</span>
-                        <ArrowRight className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                        <span className="relative">
+                          {link.name}
+                          <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-cyan-400 to-green-400 group-hover:w-full transition-all duration-300" />
+                        </span>
+                        <ArrowRight className="w-3 h-3 opacity-0 group-hover:opacity-100 translate-x-0 group-hover:translate-x-1 transition-all duration-300" />
                       </Link>
                     </li>
                   ))}
@@ -176,7 +216,7 @@ export default function Footer() {
             </div>
 
             {/* Column 3: Connect */}
-            <div className="space-y-8 text-center md:text-left">
+            <div className="footer-column space-y-6 text-center md:text-left">
               {/* Contact Info */}
               <div>
                 <h3 className="text-white font-semibold mb-4 text-sm uppercase tracking-wider">
@@ -216,13 +256,13 @@ export default function Footer() {
                         href={social.href}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="group relative w-12 h-12 rounded-xl bg-white/5 backdrop-blur-xl border border-white/10 flex items-center justify-center transition-all duration-300 hover:bg-white/10 hover:border-cyan-400/50 hover:shadow-lg hover:shadow-cyan-500/20 md:hover:scale-110"
+                        className="group relative w-12 h-12 rounded-xl bg-white/5 backdrop-blur-xl border border-white/10 flex items-center justify-center transition-all duration-300 hover:bg-white/10 hover:border-cyan-400/50 hover:shadow-lg hover:shadow-cyan-500/30 md:hover:scale-110 md:hover:-translate-y-1"
                         aria-label={social.name}
                       >
-                        <Icon className="w-5 h-5 text-gray-400 group-hover:text-cyan-400 transition-colors duration-300" />
+                        <Icon className="w-5 h-5 text-gray-400 group-hover:text-cyan-400 transition-all duration-300 group-hover:scale-110" />
 
-                        {/* Subtle glow on hover */}
-                        <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/0 to-green-500/0 group-hover:from-cyan-500/10 group-hover:to-green-500/10 rounded-xl transition-all duration-300 pointer-events-none" />
+                        {/* Enhanced glow on hover */}
+                        <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/0 to-green-500/0 group-hover:from-cyan-500/20 group-hover:to-green-500/20 rounded-xl transition-all duration-500 pointer-events-none blur-sm" />
                       </a>
                     );
                   })}

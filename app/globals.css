@@ -297,3 +297,69 @@ body:hover * {
     transition: none !important;
   }
 }
+
+/* =============================================
+   Footer Animation System
+   ============================================= */
+
+/* Animated gradient movement */
+@keyframes gradient {
+  0%, 100% {
+    transform: translateX(0) translateY(0);
+  }
+  50% {
+    transform: translateX(-20px) translateY(-20px);
+  }
+}
+
+/* Slow floating animation for background orbs */
+@keyframes float-slow {
+  0%, 100% {
+    transform: translateY(0) translateX(0);
+  }
+  50% {
+    transform: translateY(-30px) translateX(30px);
+  }
+}
+
+/* Slower floating animation for background orbs */
+@keyframes float-slower {
+  0%, 100% {
+    transform: translateY(0) translateX(0);
+  }
+  50% {
+    transform: translateY(30px) translateX(-30px);
+  }
+}
+
+/* Apply animations with timing */
+.animate-gradient {
+  animation: gradient 15s ease-in-out infinite;
+}
+
+.animate-float-slow {
+  animation: float-slow 20s ease-in-out infinite;
+}
+
+.animate-float-slower {
+  animation: float-slower 25s ease-in-out infinite;
+}
+
+/* Performance optimization for footer animations */
+.footer-background {
+  will-change: transform;
+  backface-visibility: hidden;
+}
+
+.footer-column {
+  will-change: opacity, transform;
+}
+
+/* Respect reduced motion for footer animations */
+@media (prefers-reduced-motion: reduce) {
+  .animate-gradient,
+  .animate-float-slow,
+  .animate-float-slower {
+    animation: none !important;
+  }
+}

@@ -9,6 +9,7 @@ import MenuOverlay from './MenuOverlay';
 import SmoothScrolling from './SmoothScrolling';
 import AnimatedText from './AnimatedText';
 import Header from './Header';
+import Footer from './Footer';
 import { servicesData } from '@/lib/services-data';
 import { useResponsive } from '@/hooks/useResponsive';
 
@@ -136,6 +137,9 @@ export default function ServicesSection({ onBack }: ServicesSectionProps) {
             />
           </div>
         </section>
+
+        {/* Footer */}
+        <Footer />
 
         {/* Menu Overlay */}
         <MenuOverlay isOpen={menuOpen} onClose={() => setMenuOpen(false)} />

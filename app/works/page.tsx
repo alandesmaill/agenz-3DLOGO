@@ -6,9 +6,9 @@ import Header from '@/components/dom/Header';
 import MenuOverlay from '@/components/dom/MenuOverlay';
 import Footer from '@/components/dom/Footer';
 import ServiceCTA from '@/components/dom/ServiceCTA';
-import AnimatedText from '@/components/dom/AnimatedText';
 import FullScreenProjectShowcase from '@/components/dom/FullScreenProjectShowcase';
 import ClientLogos from '@/components/dom/ClientLogos';
+import WorksPageHero from '@/components/dom/WorksPageHero';
 import { getAllPortfolio } from '@/lib/works-data';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -18,6 +18,9 @@ gsap.registerPlugin(ScrollTrigger);
 export default function WorksPage() {
   const [menuOpen, setMenuOpen] = useState(false);
   const portfolioItems = getAllPortfolio();
+
+  // Get featured project (TechFlow)
+  const featuredProject = portfolioItems.find(item => item.id === 'techflow-rebrand');
 
   // Scroll to top and refresh ScrollTrigger on mount
   useEffect(() => {
@@ -41,38 +44,11 @@ export default function WorksPage() {
         onGetInTouch={() => window.location.href = '/contact'}
         onMenuClick={() => setMenuOpen(true)}
       />
+      {/* Hero Section - Full Screen */}
+      {featuredProject && <WorksPageHero featuredProject={featuredProject} />}
+
       <SmoothScrolling>
         <main className="relative min-h-screen bg-gray-100">
-          {/* Hero Section */}
-          <section className="relative py-16 md:py-24 px-6 md:px-12 overflow-hidden">
-            <div className="max-w-6xl mx-auto text-center">
-              {/* Title */}
-              <AnimatedText
-                className="text-5xl md:text-7xl lg:text-8xl font-['Gibson'] font-bold text-gray-900 mb-6"
-                splitBy="chars"
-                stagger={0.02}
-                duration={0.5}
-                y={30}
-              >
-                Our Work
-              </AnimatedText>
-
-              {/* Description */}
-              <AnimatedText
-                className="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto font-['Gibson']"
-                splitBy="words"
-                stagger={0.015}
-                duration={0.4}
-                delay={0.3}
-                y={20}
-              >
-                Explore our portfolio of award-winning projects across brand identity, digital campaigns, and video production. Each piece tells a story of transformation and measurable impact.
-              </AnimatedText>
-            </div>
-
-            {/* Subtle accent gradient background */}
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gradient-to-r from-cyan-500/5 to-green-500/5 rounded-full blur-3xl -z-10" />
-          </section>
 
           {/* Portfolio Showcase - Full-Screen Projects */}
           <div className="relative bg-white">
