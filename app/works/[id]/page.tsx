@@ -89,7 +89,7 @@ export default function PortfolioDetailPage() {
         onMenuClick={() => setMenuOpen(true)}
       />
       <SmoothScrolling>
-        <main className="relative min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100">
+        <main className="scrollable-page relative min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100">
           {/* Hero Section - Full Screen */}
           <FullScreenHero
             clientName={portfolio.clientName}

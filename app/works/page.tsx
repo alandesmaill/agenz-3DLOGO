@@ -48,7 +48,7 @@ export default function WorksPage() {
       {featuredProject && <WorksPageHero featuredProject={featuredProject} />}
 
       <SmoothScrolling>
-        <main className="relative min-h-screen bg-gray-100">
+        <main className="scrollable-page relative min-h-screen bg-gray-100">
 
           {/* Portfolio Showcase - Full-Screen Projects */}
           <div className="relative bg-white">
