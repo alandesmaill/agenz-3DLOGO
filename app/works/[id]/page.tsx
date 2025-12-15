@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { notFound } from 'next/navigation';
+import { notFound, useParams } from 'next/navigation';
 import SmoothScrolling from '@/components/dom/SmoothScrolling';
 import Header from '@/components/dom/Header';
 import MenuOverlay from '@/components/dom/MenuOverlay';
@@ -21,9 +21,11 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 gsap.registerPlugin(ScrollTrigger);
 
-export default function PortfolioDetailPage({ params }: { params: { id: string } }) {
+export default function PortfolioDetailPage() {
   const [menuOpen, setMenuOpen] = useState(false);
-  const portfolio = getPortfolioById(params.id);
+  const params = useParams();
+  const id = params.id as string;
+  const portfolio = getPortfolioById(id);
 
   // If portfolio item not found, show 404
   if (!portfolio) {
