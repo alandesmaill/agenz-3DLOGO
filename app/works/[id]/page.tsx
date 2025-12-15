@@ -16,6 +16,7 @@ import ProjectTestimonial from '@/components/dom/ProjectTestimonial';
 import RelatedProjects from '@/components/dom/RelatedProjects';
 import { getPortfolioById } from '@/lib/works-data';
 import { getProjectGradient } from '@/lib/works-placeholders';
+import { usePageReady } from '@/contexts/PageReadyContext';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
@@ -23,6 +24,7 @@ gsap.registerPlugin(ScrollTrigger);
 
 export default function PortfolioDetailPage() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const { markReady } = usePageReady();
   const params = useParams();
   const id = params.id as string;
   const portfolio = getPortfolioById(id);
@@ -35,12 +37,15 @@ export default function PortfolioDetailPage() {
 
   // Scroll to top and refresh ScrollTrigger on mount
   useEffect(() => {
+    console.log('[PortfolioDetail] Component mounted');
     window.scrollTo(0, 0);
 
     // Check if coming from morph transition
     const transition = sessionStorage.getItem('works-page-transition');
 
     if (transition) {
+      console.log('[PortfolioDetail] Coming from morph transition');
+
       // Coming from morph - refresh immediately and earlier
       setTimeout(() => {
         ScrollTrigger.refresh();
@@ -53,8 +58,14 @@ export default function PortfolioDetailPage() {
       // Additional refresh to ensure all triggers are set up
       setTimeout(() => {
         ScrollTrigger.refresh();
+        console.log('[PortfolioDetail] Final ScrollTrigger refresh complete');
+
+        // Signal that page is fully painted and ready
+        markReady();
       }, 500);
     } else {
+      console.log('[PortfolioDetail] Normal navigation');
+
       // Normal navigation - use existing timers
       setTimeout(() => {
         ScrollTrigger.refresh();
@@ -62,9 +73,13 @@ export default function PortfolioDetailPage() {
 
       setTimeout(() => {
         ScrollTrigger.update();
+        console.log('[PortfolioDetail] Final ScrollTrigger update complete');
+
+        // Signal that page is fully painted and ready
+        markReady();
       }, 800);
     }
-  }, []);
+  }, [markReady]);
 
   return (
     <>

@@ -48,6 +48,12 @@ export default function FullScreenHero({
           scale: 1,
           duration: 1.5,
           ease: 'power3.out',
+          onComplete: () => {
+            // Remove will-change after animation completes for memory optimization
+            if (heroRef.current) {
+              heroRef.current.style.willChange = 'auto';
+            }
+          },
         }
       );
 
@@ -131,12 +137,19 @@ export default function FullScreenHero({
   }, [gradient]);
 
   return (
-    <section className="relative h-screen min-h-[600px] flex items-end overflow-hidden">
+    <section
+      data-testid="project-detail-hero"
+      className="relative h-screen min-h-[600px] flex items-end overflow-hidden"
+    >
       {/* Hero Gradient Background */}
       <div
         ref={heroRef}
         className="absolute inset-0 will-change-transform"
-        style={{ background: gradient }}
+        style={{
+          background: gradient,
+          contain: 'layout style paint', // Performance optimization
+          contentVisibility: 'auto',
+        }}
       >
         {/* Large Client Name Watermark */}
         <div className="absolute inset-0 flex items-center justify-center">

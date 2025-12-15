@@ -72,7 +72,18 @@ export default function FullScreenProjectShowcase({
       scale: 0.95,
       duration: 0.15,
       ease: 'power2.in',
+      onComplete: () => {
+        // Start GSAP morph animation
+        handleMorph();
+      },
     });
+  };
+
+  // GSAP morph animation with signal-based coordination for flash-free transitions
+  const handleMorph = () => {
+    if (!imageRef.current) return;
+
+    console.log('[Morph] Starting GSAP morph animation');
 
     // Brief pause before morph begins (makes click feel snappier)
     setTimeout(() => {
@@ -88,7 +99,6 @@ export default function FullScreenProjectShowcase({
       overlay.style.backfaceVisibility = 'hidden';
       overlay.style.perspective = '1000px';
       overlay.style.transform = 'translateZ(0)';
-      overlay.style.webkitTransform = 'translateZ(0)';  // Safari support
 
       // Get current position of the card
       const rect = imageRef.current!.getBoundingClientRect();
@@ -106,26 +116,48 @@ export default function FullScreenProjectShowcase({
           // Navigate to detail page after animation completes
           router.push(`/works/${item.id}`);
 
-          // Wait for browser to paint the new page content
-          // Double RAF ensures content is visible before overlay fades
-          requestAnimationFrame(() => {
-            requestAnimationFrame(() => {
-              // Additional 50ms safety delay to ensure paint is fully complete
-              setTimeout(() => {
-                // Fade overlay out smoothly with premium easing
-                gsap.to(overlay, {
-                  opacity: 0,
-                  duration: 0.3,  // Increased from 200ms to 300ms
-                  ease: 'cubic-bezier(0.16, 1, 0.3, 1)',  // Premium smooth curve
-                  onComplete: () => {
-                    if (overlay && overlay.parentNode) {
-                      overlay.remove();
-                    }
-                  },
-                });
-              }, 50);  // 50ms paint safety delay
-            });
-          });
+          // Wait for detail page to signal it's fully painted
+          const waitForPageReady = () => {
+            const readySignal = sessionStorage.getItem('page-ready-signal');
+
+            if (readySignal === 'true') {
+              // Page is ready! Fade overlay out
+              console.log('[Morph] Page ready signal received, fading overlay');
+
+              sessionStorage.removeItem('page-ready-signal');
+
+              gsap.to(overlay, {
+                opacity: 0,
+                duration: 0.3,
+                ease: 'cubic-bezier(0.16, 1, 0.3, 1)',
+                onComplete: () => {
+                  if (overlay && overlay.parentNode) {
+                    overlay.remove();
+                  }
+                  setIsAnimating(false);
+                },
+              });
+            } else {
+              // Not ready yet, check again in 50ms
+              setTimeout(waitForPageReady, 50);
+            }
+          };
+
+          // Start polling for ready signal
+          setTimeout(waitForPageReady, 100);
+
+          // Safety timeout: force fade after 5 seconds even if no signal
+          setTimeout(() => {
+            if (overlay && overlay.parentNode) {
+              console.warn('[Morph] Timeout reached, forcing overlay fade');
+              gsap.to(overlay, {
+                opacity: 0,
+                duration: 0.3,
+                onComplete: () => overlay.remove(),
+              });
+              setIsAnimating(false);
+            }
+          }, 5000);
         },
       });
 
@@ -138,7 +170,7 @@ export default function FullScreenProjectShowcase({
           duration: 1.15,
           ease: 'power2.inOut',
         },
-        0  // Start immediately
+        0
       );
 
       // Phase 2: Size expands with slight delay (0.05-1.15s)
@@ -150,7 +182,7 @@ export default function FullScreenProjectShowcase({
           duration: 1.1,
           ease: 'power2.inOut',
         },
-        0.05  // 50ms delay for visual separation
+        0.05
       );
 
       // Phase 3: Corners flatten faster (0.35-1.05s)
@@ -161,9 +193,9 @@ export default function FullScreenProjectShowcase({
           duration: 0.7,
           ease: 'power3.out',
         },
-        0.35  // Starts later, finishes earlier
+        0.35
       );
-    }, 150);  // 150ms anticipation delay
+    }, 150);
   };
 
   return (
@@ -179,6 +211,8 @@ export default function FullScreenProjectShowcase({
             <div
               ref={imageRef}
               onClick={handleClick}
+              data-project-card
+              data-project-id={item.id}
               className="relative aspect-[4/3] rounded-3xl overflow-hidden will-change-transform shadow-2xl hover:scale-[1.02] transition-transform duration-700 cursor-pointer"
               style={{
                 background: getProjectGradient(item.id, 'hero'),

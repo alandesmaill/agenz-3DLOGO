@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import StructuredData from "@/components/StructuredData";
+import { PageReadyProvider } from "@/contexts/PageReadyContext";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -112,7 +113,11 @@ export default function RootLayout({
         <meta name="color-scheme" content="light" />
         <StructuredData data={organizationSchema} />
       </head>
-      <body>{children}</body>
+      <body>
+        <PageReadyProvider>
+          {children}
+        </PageReadyProvider>
+      </body>
     </html>
   );
 }
