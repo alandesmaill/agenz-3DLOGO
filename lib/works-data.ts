@@ -588,6 +588,365 @@ export const portfolioData: Record<string, PortfolioItem> = {
 
     relatedProjects: ['cascade-festival', 'luxe-hotels-campaign'],
   },
+
+  // ========================================
+  // BRAND IDENTITY #3: Nexus Digital Rebrand
+  // ========================================
+  'nexus-digital-rebrand': {
+    id: 'nexus-digital-rebrand',
+    category: 'brand-identity',
+    clientName: 'Nexus Digital',
+    projectTitle: 'Tech Startup Identity Overhaul',
+    year: '2023',
+    accentColor: '#00b8ff', // Blue
+
+    thumbnail: {
+      image: '/images/works/thumbnails/techflow.jpg',
+      alt: 'Nexus Digital brand identity showcase',
+    },
+
+    hero: {
+      coverImage: '/images/works/hero/nexus-hero.jpg',
+      tagline: 'Building Trust Through Modern Design',
+      description: 'A comprehensive brand transformation for a rising tech startup, establishing credibility and differentiation in a competitive SaaS marketplace.',
+      stats: [
+        { value: '85%', label: 'Market Recognition' },
+        { value: '40+', label: 'Brand Assets' },
+        { value: '2 Months', label: 'Timeline' },
+      ],
+    },
+
+    overview: {
+      challenge: 'Nexus Digital struggled with a generic identity that failed to communicate their innovative solutions. Their brand felt unpolished and didn\'t inspire confidence with enterprise clients. Inconsistent visual assets made them appear fragmented.',
+      solution: 'We developed a cohesive brand system featuring bold typography, a modern color palette, and geometric patterns representing digital connectivity. Created comprehensive guidelines ensuring consistency across all touchpoints.',
+      approach: [
+        'Stakeholder workshops to define brand values and positioning',
+        'Competitive analysis of 15+ tech startups to identify opportunities',
+        'Multiple design directions exploring different visual approaches',
+        'Comprehensive brand guidelines with implementation examples',
+      ],
+      deliverables: [
+        'Complete brand identity (logo suite, color system, typography)',
+        '60-page brand guidelines documentation',
+        'Marketing templates (pitch decks, one-pagers, email signatures)',
+        'Digital assets (social media templates, web UI components)',
+        'Print collateral (business cards, letterheads, folders)',
+      ],
+    },
+
+    gallery: [
+      { type: 'image', src: '/images/works/thumbnails/techflow.jpg', alt: 'Logo variations' },
+      { type: 'image', src: '/images/works/thumbnails/techflow.jpg', alt: 'Color palette' },
+      { type: 'image', src: '/images/works/thumbnails/techflow.jpg', alt: 'Typography system' },
+      { type: 'image', src: '/images/works/thumbnails/techflow.jpg', alt: 'Business cards' },
+      { type: 'image', src: '/images/works/thumbnails/techflow.jpg', alt: 'Digital templates' },
+      { type: 'image', src: '/images/works/thumbnails/techflow.jpg', alt: 'Brand applications' },
+    ],
+
+    results: [
+      { metric: 'recognition', value: '85%', label: 'Market Recognition', icon: '/icons/brand.svg' },
+      { metric: 'assets', value: '40+', label: 'Brand Assets', icon: '/icons/package.svg' },
+      { metric: 'trust', value: '70%', label: 'Trust Score Increase', icon: '/icons/growth.svg' },
+      { metric: 'consistency', value: '95%', label: 'Brand Consistency', icon: '/icons/analytics.svg' },
+    ],
+
+    testimonial: {
+      quote: 'The rebrand gave us the professional edge we needed to compete with established players. Our sales team finally has confidence presenting to enterprise clients.',
+      author: 'Michael Chen',
+      role: 'CEO & Founder',
+      company: 'Nexus Digital',
+    },
+
+    relatedProjects: ['techflow-rebrand', 'startupxyz-launch'],
+  },
+
+  // ========================================
+  // BRAND IDENTITY #4: Summit Wellness
+  // ========================================
+  'summit-wellness': {
+    id: 'summit-wellness',
+    category: 'brand-identity',
+    clientName: 'Summit Wellness Co.',
+    projectTitle: 'Holistic Health Brand System',
+    year: '2023',
+    accentColor: '#00e92c', // Green
+
+    thumbnail: {
+      image: '/images/works/thumbnails/techflow.jpg',
+      alt: 'Summit Wellness brand identity',
+    },
+
+    hero: {
+      coverImage: '/images/works/hero/summit-hero.jpg',
+      tagline: 'Bringing Calm to Healthcare Branding',
+      description: 'A soothing, nature-inspired brand identity for a holistic wellness center, creating a sense of tranquility and trust for health-conscious clients.',
+      stats: [
+        { value: '3x', label: 'Client Inquiries' },
+        { value: '35+', label: 'Brand Elements' },
+        { value: '90%', label: 'Client Satisfaction' },
+      ],
+    },
+
+    overview: {
+      challenge: 'Summit Wellness needed to differentiate from clinical healthcare brands and convey their holistic, natural approach. Their existing identity felt cold and impersonal, contradicting their warm, personalized service philosophy.',
+      solution: 'Created a calming brand system using earth tones, organic shapes, and nature-inspired imagery. Developed a visual language emphasizing balance, growth, and natural healing through mindful design choices.',
+      approach: [
+        'Brand discovery sessions with founders and practitioners',
+        'Client persona development and journey mapping',
+        'Visual direction exploration balancing professionalism and warmth',
+        'Comprehensive touchpoint design across physical and digital spaces',
+      ],
+      deliverables: [
+        'Brand identity system (logo, color palette, typography)',
+        'Nature-inspired visual elements and patterns',
+        'Interior signage and wayfinding system',
+        'Website design and digital marketing templates',
+        'Print materials (brochures, appointment cards, packaging)',
+        '50-page brand guidelines',
+      ],
+    },
+
+    gallery: [
+      { type: 'image', src: '/images/works/thumbnails/techflow.jpg', alt: 'Logo design' },
+      { type: 'image', src: '/images/works/thumbnails/techflow.jpg', alt: 'Color and typography' },
+      { type: 'image', src: '/images/works/thumbnails/techflow.jpg', alt: 'Nature patterns' },
+      { type: 'image', src: '/images/works/thumbnails/techflow.jpg', alt: 'Interior signage' },
+      { type: 'image', src: '/images/works/thumbnails/techflow.jpg', alt: 'Print collateral' },
+      { type: 'image', src: '/images/works/thumbnails/techflow.jpg', alt: 'Digital applications' },
+    ],
+
+    results: [
+      { metric: 'inquiries', value: '3x', label: 'Client Inquiries', icon: '/icons/growth.svg' },
+      { metric: 'assets', value: '35+', label: 'Brand Elements', icon: '/icons/package.svg' },
+      { metric: 'satisfaction', value: '90%', label: 'Client Satisfaction', icon: '/icons/analytics.svg' },
+      { metric: 'retention', value: '85%', label: 'Client Retention', icon: '/icons/community.svg' },
+    ],
+
+    testimonial: {
+      quote: 'Our new brand perfectly captures our philosophy of holistic wellness. Clients immediately feel the warmth and care we provide, even before stepping into our center.',
+      author: 'Dr. Sarah Williams',
+      role: 'Founder & Wellness Director',
+      company: 'Summit Wellness Co.',
+    },
+
+    relatedProjects: ['organics-packaging', 'ecotech-series'],
+  },
+
+  // ========================================
+  // DIGITAL CAMPAIGNS #4: Metro Transit Campaign
+  // ========================================
+  'metro-transit-campaign': {
+    id: 'metro-transit-campaign',
+    category: 'digital-campaigns',
+    clientName: 'Metro Transit Authority',
+    projectTitle: 'Ridership Recovery Social Push',
+    year: '2024',
+    accentColor: '#00ffff', // Cyan
+
+    thumbnail: {
+      image: '/images/works/thumbnails/techflow.jpg',
+      alt: 'Metro Transit social campaign',
+    },
+
+    hero: {
+      coverImage: '/images/works/hero/metro-hero.jpg',
+      tagline: 'Getting People Moving Again',
+      description: 'A multi-channel social media campaign that revitalized public transit ridership post-pandemic, achieving 35% growth in monthly passes and restoring community trust.',
+      stats: [
+        { value: '35%', label: 'Ridership Growth' },
+        { value: '150K+', label: 'Social Reach' },
+        { value: '18%', label: 'Engagement Rate' },
+      ],
+    },
+
+    overview: {
+      challenge: 'Metro Transit faced declining ridership post-pandemic, with public perception focused on safety concerns and convenience issues. Social media engagement was minimal, and messaging felt bureaucratic and impersonal.',
+      solution: 'Launched a human-centered campaign featuring real riders, staff stories, and community benefits. Created engaging video content, interactive polls, and user-generated content initiatives highlighting the diverse Metro community.',
+      approach: [
+        'Community listening sessions and rider surveys',
+        'Content strategy focusing on safety, convenience, and community',
+        'Influencer partnerships with local content creators',
+        'Monthly themed campaigns (e.g., "Meet Your Neighbors," "Hidden Gems")',
+      ],
+      deliverables: [
+        'Social media campaign across Instagram, Facebook, TikTok (3-month duration)',
+        '80+ original content pieces (photos, videos, stories)',
+        'Influencer collaboration program (12 local creators)',
+        'User-generated content campaign with branded hashtag',
+        'Community event sponsorships and activations',
+        'Performance analytics dashboard and monthly reports',
+      ],
+    },
+
+    gallery: [
+      { type: 'image', src: '/images/works/thumbnails/techflow.jpg', alt: 'Social content grid' },
+      { type: 'video', src: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ', alt: 'Campaign video', thumbnail: '/images/works/thumbnails/techflow.jpg' },
+      { type: 'image', src: '/images/works/thumbnails/techflow.jpg', alt: 'Rider stories' },
+      { type: 'image', src: '/images/works/thumbnails/techflow.jpg', alt: 'Community events' },
+      { type: 'image', src: '/images/works/thumbnails/techflow.jpg', alt: 'Influencer content' },
+      { type: 'image', src: '/images/works/thumbnails/techflow.jpg', alt: 'User-generated posts' },
+    ],
+
+    results: [
+      { metric: 'ridership', value: '35%', label: 'Ridership Growth', icon: '/icons/growth.svg' },
+      { metric: 'reach', value: '150K+', label: 'Social Media Reach', icon: '/icons/community.svg' },
+      { metric: 'engagement', value: '18%', label: 'Engagement Rate', icon: '/icons/analytics.svg' },
+      { metric: 'passes', value: '12K', label: 'New Monthly Passes', icon: '/icons/award.svg' },
+    ],
+
+    testimonial: {
+      quote: 'This campaign transformed how our community sees public transit. We\'re not just a transportation service—we\'re a vital part of the urban fabric connecting people and neighborhoods.',
+      author: 'James Rodriguez',
+      role: 'Director of Marketing',
+      company: 'Metro Transit Authority',
+    },
+
+    relatedProjects: ['regional-auto', 'luxe-hotels-campaign'],
+  },
+
+  // ========================================
+  // DIGITAL CAMPAIGNS #5: Artisan Coffee Ads
+  // ========================================
+  'artisan-coffee-ads': {
+    id: 'artisan-coffee-ads',
+    category: 'digital-campaigns',
+    clientName: 'Artisan Coffee Co.',
+    projectTitle: 'Instagram Storytelling Campaign',
+    year: '2023',
+    accentColor: '#00d4aa', // Teal
+
+    thumbnail: {
+      image: '/images/works/thumbnails/techflow.jpg',
+      alt: 'Artisan Coffee Instagram campaign',
+    },
+
+    hero: {
+      coverImage: '/images/works/hero/artisan-hero.jpg',
+      tagline: 'Brewing Community One Post at a Time',
+      description: 'An authentic Instagram strategy that transformed a local coffee shop into a vibrant community hub, growing followers by 400% and increasing foot traffic by 55%.',
+      stats: [
+        { value: '400%', label: 'Follower Growth' },
+        { value: '55%', label: 'Foot Traffic Increase' },
+        { value: '22%', label: 'Engagement Rate' },
+      ],
+    },
+
+    overview: {
+      challenge: 'Artisan Coffee struggled to stand out among major coffee chains and other local cafes. Their Instagram presence was sporadic and lacked visual cohesion. They needed to build community loyalty beyond just selling coffee.',
+      solution: 'Developed a content strategy celebrating coffee craftsmanship, local partnerships, and customer stories. Focused on behind-the-scenes content, barista spotlights, and showcasing the cozy atmosphere that makes the cafe special.',
+      approach: [
+        'Visual style guide ensuring cohesive feed aesthetic',
+        'Content pillars: craft, community, culture, coffee education',
+        'Instagram Stories series featuring regulars and baristas',
+        'User-generated content reposts with customer feature program',
+      ],
+      deliverables: [
+        'Instagram content strategy and 6-month calendar',
+        '100+ high-quality posts (photos, Reels, Stories)',
+        'Barista training on content creation and storytelling',
+        'Community engagement playbook and response templates',
+        'Local business collaboration campaign',
+        'Monthly analytics reports with optimization recommendations',
+      ],
+    },
+
+    gallery: [
+      { type: 'image', src: '/images/works/thumbnails/techflow.jpg', alt: 'Instagram grid' },
+      { type: 'image', src: '/images/works/thumbnails/techflow.jpg', alt: 'Barista spotlights' },
+      { type: 'video', src: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ', alt: 'Reels compilation', thumbnail: '/images/works/thumbnails/techflow.jpg' },
+      { type: 'image', src: '/images/works/thumbnails/techflow.jpg', alt: 'Customer features' },
+      { type: 'image', src: '/images/works/thumbnails/techflow.jpg', alt: 'Coffee education' },
+      { type: 'image', src: '/images/works/thumbnails/techflow.jpg', alt: 'Community events' },
+    ],
+
+    results: [
+      { metric: 'followers', value: '400%', label: 'Follower Growth', icon: '/icons/community.svg' },
+      { metric: 'traffic', value: '55%', label: 'Foot Traffic Increase', icon: '/icons/growth.svg' },
+      { metric: 'engagement', value: '22%', label: 'Engagement Rate', icon: '/icons/analytics.svg' },
+      { metric: 'sales', value: '$85K', label: 'Attributed Revenue', icon: '/icons/revenue.svg' },
+    ],
+
+    testimonial: {
+      quote: 'Our Instagram became our most powerful marketing tool. Customers now visit specifically to be part of our community, not just for the coffee. The campaign exceeded every expectation.',
+      author: 'Emma Davis',
+      role: 'Owner & Head Roaster',
+      company: 'Artisan Coffee Co.',
+    },
+
+    relatedProjects: ['luxe-hotels-campaign', 'startupxyz-launch'],
+  },
+
+  // ========================================
+  // VIDEO PRODUCTION #3: Horizon Documentary
+  // ========================================
+  'horizon-documentary': {
+    id: 'horizon-documentary',
+    category: 'video-production',
+    clientName: 'Horizon Documentary Films',
+    projectTitle: 'Environmental Impact Mini-Series',
+    year: '2024',
+    accentColor: '#00e92c', // Green
+
+    thumbnail: {
+      image: '/images/works/thumbnails/techflow.jpg',
+      alt: 'Horizon Documentary series',
+    },
+
+    hero: {
+      coverImage: '/images/works/hero/horizon-hero.jpg',
+      tagline: 'Stories That Inspire Change',
+      description: 'A 4-part documentary mini-series exploring grassroots environmental initiatives, garnering 800K+ views and inspiring 50+ new community projects across the region.',
+      stats: [
+        { value: '800K+', label: 'Total Views' },
+        { value: '4', label: 'Episode Series' },
+        { value: '50+', label: 'Community Projects' },
+      ],
+    },
+
+    overview: {
+      challenge: 'Horizon Documentary Films needed to create engaging environmental content that avoided preachiness while inspiring action. Environmental documentaries often feel overwhelming or disconnected from individual impact.',
+      solution: 'Produced a 4-episode series profiling everyday people making extraordinary impact through small, replicable initiatives. Combined cinematic storytelling with practical how-to segments, making environmental action feel accessible.',
+      approach: [
+        'Community outreach identifying inspiring local changemakers',
+        'Cinematic interview and b-roll production (12 days filming)',
+        'Narrative structure balancing emotion with practical takeaways',
+        'Strategic distribution across YouTube, social media, and local screenings',
+      ],
+      deliverables: [
+        '4-episode documentary series (20-25 minutes each)',
+        'Extended interviews and bonus content',
+        'Social media promotional campaign',
+        'Community screening events and discussion guides',
+        'Behind-the-scenes mini-documentaries',
+        'Educational resources for schools and organizations',
+      ],
+    },
+
+    gallery: [
+      { type: 'video', src: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ', alt: 'Series trailer', thumbnail: '/images/works/thumbnails/techflow.jpg' },
+      { type: 'image', src: '/images/works/thumbnails/techflow.jpg', alt: 'Cinematography stills' },
+      { type: 'image', src: '/images/works/thumbnails/techflow.jpg', alt: 'Interview moments' },
+      { type: 'image', src: '/images/works/thumbnails/techflow.jpg', alt: 'Community impact' },
+      { type: 'image', src: '/images/works/thumbnails/techflow.jpg', alt: 'Screening events' },
+      { type: 'image', src: '/images/works/thumbnails/techflow.jpg', alt: 'Behind the scenes' },
+    ],
+
+    results: [
+      { metric: 'views', value: '800K+', label: 'Total Views', icon: '/icons/analytics.svg' },
+      { metric: 'episodes', value: '4', label: 'Episode Series', icon: '/icons/camera.svg' },
+      { metric: 'projects', value: '50+', label: 'Community Projects Launched', icon: '/icons/growth.svg' },
+      { metric: 'awards', value: '🏆', label: 'Film Festival Recognition', icon: '/icons/award.svg' },
+    ],
+
+    testimonial: {
+      quote: 'This series did exactly what we hoped—it inspired action without overwhelming viewers. People saw themselves in these stories and realized they could make a difference too.',
+      author: 'Rachel Martinez',
+      role: 'Executive Producer',
+      company: 'Horizon Documentary Films',
+    },
+
+    relatedProjects: ['cascade-festival', 'ecotech-series'],
+  },
 };
 
 // ============================================

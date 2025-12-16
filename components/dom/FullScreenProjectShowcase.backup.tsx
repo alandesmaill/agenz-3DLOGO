@@ -1,3 +1,11 @@
+/**
+ * DEPRECATED - Replaced by BentoProjectCard.tsx
+ *
+ * This component used a 70/30 dual-panel layout with side text.
+ * Kept as reference for morph animation implementation.
+ *
+ * Date: 2025-12-16
+ */
 'use client';
 
 import { useEffect, useRef, useState } from 'react';

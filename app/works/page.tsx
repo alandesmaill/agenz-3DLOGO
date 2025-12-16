@@ -6,7 +6,7 @@ import Header from '@/components/dom/Header';
 import MenuOverlay from '@/components/dom/MenuOverlay';
 import Footer from '@/components/dom/Footer';
 import ServiceCTA from '@/components/dom/ServiceCTA';
-import FullScreenProjectShowcase from '@/components/dom/FullScreenProjectShowcase';
+import BentoGrid from '@/components/dom/BentoGrid';
 import ClientLogos from '@/components/dom/ClientLogos';
 import WorksPageHero from '@/components/dom/WorksPageHero';
 import { getAllPortfolio } from '@/lib/works-data';
@@ -50,12 +50,15 @@ export default function WorksPage() {
       <SmoothScrolling>
         <main className="relative min-h-screen bg-gray-100">
 
-          {/* Portfolio Showcase - Full-Screen Projects */}
-          <div className="relative bg-white">
-            {portfolioItems.map((item, index) => (
-              <FullScreenProjectShowcase key={item.id} item={item} index={index} />
-            ))}
-          </div>
+          {/* Portfolio Bento Grid - 10 Projects (excluding TechFlow) */}
+          <section className="bento-section relative bg-white py-6 md:py-8 lg:py-12">
+            <BentoGrid
+              projects={portfolioItems
+                .filter(item => item.id !== 'techflow-rebrand')
+                .slice(0, 10)
+              }
+            />
+          </section>
 
           {/* Client Logos Section */}
           <section className="relative py-12 md:py-16 px-6 md:px-12">

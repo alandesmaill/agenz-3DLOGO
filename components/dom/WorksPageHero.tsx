@@ -1,7 +1,6 @@
 'use client';
 
 import Image from 'next/image';
-import AnimatedText from '@/components/dom/AnimatedText';
 import { PortfolioItem } from '@/lib/works-data';
 import { getProjectGradient } from '@/lib/works-placeholders';
 
@@ -11,10 +10,10 @@ interface WorksPageHeroProps {
 
 export default function WorksPageHero({ featuredProject }: WorksPageHeroProps) {
   const handleExploreClick = () => {
-    window.scrollTo({
-      top: window.innerHeight,
-      behavior: 'smooth'
-    });
+    const bentoSection = document.querySelector('.bento-section');
+    if (bentoSection) {
+      bentoSection.scrollIntoView({ behavior: 'smooth' });
+    }
   };
 
   return (
@@ -38,65 +37,8 @@ export default function WorksPageHero({ featuredProject }: WorksPageHeroProps) {
         </div>
       )}
 
-      {/* Large client name watermark */}
-      <div className="absolute top-8 sm:top-12 left-4 sm:left-6 md:left-12 pointer-events-none select-none">
-        <h1 className="text-[12vw] md:text-[15vw] lg:text-[18vw] font-['Gibson'] font-bold text-white/10 leading-none">
-          {featuredProject.clientName}
-        </h1>
-      </div>
-
-      {/* Content at bottom */}
+      {/* Content at bottom - Just "Explore Portfolio" button */}
       <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-12 pb-12 md:pb-20 w-full">
-        {/* Category badge */}
-        <div className="inline-block px-4 py-2 rounded-full backdrop-blur-lg bg-white/20 border border-white/30 mb-6">
-          <span className="text-sm font-['Gibson'] font-bold text-white uppercase tracking-wider">
-            {featuredProject.category} • {featuredProject.year}
-          </span>
-        </div>
-
-        {/* Project title with AnimatedText */}
-        <AnimatedText
-          className="text-4xl md:text-5xl lg:text-6xl font-['Gibson'] font-bold text-white mb-4 leading-tight"
-          splitBy="words"
-          stagger={0.05}
-          duration={0.6}
-          y={30}
-        >
-          {featuredProject.projectTitle}
-        </AnimatedText>
-
-        {/* Tagline */}
-        <p className="text-xl md:text-2xl font-['Gibson'] text-white/90 mb-8 max-w-3xl leading-relaxed">
-          {featuredProject.hero.tagline}
-        </p>
-
-        {/* Stats grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8 max-w-2xl">
-          {featuredProject.hero.stats.map((stat, index) => (
-            <div
-              key={index}
-              className="
-                p-4 md:p-6
-                rounded-xl
-                backdrop-blur-lg bg-white/10
-                border border-white/20
-                hover:bg-white/20
-                transition-all duration-300
-                hover:scale-105
-                transform-gpu
-              "
-            >
-              <div className="text-3xl md:text-4xl font-['Gibson'] font-bold text-white mb-1">
-                {stat.value}
-              </div>
-              <div className="text-xs md:text-sm font-['Gibson'] text-white/80 uppercase tracking-wide">
-                {stat.label}
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {/* CTA Button */}
         <button
           onClick={handleExploreClick}
           className="
