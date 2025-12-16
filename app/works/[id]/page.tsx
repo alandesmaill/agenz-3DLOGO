@@ -31,9 +31,10 @@ export default function PortfolioDetailPage({ params }: { params: { id: string }
   }
 
 
-  // Scroll to top and refresh ScrollTrigger on mount
+  // Refresh ScrollTrigger on mount
   useEffect(() => {
-    window.scrollTo(0, 0);
+    console.log('[PortfolioDetail] Component mounted');
+    // No scroll reset needed - browser starts at top naturally
 
     // Check if coming from morph transition
     const transition = sessionStorage.getItem('works-page-transition');

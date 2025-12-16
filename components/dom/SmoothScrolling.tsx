@@ -59,8 +59,8 @@ export default function SmoothScrolling({ children, className }: SmoothScrolling
     const transition = sessionStorage.getItem('works-page-transition');
 
     if (transition) {
-      // Coming from morph - force immediate scroll to top and refresh
-      lenis.scrollTo(0, { immediate: true });
+      // Coming from morph - just refresh ScrollTrigger
+      // No need to force scroll to top - browser handles this automatically
 
       // Faster refresh for morph transitions
       const morphRefreshTimer = setTimeout(() => {
