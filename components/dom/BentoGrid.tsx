@@ -103,6 +103,7 @@ export default function BentoGrid({ projects }: BentoGridProps) {
     return {
       colSpan: `${tablet.colSpan || ''} ${desktop.colSpan || ''}`.trim(),
       rowSpan: `${tablet.rowSpan || ''} ${desktop.rowSpan || ''}`.trim(),
+      aspect: '', // No aspect ratios to avoid conflicts with auto-rows
     };
   };
 
@@ -114,10 +115,11 @@ export default function BentoGrid({ projects }: BentoGridProps) {
         grid-cols-1
         md:grid-cols-2
         lg:grid-cols-4
-        gap-1 md:gap-2 lg:gap-3
-        auto-rows-[180px] md:auto-rows-[200px] lg:auto-rows-[200px]
+        gap-4 md:gap-2 lg:gap-3
+        auto-rows-[220px] md:auto-rows-[200px] lg:auto-rows-[200px]
         w-full
-        max-h-[85vh]
+        md:max-h-[85vh]
+        px-4 md:px-0
       "
     >
       {projects.map((project, index) => (

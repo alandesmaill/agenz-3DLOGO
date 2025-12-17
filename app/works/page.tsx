@@ -7,7 +7,6 @@ import MenuOverlay from '@/components/dom/MenuOverlay';
 import Footer from '@/components/dom/Footer';
 import ServiceCTA from '@/components/dom/ServiceCTA';
 import BentoGrid from '@/components/dom/BentoGrid';
-import ClientLogos from '@/components/dom/ClientLogos';
 import WorksPageHero from '@/components/dom/WorksPageHero';
 import { getAllPortfolio } from '@/lib/works-data';
 import { gsap } from 'gsap';
@@ -51,18 +50,13 @@ export default function WorksPage() {
         <main className="relative min-h-screen bg-gray-100">
 
           {/* Portfolio Bento Grid - 10 Projects (excluding TechFlow) */}
-          <section className="bento-section relative bg-white py-6 md:py-8 lg:py-12">
+          <section className="bento-section relative bg-white py-8 md:py-8 lg:py-12 px-0">
             <BentoGrid
               projects={portfolioItems
                 .filter(item => item.id !== 'techflow-rebrand')
                 .slice(0, 10)
               }
             />
-          </section>
-
-          {/* Client Logos Section */}
-          <section className="relative py-12 md:py-16 px-6 md:px-12">
-            <ClientLogos />
           </section>
 
           {/* CTA Section */}
