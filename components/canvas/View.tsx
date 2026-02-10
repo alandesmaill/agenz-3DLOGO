@@ -139,8 +139,8 @@ export default function View() {
       {/* Loading Screen */}
       <LoadingScreen progress={loadingProgress} isLoaded={isLoaded} />
 
-      {/* Header with Logo and Buttons - only show after preload */}
-      {isLoaded && (
+      {/* Header with Logo and Buttons - only show after preload, hide when section active */}
+      {isLoaded && !testSection.isVisible && (
         <Header
           onGetInTouch={handleGetInTouch}
           onMenuClick={handleMenuClick}

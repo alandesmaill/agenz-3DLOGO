@@ -10,6 +10,7 @@ gsap.registerPlugin(ScrollTrigger);
 interface AnimatedTextProps {
   children: ReactNode;
   className?: string;
+  style?: React.CSSProperties;
   splitBy?: 'chars' | 'words' | 'lines';
   stagger?: number;
   duration?: number;
@@ -22,6 +23,7 @@ interface AnimatedTextProps {
 export default function AnimatedText({
   children,
   className = '',
+  style,
   splitBy = 'chars',
   stagger = 0.008, // Optimal for character animations
   duration = 0.5,
@@ -114,7 +116,7 @@ export default function AnimatedText({
   }, [splitBy, stagger, duration, delay, y, triggerStart, once]);
 
   return (
-    <div ref={textRef} className={className}>
+    <div ref={textRef} className={className} style={style}>
       {children}
     </div>
   );

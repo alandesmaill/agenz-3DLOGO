@@ -109,6 +109,14 @@ body:has(.scroll-container) {
   color: #1a1a1a;      /* Dark text */
 }
 
+/* About dark bg overrides scroll-container defaults */
+body:has(.about-dark-bg) {
+  overflow: auto;
+  height: auto;
+  background: #050505 !important;
+  color: #ffffff !important;
+}
+
 /* Enable scroll for service routes and other scrollable pages */
 body:has(main.scrollable-page) {
   overflow: auto;
@@ -159,6 +167,44 @@ h4 {
 
 h6 {
   font-size: clamp(0.875rem, 1.5vw, 1rem);
+}
+
+/* Text stroke utility for outline typography */
+.text-stroke {
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(255, 255, 255, 0.5);
+}
+
+@media (min-width: 768px) {
+  .text-stroke {
+    -webkit-text-stroke: 1.5px rgba(255, 255, 255, 0.5);
+  }
+}
+
+@media (min-width: 1024px) {
+  .text-stroke {
+    -webkit-text-stroke: 2px rgba(255, 255, 255, 0.5);
+  }
+}
+
+@media (min-width: 1440px) {
+  .text-stroke {
+    -webkit-text-stroke: 2.5px rgba(255, 255, 255, 0.5);
+  }
+}
+
+/* Dark background for About page - prevents light flash */
+body:has(.about-dark-bg) {
+  background: #050505 !important;
+  color: #ffffff !important;
+}
+
+/* Override dark mode prevention for about dark bg */
+@media (prefers-color-scheme: dark) {
+  body:has(.about-dark-bg) {
+    background: #050505 !important;
+    color: #ffffff !important;
+  }
 }
 
 /* Smooth scrolling - disabled for Lenis */
@@ -246,6 +292,15 @@ body:hover ::-webkit-scrollbar-thumb {
 
 body:hover ::-webkit-scrollbar-thumb:hover {
   background: rgba(60, 60, 60, 0.6); /* Darker gray on hover */
+}
+
+/* Light scrollbar for dark about page */
+.about-dark-bg::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.about-dark-bg:hover::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.3);
 }
 
 /* Firefox scrollbar support */
