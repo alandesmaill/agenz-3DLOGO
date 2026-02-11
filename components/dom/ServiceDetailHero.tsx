@@ -1,6 +1,5 @@
 'use client';
 
-import Link from 'next/link';
 import AnimatedText from '@/components/dom/AnimatedText';
 
 interface ServiceDetailHeroProps {
@@ -9,10 +8,6 @@ interface ServiceDetailHeroProps {
   tagline: string;
   description: string;
   accentColor: string;
-  stats: Array<{
-    label: string;
-    value: string;
-  }>;
 }
 
 export default function ServiceDetailHero({
@@ -21,7 +16,6 @@ export default function ServiceDetailHero({
   tagline,
   description,
   accentColor,
-  stats,
 }: ServiceDetailHeroProps) {
   return (
     <div className="max-w-6xl mx-auto relative">
@@ -64,58 +58,6 @@ export default function ServiceDetailHero({
           {description}
         </p>
 
-        {/* Stats grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 mb-10">
-          {stats.map((stat, index) => (
-            <div
-              key={index}
-              className="
-                p-6 md:p-8
-                rounded-2xl
-                bg-gray-100/80 backdrop-blur-xl
-                border border-white/30
-                shadow-lg hover:shadow-2xl
-                transition-all duration-300
-                hover:scale-105
-                transform-gpu
-              "
-            >
-              <div
-                className="text-4xl md:text-5xl font-['Gibson'] font-bold mb-2"
-                style={{ color: accentColor }}
-              >
-                {stat.value}
-              </div>
-              <div className="text-sm md:text-base font-['Gibson'] font-medium text-gray-600">
-                {stat.label}
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {/* CTA Button */}
-        <Link
-          href="/contact"
-          className="
-            inline-flex items-center gap-3
-            px-8 py-4
-            bg-gray-900 text-white
-            font-['Gibson'] font-bold text-lg
-            rounded-full
-            hover:scale-105 hover:bg-gray-800
-            transition-all duration-300
-            shadow-xl
-            group
-          "
-          style={{
-            boxShadow: `0 15px 50px ${accentColor}25`,
-          }}
-        >
-          <span>Get Started</span>
-          <span className="text-xl transition-transform group-hover:translate-x-1">
-            →
-          </span>
-        </Link>
       </div>
     </div>
   );
