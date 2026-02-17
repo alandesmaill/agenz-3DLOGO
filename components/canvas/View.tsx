@@ -1,6 +1,7 @@
 'use client';
 
 import { Canvas, Scene, FracturedLogo } from '@/components/canvas';
+import type { FracturedLogoHandle } from '@/components/canvas';
 import { NavigationLabel, TestSection, AnimatedBackground, LoadingScreen, Header, HoverHint, ContactModal, MenuOverlay } from '@/components/dom';
 import { Suspense, useState, useRef, useEffect, useCallback } from 'react';
 import { useProgress } from '@react-three/drei';
@@ -19,6 +20,7 @@ function LoadingManager({ onProgress }: { onProgress: (progress: number) => void
 
 export default function View() {
   const containerRef = useRef<HTMLDivElement>(null);
+  const fracturedLogoRef = useRef<FracturedLogoHandle>(null);
   const [labelData, setLabelData] = useState<{
     label: string | null;
     position: { x: number; y: number } | null;
@@ -41,6 +43,7 @@ export default function View() {
   const [loadingProgress, setLoadingProgress] = useState(0);
   const [isLoaded, setIsLoaded] = useState(false);
   const [isDecomposed, setIsDecomposed] = useState(false);
+  const [isDecomposeComplete, setIsDecomposeComplete] = useState(false);
 
   // Canvas optimization - unmount when in section view
   const [canvasActive, setCanvasActive] = useState(true);
@@ -125,6 +128,16 @@ export default function View() {
     setIsDecomposed(true);
   };
 
+  // Handle decompose animation complete
+  const handleDecomposeComplete = useCallback(() => {
+    setIsDecomposeComplete(true);
+  }, []);
+
+  // Handle nav bar click from HoverHint
+  const handleHintNavClick = useCallback((section: string) => {
+    fracturedLogoRef.current?.navigateToSection(section);
+  }, []);
+
   // Header button handlers
   const handleGetInTouch = useCallback(() => {
     setContactModalOpen(true);
@@ -147,8 +160,12 @@ export default function View() {
         />
       )}
 
-      {/* Hover Hint - disappears when logo decomposes */}
-      <HoverHint isVisible={isLoaded && !isDecomposed && canvasActive} />
+      {/* Hover Hint - transforms into nav bar after decompose */}
+      <HoverHint
+        isVisible={isLoaded && canvasActive && !testSection.isVisible}
+        isDecomposed={isDecomposeComplete}
+        onNavigationClick={handleHintNavClick}
+      />
 
       {/* Animated Background with Brand Colors - hide when canvas unmounted */}
       {canvasActive && <AnimatedBackground />}
@@ -161,12 +178,14 @@ export default function View() {
             <Scene>
               {/* Interactive Fractured Logo */}
               <FracturedLogo
+                ref={fracturedLogoRef}
                 path="/models/3d-logo.glb"
                 position={[0, 0, 0]}
                 scale={logoScale}
                 onNavigationHover={handleNavigationHover}
                 onNavigationClick={handleNavigationClick}
                 onDecompose={handleDecompose}
+                onDecomposeComplete={handleDecomposeComplete}
               />
             </Scene>
           </Suspense>

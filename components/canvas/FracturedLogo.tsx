@@ -1,11 +1,15 @@
 'use client';
 
 import { useGLTF } from '@react-three/drei';
-import { useRef, useEffect, useState, useMemo } from 'react';
+import { useRef, useEffect, useState, useMemo, forwardRef, useImperativeHandle } from 'react';
 import { useFrame, useThree } from '@react-three/fiber';
 import * as THREE from 'three';
 import { GLTF } from 'three-stdlib';
 import { gsap } from 'gsap';
+
+export interface FracturedLogoHandle {
+  navigateToSection: (section: string) => void;
+}
 
 interface FracturedLogoProps {
   path: string;
@@ -14,6 +18,7 @@ interface FracturedLogoProps {
   onNavigationHover?: (piece: string | null, label: string | null, screenPosition: { x: number; y: number } | null) => void;
   onNavigationClick?: (section: string) => void;
   onDecompose?: () => void;
+  onDecomposeComplete?: () => void;
 }
 
 // Removed custom GLTFResult type - using GLTF from three-stdlib directly
@@ -42,14 +47,15 @@ const NAV_SECTIONS = [
   { section: 'contact', label: 'CONTACT', position: new THREE.Vector3(0.6, 0.5, 1.0) },   // Bottom-right
 ];
 
-export default function FracturedLogo({
+const FracturedLogo = forwardRef<FracturedLogoHandle, FracturedLogoProps>(function FracturedLogo({
   path,
   position = [0, 0, 0],
   scale = 1,
   onNavigationHover,
   onNavigationClick,
   onDecompose,
-}: FracturedLogoProps) {
+  onDecomposeComplete,
+}: FracturedLogoProps, ref) {
   const groupRef = useRef<THREE.Group>(null);
   const collisionRef = useRef<THREE.Mesh>(null);
 
@@ -418,6 +424,9 @@ export default function FracturedLogo({
     const totalDelay = prefersReducedMotion ? 500 : 4000;
     setTimeout(() => {
       setIsAnimating(false);
+      if (onDecomposeComplete) {
+        onDecomposeComplete();
+      }
     }, totalDelay);
   };
 
@@ -590,6 +599,17 @@ export default function FracturedLogo({
       );
   };
 
+  // Expose imperative handle for DOM-driven navigation
+  useImperativeHandle(ref, () => ({
+    navigateToSection: (section: string) => {
+      if (isAnimating) return;
+      const piece = navigationPieces.find(p => p.section === section);
+      if (piece) {
+        handleNavPieceClick(piece);
+      }
+    },
+  }));
+
   // OPTIMIZATION: Cleanup GSAP animations on unmount to prevent memory leaks
   useEffect(() => {
     return () => {
@@ -636,7 +656,9 @@ export default function FracturedLogo({
         ))}
     </group>
   );
-}
+});
+
+export default FracturedLogo;
 
 // Preload the model
 useGLTF.preload('/models/3d-logo.glb');
