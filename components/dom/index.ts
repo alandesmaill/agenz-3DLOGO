@@ -17,4 +17,3 @@ export { default as FormTextarea } from './FormTextarea';
 export { default as SubmissionSuccess } from './SubmissionSuccess';
 export { default as Footer } from './Footer';
 export { default as ClientLogos } from './ClientLogos';
-export { default as WorksPageHero } from './WorksPageHero';

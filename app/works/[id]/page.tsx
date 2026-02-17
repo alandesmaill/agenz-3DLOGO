@@ -6,17 +6,11 @@ import SmoothScrolling from '@/components/dom/SmoothScrolling';
 import Header from '@/components/dom/Header';
 import MenuOverlay from '@/components/dom/MenuOverlay';
 import Footer from '@/components/dom/Footer';
-import FullScreenHero from '@/components/dom/FullScreenHero';
-import ImageGrid from '@/components/dom/ImageGrid';
-import ProjectOverview from '@/components/dom/ProjectOverview';
-import BeforeAfterShowcase from '@/components/dom/BeforeAfterShowcase';
-import ProjectGallery from '@/components/dom/ProjectGallery';
-import ProjectResults from '@/components/dom/ProjectResults';
+import CompactProjectHeader from '@/components/dom/CompactProjectHeader';
+import ProjectStorySection from '@/components/dom/ProjectStorySection';
 import ProjectTestimonial from '@/components/dom/ProjectTestimonial';
 import RelatedProjects from '@/components/dom/RelatedProjects';
 import { getPortfolioById } from '@/lib/works-data';
-import { getProjectGradient } from '@/lib/works-placeholders';
-import { usePageReady } from '@/contexts/PageReadyContext';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
@@ -24,62 +18,25 @@ gsap.registerPlugin(ScrollTrigger);
 
 export default function PortfolioDetailPage() {
   const [menuOpen, setMenuOpen] = useState(false);
-  const { markReady } = usePageReady();
   const params = useParams();
   const id = params.id as string;
   const portfolio = getPortfolioById(id);
 
-  // If portfolio item not found, show 404
   if (!portfolio) {
     notFound();
   }
 
-
-  // Scroll to top and refresh ScrollTrigger on mount
   useEffect(() => {
-    console.log('[PortfolioDetail] Component mounted');
     window.scrollTo(0, 0);
 
-    // Check if coming from morph transition
-    const transition = sessionStorage.getItem('works-page-transition');
+    setTimeout(() => {
+      ScrollTrigger.refresh();
+    }, 600);
 
-    if (transition) {
-      console.log('[PortfolioDetail] Coming from morph transition');
-
-      // Coming from morph - refresh immediately and earlier
-      setTimeout(() => {
-        ScrollTrigger.refresh();
-      }, 100);
-
-      setTimeout(() => {
-        ScrollTrigger.update();
-      }, 300);
-
-      // Additional refresh to ensure all triggers are set up
-      setTimeout(() => {
-        ScrollTrigger.refresh();
-        console.log('[PortfolioDetail] Final ScrollTrigger refresh complete');
-
-        // Signal that page is fully painted and ready
-        markReady();
-      }, 500);
-    } else {
-      console.log('[PortfolioDetail] Normal navigation');
-
-      // Normal navigation - use existing timers
-      setTimeout(() => {
-        ScrollTrigger.refresh();
-      }, 600);
-
-      setTimeout(() => {
-        ScrollTrigger.update();
-        console.log('[PortfolioDetail] Final ScrollTrigger update complete');
-
-        // Signal that page is fully painted and ready
-        markReady();
-      }, 800);
-    }
-  }, [markReady]);
+    setTimeout(() => {
+      ScrollTrigger.update();
+    }, 800);
+  }, []);
 
   return (
     <>
@@ -90,72 +47,69 @@ export default function PortfolioDetailPage() {
       />
       <SmoothScrolling>
         <main className="scrollable-page relative min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100">
-          {/* Hero Section - Full Screen */}
-          <FullScreenHero
+          {/* Compact Header */}
+          <CompactProjectHeader
             clientName={portfolio.clientName}
             projectTitle={portfolio.projectTitle}
             year={portfolio.year}
             category={portfolio.category}
             accentColor={portfolio.accentColor}
-            gradient={getProjectGradient(portfolio.id, 'hero')}
-            projectId={portfolio.id}
+            tagline={portfolio.hero.tagline}
+            stats={portfolio.hero.stats}
+            coverImage={portfolio.hero.coverImage}
           />
 
-          {/* Overview Section */}
-          <section className="relative py-16 md:py-24 px-6 md:px-12">
-            <ProjectOverview
-              challenge={portfolio.overview.challenge}
-              solution={portfolio.overview.solution}
-              approach={portfolio.overview.approach}
-              deliverables={portfolio.overview.deliverables}
-              accentColor={portfolio.accentColor}
-            />
-          </section>
+          {/* The Challenge */}
+          <ProjectStorySection title="The Challenge" accentColor={portfolio.accentColor}>
+            <p className="text-lg font-['Gibson'] text-gray-700 leading-relaxed">
+              {portfolio.overview.challenge}
+            </p>
+          </ProjectStorySection>
 
-          {/* Before/After Section (conditional) */}
-          {portfolio.beforeAfter && (
-            <section className="relative py-16 md:py-24 px-6 md:px-12">
-              <BeforeAfterShowcase
-                beforeImage={portfolio.beforeAfter.beforeImage}
-                afterImage={portfolio.beforeAfter.afterImage}
-                description={portfolio.beforeAfter.description}
-                accentColor={portfolio.accentColor}
-              />
-            </section>
-          )}
+          {/* Our Solution */}
+          <ProjectStorySection title="Our Solution" accentColor={portfolio.accentColor}>
+            <p className="text-lg font-['Gibson'] text-gray-700 leading-relaxed mb-6">
+              {portfolio.overview.solution}
+            </p>
+            <h4 className="text-lg font-['Gibson'] font-bold text-gray-900 mb-3">Approach</h4>
+            <ul className="space-y-2">
+              {portfolio.overview.approach.map((item, i) => (
+                <li key={i} className="flex items-start gap-3">
+                  <span
+                    className="w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5"
+                    style={{ backgroundColor: `${portfolio.accentColor}20` }}
+                  >
+                    <svg className="w-3 h-3" fill="none" stroke={portfolio.accentColor} viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                  </span>
+                  <span className="text-base font-['Gibson'] text-gray-700">{item}</span>
+                </li>
+              ))}
+            </ul>
+          </ProjectStorySection>
 
-          {/* Gallery Section */}
-          <section className="relative py-16 md:py-24 px-6 md:px-12">
-            <ProjectGallery
-              galleryItems={portfolio.gallery}
-              accentColor={portfolio.accentColor}
-            />
-          </section>
+          {/* What We Delivered */}
+          <ProjectStorySection title="What We Delivered" accentColor={portfolio.accentColor}>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              {portfolio.overview.deliverables.map((item, i) => (
+                <div key={i} className="flex items-start gap-3">
+                  <span
+                    className="w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5"
+                    style={{ backgroundColor: `${portfolio.accentColor}20` }}
+                  >
+                    <svg className="w-3 h-3" fill="none" stroke={portfolio.accentColor} viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
+                  </span>
+                  <span className="text-sm font-['Gibson'] text-gray-700">{item}</span>
+                </div>
+              ))}
+            </div>
+          </ProjectStorySection>
 
-          {/* Image Grid - Visual Showcase */}
-          <ImageGrid
-            images={[
-              getProjectGradient(portfolio.id, 'gallery', 0),
-              getProjectGradient(portfolio.id, 'gallery', 1),
-              getProjectGradient(portfolio.id, 'gallery', 2),
-            ]}
-            captions={[
-              portfolio.gallery[0]?.alt || 'Project showcase image 1',
-              portfolio.gallery[1]?.alt || 'Project showcase image 2',
-              portfolio.gallery[2]?.alt || 'Project showcase image 3',
-            ]}
-          />
-
-          {/* Results Section */}
-          <section className="relative py-16 md:py-24 px-6 md:px-12">
-            <ProjectResults
-              results={portfolio.results}
-              accentColor={portfolio.accentColor}
-            />
-          </section>
-
-          {/* Testimonial Section */}
-          <section className="relative py-16 md:py-24 px-6 md:px-12">
+          {/* Testimonial */}
+          <section className="relative py-12 md:py-16 px-6 md:px-12">
             <ProjectTestimonial
               quote={portfolio.testimonial.quote}
               author={portfolio.testimonial.author}
@@ -165,9 +119,9 @@ export default function PortfolioDetailPage() {
             />
           </section>
 
-          {/* Related Projects Section */}
+          {/* Related Projects */}
           {portfolio.relatedProjects.length > 0 && (
-            <section className="relative py-16 md:py-24 px-6 md:px-12">
+            <section className="relative py-12 md:py-16 px-6 md:px-12">
               <RelatedProjects
                 relatedProjectIds={portfolio.relatedProjects}
                 accentColor={portfolio.accentColor}
@@ -175,12 +129,10 @@ export default function PortfolioDetailPage() {
             </section>
           )}
 
-          {/* Footer */}
           <Footer />
         </main>
       </SmoothScrolling>
 
-      {/* Menu Overlay */}
       <MenuOverlay
         isOpen={menuOpen}
         onClose={() => setMenuOpen(false)}

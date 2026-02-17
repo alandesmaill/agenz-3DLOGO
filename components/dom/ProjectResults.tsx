@@ -74,7 +74,7 @@ export default function ProjectResults({
             key={index}
             ref={(el) => { cardRefs.current[index] = el; }}
             className="
-              p-8 md:p-10
+              p-5 md:p-6
               rounded-3xl
               bg-gray-100/80 backdrop-blur-xl
               border border-white/30
@@ -89,7 +89,7 @@ export default function ProjectResults({
           >
             {/* Icon */}
             <div
-              className="w-16 h-16 rounded-2xl flex items-center justify-center mb-6"
+              className="w-12 h-12 rounded-xl flex items-center justify-center mb-4"
               style={{
                 backgroundColor: `${accentColor}20`,
               }}
@@ -104,7 +104,7 @@ export default function ProjectResults({
 
             {/* Value */}
             <div
-              className="text-5xl md:text-6xl font-['Gibson'] font-bold mb-3"
+              className="text-3xl font-['Gibson'] font-bold mb-2"
               style={{ color: accentColor }}
             >
               {result.value}

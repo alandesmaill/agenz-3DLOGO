@@ -20,7 +20,7 @@ export default function ProjectTestimonial({
       <div
         className="
           relative
-          p-10 md:p-16
+          p-6 md:p-8
           rounded-3xl
           bg-gray-100/80 backdrop-blur-xl
           border border-white/30
@@ -32,7 +32,7 @@ export default function ProjectTestimonial({
       >
         {/* Quotation Mark Icon */}
         <div
-          className="absolute top-8 left-8 md:top-12 md:left-12 text-6xl md:text-8xl font-serif opacity-10 select-none pointer-events-none"
+          className="absolute top-6 left-6 md:top-8 md:left-8 text-5xl md:text-6xl font-serif opacity-10 select-none pointer-events-none"
           style={{ color: accentColor }}
         >
           &ldquo;

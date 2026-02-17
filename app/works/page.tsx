@@ -6,9 +6,9 @@ import Header from '@/components/dom/Header';
 import MenuOverlay from '@/components/dom/MenuOverlay';
 import Footer from '@/components/dom/Footer';
 import ServiceCTA from '@/components/dom/ServiceCTA';
-import FullScreenProjectShowcase from '@/components/dom/FullScreenProjectShowcase';
 import ClientLogos from '@/components/dom/ClientLogos';
-import WorksPageHero from '@/components/dom/WorksPageHero';
+import WorksListHeader from '@/components/dom/WorksListHeader';
+import WorksCard from '@/components/dom/WorksCard';
 import { getAllPortfolio } from '@/lib/works-data';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -19,19 +19,13 @@ export default function WorksPage() {
   const [menuOpen, setMenuOpen] = useState(false);
   const portfolioItems = getAllPortfolio();
 
-  // Get featured project (TechFlow)
-  const featuredProject = portfolioItems.find(item => item.id === 'techflow-rebrand');
-
-  // Scroll to top and refresh ScrollTrigger on mount
   useEffect(() => {
     window.scrollTo(0, 0);
 
-    // Refresh after component renders
     setTimeout(() => {
       ScrollTrigger.refresh();
     }, 600);
 
-    // Force update all triggers
     setTimeout(() => {
       ScrollTrigger.update();
     }, 800);
@@ -44,16 +38,14 @@ export default function WorksPage() {
         onGetInTouch={() => window.location.href = '/contact'}
         onMenuClick={() => setMenuOpen(true)}
       />
-      {/* Hero Section - Full Screen */}
-      {featuredProject && <WorksPageHero featuredProject={featuredProject} />}
+      <WorksListHeader />
 
       <SmoothScrolling>
         <main className="scrollable-page relative min-h-screen bg-gray-100">
-
-          {/* Portfolio Showcase - Full-Screen Projects */}
-          <div className="relative bg-white">
-            {portfolioItems.map((item, index) => (
-              <FullScreenProjectShowcase key={item.id} item={item} index={index} />
+          {/* Portfolio Cards */}
+          <div className="max-w-6xl mx-auto px-4 sm:px-6 md:px-12 py-12 space-y-4">
+            {portfolioItems.map((item) => (
+              <WorksCard key={item.id} item={item} />
             ))}
           </div>
 
@@ -73,12 +65,10 @@ export default function WorksPage() {
             />
           </section>
 
-          {/* Footer */}
           <Footer />
         </main>
       </SmoothScrolling>
 
-      {/* Menu Overlay */}
       <MenuOverlay
         isOpen={menuOpen}
         onClose={() => setMenuOpen(false)}
