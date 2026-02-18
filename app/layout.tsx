@@ -59,25 +59,27 @@ export const metadata: Metadata = {
     description: "Award-winning creative digital agency specializing in advertising, video production, graphic design, and strategic media services.",
   },
 
-  // Favicon Configuration (Next.js 14 pattern)
-  // TODO: Uncomment after generating favicon files (see favicon generation instructions)
-  // icons: {
-  //   icon: [
-  //     { url: "/favicon-16x16.png", sizes: "16x16", type: "image/png" },
-  //     { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
-  //     { url: "/favicon.ico", sizes: "any" },
-  //   ],
-  //   apple: [
-  //     { url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" },
-  //   ],
-  //   other: [
-  //     {
-  //       rel: "mask-icon",
-  //       url: "/safari-pinned-tab.svg",
-  //       color: "#00e92c", // Brand green color
-  //     },
-  //   ],
-  // },
+  // Favicon Configuration
+  icons: {
+    icon: [
+      { url: "/Favicon/Web/favicon-16x16.svg", sizes: "16x16", type: "image/svg+xml" },
+      { url: "/Favicon/Web/favicon-32x32.svg", sizes: "32x32", type: "image/svg+xml" },
+      { url: "/Favicon/Web/favicon-96x96.svg", sizes: "96x96", type: "image/svg+xml" },
+      { url: "/Favicon/Web/favicon-196x196.svg", sizes: "196x196", type: "image/svg+xml" },
+    ],
+    apple: [
+      { url: "/Favicon/Apple%20Devices%20(iOS%2C%20iPadOS)/apple-touch-icon-180x180.png", sizes: "180x180", type: "image/png" },
+      { url: "/Favicon/Apple%20Devices%20(iOS%2C%20iPadOS)/apple-touch-icon-167x167.png", sizes: "167x167", type: "image/png" },
+      { url: "/Favicon/Apple%20Devices%20(iOS%2C%20iPadOS)/apple-touch-icon-152x152.png", sizes: "152x152", type: "image/png" },
+      { url: "/Favicon/Apple%20Devices%20(iOS%2C%20iPadOS)/apple-touch-icon-144x144.png", sizes: "144x144", type: "image/png" },
+      { url: "/Favicon/Apple%20Devices%20(iOS%2C%20iPadOS)/apple-touch-icon-120x120.png", sizes: "120x120", type: "image/png" },
+      { url: "/Favicon/Apple%20Devices%20(iOS%2C%20iPadOS)/apple-touch-icon-114x114.png", sizes: "114x114", type: "image/png" },
+      { url: "/Favicon/Apple%20Devices%20(iOS%2C%20iPadOS)/apple-touch-icon-76x76.png", sizes: "76x76", type: "image/png" },
+      { url: "/Favicon/Apple%20Devices%20(iOS%2C%20iPadOS)/apple-touch-icon-72x72.png", sizes: "72x72", type: "image/png" },
+      { url: "/Favicon/Apple%20Devices%20(iOS%2C%20iPadOS)/apple-touch-icon-60x60.png", sizes: "60x60", type: "image/png" },
+      { url: "/Favicon/Apple%20Devices%20(iOS%2C%20iPadOS)/apple-touch-icon-57x57.png", sizes: "57x57", type: "image/png" },
+    ],
+  },
 
   // Web App Manifest
   manifest: "/manifest.json",
