@@ -1,11 +1,58 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 
-// Validation Schema
+// --- In-memory rate limiter (5 requests per hour per IP) ---
+const RATE_LIMIT_MAX = 5;
+const RATE_LIMIT_WINDOW_MS = 60 * 60 * 1000; // 1 hour
+const rateLimitMap = new Map<string, { count: number; resetAt: number }>();
+
+function isRateLimited(ip: string): boolean {
+  const now = Date.now();
+  const entry = rateLimitMap.get(ip);
+
+  if (!entry || now > entry.resetAt) {
+    rateLimitMap.set(ip, { count: 1, resetAt: now + RATE_LIMIT_WINDOW_MS });
+    return false;
+  }
+
+  entry.count++;
+  return entry.count > RATE_LIMIT_MAX;
+}
+
+// Clean up stale entries every 10 minutes to prevent memory leaks
+setInterval(() => {
+  const now = Date.now();
+  for (const [ip, entry] of rateLimitMap) {
+    if (now > entry.resetAt) rateLimitMap.delete(ip);
+  }
+}, 10 * 60 * 1000);
+
+// --- Fetch with timeout helper ---
+const FETCH_TIMEOUT_MS = 10_000;
+
+async function fetchWithTimeout(url: string, options: RequestInit): Promise<Response> {
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS);
+
+  try {
+    return await fetch(url, { ...options, signal: controller.signal });
+  } finally {
+    clearTimeout(timeout);
+  }
+}
+
+// --- Validation Schema ---
+const phoneRegex = /^[+]?[\d\s\-()]{7,20}$/;
+
 const contactSchema = z.object({
   name: z.string().min(2, 'Name must be at least 2 characters').max(100, 'Name is too long'),
   email: z.string().email('Invalid email address'),
-  phone: z.string().optional(),
+  phone: z
+    .string()
+    .refine((val) => val === '' || phoneRegex.test(val), {
+      message: 'Invalid phone number format',
+    })
+    .optional(),
   company: z.string().max(100, 'Company name is too long').optional(),
   message: z.string().min(10, 'Message must be at least 10 characters').max(1000, 'Message is too long'),
   captchaToken: z.string().min(1, 'Captcha verification required'),
@@ -24,14 +71,14 @@ async function verifyCaptcha(token: string): Promise<boolean> {
       return false;
     }
 
-    const response = await fetch('https://www.google.com/recaptcha/api/siteverify', {
+    const response = await fetchWithTimeout('https://www.google.com/recaptcha/api/siteverify', {
       method: 'POST',
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
       body: `secret=${secretKey}&response=${token}`,
     });
 
     const data = await response.json();
-    return data.success && data.score > 0.5; // reCAPTCHA v3 score threshold
+    return data.success && data.score > 0.7;
   } catch (error) {
     console.error('[API] reCAPTCHA verification error:', error);
     return false;
@@ -41,8 +88,8 @@ async function verifyCaptcha(token: string): Promise<boolean> {
 /**
  * Send email via EmailJS REST API
  */
-async function sendEmailJS(templateId: string, params: any) {
-  const response = await fetch('https://api.emailjs.com/api/v1.0/email/send', {
+async function sendEmailJS(templateId: string, params: Record<string, string>) {
+  const response = await fetchWithTimeout('https://api.emailjs.com/api/v1.0/email/send', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
@@ -67,6 +114,18 @@ async function sendEmailJS(templateId: string, params: any) {
  */
 export async function POST(request: NextRequest) {
   try {
+    // Rate limit check
+    const ip = request.headers.get('x-forwarded-for')?.split(',')[0]?.trim()
+      || request.headers.get('x-real-ip')
+      || 'unknown';
+
+    if (isRateLimited(ip)) {
+      return NextResponse.json(
+        { error: 'Too many requests. Please try again later.' },
+        { status: 429 }
+      );
+    }
+
     // Parse request body
     const body = await request.json();
 
@@ -84,7 +143,6 @@ export async function POST(request: NextRequest) {
 
     // Prepare email parameters
     const timestamp = new Date().toISOString();
-    const ipAddress = request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip') || 'Unknown';
 
     const emailParams = {
       from_name: validated.name,
@@ -93,7 +151,7 @@ export async function POST(request: NextRequest) {
       company: validated.company || 'Not provided',
       message: validated.message,
       timestamp,
-      ip_address: ipAddress,
+      ip_address: ip,
     };
 
     // Send main notification email to site owner
@@ -108,7 +166,7 @@ export async function POST(request: NextRequest) {
       {
         from_name: validated.name,
         from_email: validated.email,
-        to_email: validated.email, // Ensure auto-reply goes to user
+        to_email: validated.email,
       }
     );
 

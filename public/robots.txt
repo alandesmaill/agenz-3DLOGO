@@ -3,4 +3,4 @@ User-agent: *
 Allow: /
 
 # Sitemap location
-Sitemap: https://your-domain.vercel.app/sitemap.xml
+Sitemap: https://agenz-iq.com/sitemap.xml
