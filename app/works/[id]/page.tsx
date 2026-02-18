@@ -10,6 +10,7 @@ import CompactProjectHeader from '@/components/dom/CompactProjectHeader';
 import ProjectStorySection from '@/components/dom/ProjectStorySection';
 import ProjectTestimonial from '@/components/dom/ProjectTestimonial';
 import RelatedProjects from '@/components/dom/RelatedProjects';
+import ProjectGallery from '@/components/dom/ProjectGallery';
 import { getPortfolioById } from '@/lib/works-data';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -55,7 +56,6 @@ export default function PortfolioDetailPage() {
             category={portfolio.category}
             accentColor={portfolio.accentColor}
             tagline={portfolio.hero.tagline}
-            stats={portfolio.hero.stats}
             coverImage={portfolio.hero.coverImage}
           />
 
@@ -118,6 +118,14 @@ export default function PortfolioDetailPage() {
               accentColor={portfolio.accentColor}
             />
           </section>
+
+          {/* Project Gallery */}
+          {portfolio.gallery.length > 0 && (
+            <ProjectGallery
+              items={portfolio.gallery}
+              accentColor={portfolio.accentColor}
+            />
+          )}
 
           {/* Related Projects */}
           {portfolio.relatedProjects.length > 0 && (
