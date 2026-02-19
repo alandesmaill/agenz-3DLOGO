@@ -1,0 +1,7 @@
+<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Megaphone icon for Advertising & Social Media -->
+  <path d="M12 38L12 26C12 24.8954 12.8954 24 14 24L28 24C28 24 38 18 42 18C44 18 44 20 44 22L44 42C44 44 44 46 42 46C38 46 28 40 28 40L14 40C12.8954 40 12 39.1046 12 38Z" stroke="#00ffff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M44 28L50 24C51 23 52 24 52 25L52 39C52 40 51 41 50 40L44 36" stroke="#00ffff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="20" cy="32" r="3" fill="#00ffff" fill-opacity="0.3"/>
+  <path d="M28 40L24 52C23.5 53 22 53 22 52L20 48" stroke="#00ffff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

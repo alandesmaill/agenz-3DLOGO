@@ -1,0 +1,129 @@
+'use client';
+
+import { useState, useCallback } from 'react';
+import MenuOverlay from './MenuOverlay';
+import ContactForm from './ContactForm';
+import SubmissionSuccess from './SubmissionSuccess';
+import Header from './Header';
+
+interface ContactSectionProps {
+  onBack?: () => void;
+}
+
+export default function ContactSection({ onBack }: ContactSectionProps) {
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [submitSuccess, setSubmitSuccess] = useState(false);
+
+  const handleSuccess = useCallback(() => {
+    setSubmitSuccess(true);
+  }, []);
+
+  const handleCloseSuccess = useCallback(() => {
+    setSubmitSuccess(false);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, []);
+
+  const handleSendAnother = useCallback(() => {
+    setSubmitSuccess(false);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, []);
+
+  return (
+    <div className="min-h-screen bg-[#f7f7f7] relative overflow-hidden">
+      {/* Subtle background gradient accents */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute top-0 left-0 w-[600px] h-[600px] bg-[#00e92c]/6 rounded-full blur-[160px]" />
+        <div className="absolute bottom-0 right-0 w-[500px] h-[500px] bg-[#00ffff]/6 rounded-full blur-[160px]" />
+      </div>
+
+      {/* Fixed Header */}
+      <Header
+        variant="light"
+        onLogoClick={onBack}
+        onGetInTouch={() => window.location.href = 'mailto:hello@agenz.com'}
+        onMenuClick={() => setMenuOpen(true)}
+      />
+
+      {/* Main Content */}
+      <main className="relative z-10 pt-32 pb-24 px-6 md:px-12">
+        <div className="max-w-7xl mx-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-20 items-start">
+
+            {/* Left Column — Heading & Contact Info */}
+            <div className="lg:pt-6">
+              <p className="text-[#00a820] text-sm font-semibold tracking-widest uppercase mb-4">Contact Us</p>
+              <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-gray-900 leading-tight mb-6">
+                Let&apos;s Create{' '}
+                <span className="bg-gradient-to-r from-[#00e92c] to-[#00b8a0] bg-clip-text text-transparent">
+                  Something Amazing
+                </span>{' '}
+                Together
+              </h1>
+              <p className="text-lg text-gray-500 mb-12 max-w-md leading-relaxed">
+                Ready to bring your vision to life? Fill out the form and we&apos;ll get back to you within 24 hours.
+              </p>
+
+              {/* Contact Details */}
+              <div className="space-y-5">
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 rounded-2xl bg-white border border-gray-200 shadow-sm flex items-center justify-center flex-shrink-0">
+                    <svg className="w-5 h-5 text-[#00a820]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                    </svg>
+                  </div>
+                  <div>
+                    <p className="text-gray-400 text-xs uppercase tracking-wider mb-0.5">Email</p>
+                    <p className="text-gray-900 font-medium">hello@agenz.com</p>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 rounded-2xl bg-white border border-gray-200 shadow-sm flex items-center justify-center flex-shrink-0">
+                    <svg className="w-5 h-5 text-[#00a820]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                    </svg>
+                  </div>
+                  <div>
+                    <p className="text-gray-400 text-xs uppercase tracking-wider mb-0.5">Phone</p>
+                    <p className="text-gray-900 font-medium">+1 (234) 567-890</p>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 rounded-2xl bg-white border border-gray-200 shadow-sm flex items-center justify-center flex-shrink-0">
+                    <svg className="w-5 h-5 text-[#00a820]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                  </div>
+                  <div>
+                    <p className="text-gray-400 text-xs uppercase tracking-wider mb-0.5">Response Time</p>
+                    <p className="text-gray-900 font-medium">Within 24 hours</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Right Column — Form */}
+            <div>
+              <ContactForm onSuccess={handleSuccess} />
+            </div>
+          </div>
+        </div>
+      </main>
+
+      {/* Success Screen Overlay */}
+      {submitSuccess && (
+        <SubmissionSuccess
+          onClose={handleCloseSuccess}
+          onSendAnother={handleSendAnother}
+        />
+      )}
+
+      {/* Menu Overlay */}
+      <MenuOverlay
+        isOpen={menuOpen}
+        onClose={() => setMenuOpen(false)}
+      />
+    </div>
+  );
+}

@@ -1,0 +1,12 @@
+<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Chart/graph icon for Strategic Media Services -->
+  <rect x="12" y="12" width="40" height="40" rx="4" stroke="#00b8ff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M12 38L24 26L32 34L52 14" stroke="#00b8ff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="24" cy="26" r="3" fill="#00b8ff"/>
+  <circle cx="32" cy="34" r="3" fill="#00b8ff"/>
+  <circle cx="52" cy="14" r="3" fill="#00b8ff"/>
+  <rect x="16" y="42" width="4" height="6" rx="1" fill="#00b8ff" fill-opacity="0.4"/>
+  <rect x="24" y="36" width="4" height="12" rx="1" fill="#00b8ff" fill-opacity="0.4"/>
+  <rect x="32" y="40" width="4" height="8" rx="1" fill="#00b8ff" fill-opacity="0.4"/>
+  <rect x="40" y="32" width="4" height="16" rx="1" fill="#00b8ff" fill-opacity="0.4"/>
+</svg>
