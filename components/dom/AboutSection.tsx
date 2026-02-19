@@ -21,13 +21,13 @@ interface AboutSectionProps {
 // Light gradient background style applied to scroll-container — 6 layers covering full page
 const lightGradientStyle: React.CSSProperties = {
   background: `
-    radial-gradient(ellipse 80% 60% at 0% 0%, rgba(0, 233, 44, 0.07) 0%, transparent 50%),
-    radial-gradient(ellipse 60% 50% at 100% 0%, rgba(0, 184, 255, 0.06) 0%, transparent 50%),
-    radial-gradient(ellipse 60% 40% at 20% 50%, rgba(0, 233, 44, 0.04) 0%, transparent 50%),
-    radial-gradient(ellipse 60% 40% at 80% 50%, rgba(0, 184, 255, 0.04) 0%, transparent 50%),
-    radial-gradient(ellipse 70% 50% at 10% 100%, rgba(0, 233, 44, 0.06) 0%, transparent 50%),
-    radial-gradient(ellipse 70% 50% at 100% 100%, rgba(0, 184, 255, 0.05) 0%, transparent 50%),
-    #f7f7f7
+    radial-gradient(ellipse 80% 60% at 0% 0%, rgba(0, 233, 44, 0.13) 0%, transparent 50%),
+    radial-gradient(ellipse 60% 50% at 100% 0%, rgba(0, 184, 255, 0.12) 0%, transparent 50%),
+    radial-gradient(ellipse 60% 40% at 20% 50%, rgba(0, 233, 44, 0.07) 0%, transparent 50%),
+    radial-gradient(ellipse 60% 40% at 80% 50%, rgba(0, 184, 255, 0.07) 0%, transparent 50%),
+    radial-gradient(ellipse 70% 50% at 10% 100%, rgba(0, 233, 44, 0.10) 0%, transparent 50%),
+    radial-gradient(ellipse 70% 50% at 100% 100%, rgba(0, 184, 255, 0.09) 0%, transparent 50%),
+    #f5f4f0
   `,
 };
 
