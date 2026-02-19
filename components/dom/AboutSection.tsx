@@ -268,8 +268,8 @@ export default function AboutSection({ onBack }: AboutSectionProps) {
           <div className="relative z-10 max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             {/* Left: Mission Text */}
             <div>
-              <div className="bg-white/70 backdrop-blur-xl rounded-3xl p-8 md:p-12 border border-gray-100 shadow-lg">
-                <h2 className="text-gray-900 text-xl font-bold mb-4 uppercase tracking-wider">
+              <div className="mission-card bg-white/70 backdrop-blur-xl rounded-3xl p-8 md:p-12 border-l-4 border-l-[#00e92c] border border-gray-100 shadow-lg">
+                <h2 className="text-xl font-bold mb-4 uppercase tracking-wider bg-gradient-to-r from-[#00e92c] to-[#00ffff] bg-clip-text text-transparent">
                   Our Mission
                 </h2>
                 <AnimatedText
@@ -290,13 +290,13 @@ export default function AboutSection({ onBack }: AboutSectionProps) {
               {aboutContent.mission.stats.map((stat, index) => (
                 <div
                   key={stat.label}
-                  className="bg-white/70 backdrop-blur-xl rounded-2xl p-6 border border-gray-100 shadow-md text-center"
+                  className="bg-white/70 backdrop-blur-xl rounded-2xl p-6 border border-green-200 shadow-md text-center"
                 >
                   <div
                     ref={(el) => {
                       statsRefs.current[index] = el;
                     }}
-                    className="text-4xl md:text-5xl font-bold text-gray-900 mb-2"
+                    className="text-4xl md:text-5xl font-bold mb-2 bg-gradient-to-r from-[#00e92c] to-[#00ffff] bg-clip-text text-transparent"
                   >
                     0+
                   </div>
