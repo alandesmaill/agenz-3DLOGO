@@ -5,7 +5,7 @@
 /* Gibson Font Family */
 @font-face {
   font-family: 'Gibson';
-  src: url('/font/fonnts.com-Gibson_Regular.otf') format('opentype');
+  src: url('/font/gibson-regular.otf') format('opentype');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
@@ -13,7 +13,7 @@
 
 @font-face {
   font-family: 'Gibson';
-  src: url('/font/fonnts.com-Gibson_Medium.otf') format('opentype');
+  src: url('/font/gibson-medium.otf') format('opentype');
   font-weight: 500;
   font-style: normal;
   font-display: swap;
@@ -21,7 +21,7 @@
 
 @font-face {
   font-family: 'Gibson';
-  src: url('/font/fonnts.com-Gibson_Bold.otf') format('opentype');
+  src: url('/font/gibson-bold.otf') format('opentype');
   font-weight: 700;
   font-style: normal;
   font-display: swap;
@@ -29,7 +29,7 @@
 
 @font-face {
   font-family: 'Gibson';
-  src: url('/font/fonnts.com-Gibson_Heavy.otf') format('opentype');
+  src: url('/font/gibson-heavy.otf') format('opentype');
   font-weight: 800;
   font-style: normal;
   font-display: swap;
@@ -37,7 +37,7 @@
 
 @font-face {
   font-family: 'Gibson';
-  src: url('/font/fonnts.com-Gibson_Light_Italic.otf') format('opentype');
+  src: url('/font/gibson-light-italic.otf') format('opentype');
   font-weight: 300;
   font-style: italic;
   font-display: swap;
