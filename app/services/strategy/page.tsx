@@ -37,12 +37,13 @@ export default function StrategyPage() {
   return (
     <>
       <Header
+        variant="dark"
         onLogoClick={() => window.location.href = '/'}
         onGetInTouch={() => window.location.href = '/contact'}
         onMenuClick={() => setMenuOpen(true)}
       />
       <SmoothScrolling>
-        <main className="scrollable-page relative min-h-screen bg-gray-100">
+        <main className="scrollable-page relative min-h-screen" style={{ background: 'radial-gradient(ellipse 80% 60% at 0% 0%, rgba(0, 233, 44, 0.10) 0%, transparent 50%), radial-gradient(ellipse 60% 50% at 100% 0%, rgba(0, 255, 255, 0.08) 0%, transparent 50%), radial-gradient(ellipse 70% 50% at 10% 100%, rgba(0, 233, 44, 0.08) 0%, transparent 50%), radial-gradient(ellipse 70% 50% at 100% 100%, rgba(0, 255, 255, 0.07) 0%, transparent 50%), #050505' }}>
         {/* Hero Section */}
         <section className="relative py-20 md:py-32 px-6 md:px-12 overflow-hidden">
           <ServiceDetailHero
@@ -67,7 +68,7 @@ export default function StrategyPage() {
         {/* Features Section */}
         <section className="relative py-16 md:py-24 px-6 md:px-12">
           <div className="max-w-6xl mx-auto">
-            <h2 className="text-3xl md:text-4xl font-['Gibson'] font-bold text-gray-900 mb-12 text-center">
+            <h2 className="text-3xl md:text-4xl font-['Gibson'] font-bold text-white mb-12 text-center">
               What We Offer
             </h2>
             <ServiceFeatureGrid

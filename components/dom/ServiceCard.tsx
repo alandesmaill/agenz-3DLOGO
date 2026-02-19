@@ -25,7 +25,7 @@ const ServiceCard = forwardRef<HTMLDivElement, ServiceCardProps>(
         className={cn(
           // Base styling
           'relative overflow-hidden rounded-3xl',
-          'backdrop-blur-xl bg-gray-100/80 border border-white/30',
+          'backdrop-blur-xl bg-white/5 border border-white/8',
           'p-8 md:p-10 lg:p-12',
           'group cursor-pointer',
           // Fixed aspect ratio - perfect squares
@@ -63,10 +63,10 @@ const ServiceCard = forwardRef<HTMLDivElement, ServiceCardProps>(
         {/* Content - Middle Section (grows to fill space) */}
         <div className="flex-grow mb-6">
           <h3 className="text-2xl md:text-3xl lg:text-4xl font-['Gibson'] font-bold
-                         mb-4 text-gray-900 tracking-tight">
+                         mb-4 text-white tracking-tight">
             {title}
           </h3>
-          <p className="font-['Gibson'] text-gray-700 text-base md:text-lg
+          <p className="font-['Gibson'] text-white/65 text-base md:text-lg
                         leading-relaxed line-clamp-4">
             {description}
           </p>
@@ -77,8 +77,8 @@ const ServiceCard = forwardRef<HTMLDivElement, ServiceCardProps>(
           <Link
             href={ctaLink}
             className="inline-flex items-center gap-2 px-6 py-3 rounded-full
-                       bg-gray-900 text-white font-['Gibson'] font-bold
-                       hover:scale-105 hover:bg-gray-800
+                       bg-white/10 text-white font-['Gibson'] font-bold border border-white/20
+                       hover:scale-105 hover:bg-white/20
                        transition-all duration-300 group/btn"
             style={{
               boxShadow: `0 10px 30px ${accentColor}20`,

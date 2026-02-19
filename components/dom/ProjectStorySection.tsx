@@ -50,7 +50,7 @@ export default function ProjectStorySection({
         {/* Accent bar */}
         <div className="w-12 h-1 rounded-full mb-4" style={{ backgroundColor: accentColor }} />
         {/* Heading */}
-        <h2 className="text-2xl md:text-3xl font-['Gibson'] font-bold text-gray-900 mb-6">
+        <h2 className="text-2xl md:text-3xl font-['Gibson'] font-bold text-white mb-6">
           {title}
         </h2>
         {/* Content */}

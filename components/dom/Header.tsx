@@ -14,17 +14,13 @@ export default function Header({ onGetInTouch, onMenuClick, onLogoClick, variant
 
   const headerBg = isDark
     ? 'bg-black/40 backdrop-blur-md'
-    : 'bg-gray-100/80 backdrop-blur-md';
+    : 'bg-black/40 backdrop-blur-md';
 
-  const logoSrc = isDark ? '/Agenz-logo-white.svg' : '/Agenz-logo-black.svg';
+  const logoSrc = '/Agenz-logo-white.svg';
 
-  const getInTouchClasses = isDark
-    ? 'hidden md:flex px-5 py-2.5 text-sm font-bold text-white bg-transparent border border-white/30 rounded-full hover:bg-white/10 hover:border-white/50 transition-all duration-200'
-    : 'hidden md:flex px-5 py-2.5 text-sm font-bold text-black bg-transparent border border-gray-300 rounded-full hover:bg-gray-100 hover:border-gray-400 transition-all duration-200';
+  const getInTouchClasses = 'hidden md:flex px-5 py-2.5 text-sm font-bold text-white bg-transparent border border-white/30 rounded-full hover:bg-white/10 hover:border-white/50 transition-all duration-200';
 
-  const menuClasses = isDark
-    ? 'px-6 py-2.5 text-sm font-bold text-black bg-white rounded-full hover:bg-gray-200 transition-all duration-200'
-    : 'px-6 py-2.5 text-sm font-bold text-white bg-black rounded-full hover:bg-gray-800 transition-all duration-200';
+  const menuClasses = 'px-6 py-2.5 text-sm font-bold text-black bg-white rounded-full hover:bg-gray-200 transition-all duration-200';
 
   return (
     <header className={`fixed top-0 left-0 right-0 z-50 px-6 py-4 md:px-10 md:py-6 flex items-center justify-between pointer-events-none ${headerBg}`}>

@@ -18,15 +18,13 @@ interface AboutSectionProps {
   onBack?: () => void;
 }
 
-// Dark gradient background style applied to scroll-container — 6 layers covering full page
+// Dark gradient background style applied to scroll-container — 4 layers on #050505
 const darkGradientStyle: React.CSSProperties = {
   background: `
-    radial-gradient(ellipse 80% 60% at 0% 0%, rgba(0, 233, 44, 0.12) 0%, transparent 50%),
-    radial-gradient(ellipse 60% 50% at 100% 0%, rgba(0, 255, 255, 0.10) 0%, transparent 50%),
-    radial-gradient(ellipse 60% 40% at 20% 50%, rgba(0, 233, 44, 0.08) 0%, transparent 50%),
-    radial-gradient(ellipse 60% 40% at 80% 50%, rgba(0, 255, 255, 0.07) 0%, transparent 50%),
-    radial-gradient(ellipse 70% 50% at 10% 100%, rgba(0, 233, 44, 0.10) 0%, transparent 50%),
-    radial-gradient(ellipse 70% 50% at 100% 100%, rgba(0, 184, 255, 0.09) 0%, transparent 50%),
+    radial-gradient(ellipse 80% 60% at 0% 0%, rgba(0, 233, 44, 0.10) 0%, transparent 50%),
+    radial-gradient(ellipse 60% 50% at 100% 0%, rgba(0, 255, 255, 0.08) 0%, transparent 50%),
+    radial-gradient(ellipse 70% 50% at 10% 100%, rgba(0, 233, 44, 0.08) 0%, transparent 50%),
+    radial-gradient(ellipse 70% 50% at 100% 100%, rgba(0, 255, 255, 0.07) 0%, transparent 50%),
     #050505
   `,
 };
@@ -175,10 +173,10 @@ export default function AboutSection({ onBack }: AboutSectionProps) {
     <SmoothScrolling>
       <div
         ref={rootRef}
-        className="scroll-container about-dark-bg"
+        className="scroll-container"
         style={darkGradientStyle}
       >
-        {/* Header - Fixed, Dark Variant */}
+        {/* Header - Fixed, Light Variant */}
         <Header
           variant="dark"
           onLogoClick={onBack}
@@ -190,26 +188,31 @@ export default function AboutSection({ onBack }: AboutSectionProps) {
         <section className="relative h-screen w-full flex items-center md:items-end overflow-hidden md:pb-24">
           {/* Left-aligned text block */}
           <div className="relative z-10 w-full px-6 md:px-8 lg:px-12 mt-16 md:mt-0">
+            {/* Accent rule */}
+            <div
+              className="hero-accent-rule h-0.5 w-16 mb-4 rounded-full bg-gradient-to-r from-[#00e92c] to-[#00ffff]"
+            />
+
             {/* WELCOME TO */}
             <h2
-              className="text-white font-bold uppercase tracking-[0.15em]"
-              style={{ fontSize: 'clamp(2rem, 7vw, 10vw)', lineHeight: 1.1 }}
+              className="text-white font-bold uppercase tracking-[0.2em]"
+              style={{ fontSize: 'clamp(1.4rem, 5vw, 7vw)', lineHeight: 1.1 }}
             >
               {aboutContent.hero.welcomeText}
             </h2>
 
-            {/* AGENZ */}
+            {/* AGENZ — gradient fill */}
             <h1
-              className="text-white font-extrabold uppercase leading-none tracking-[0.1em]"
+              className="font-extrabold uppercase leading-none tracking-[0.1em] bg-gradient-to-r from-[#00e92c] to-[#00ffff] bg-clip-text text-transparent"
               style={{ fontSize: 'clamp(3.5rem, 14vw, 16vw)' }}
             >
               {aboutContent.hero.brandName}
             </h1>
 
-            {/* Tagline */}
+            {/* Tagline — lighter weight, softer colour for hierarchy contrast */}
             <AnimatedText
-              className="text-white font-extrabold uppercase leading-tight mt-2 tracking-[0.05em]"
-              style={{ fontSize: 'clamp(1.5rem, 4vw, 5vw)' }}
+              className="text-white/40 font-semibold uppercase leading-tight mt-2 tracking-[0.05em]"
+              style={{ fontSize: 'clamp(1.2rem, 3.5vw, 4.5vw)' }}
               splitBy="words"
               stagger={0.04}
               duration={0.6}
@@ -219,8 +222,8 @@ export default function AboutSection({ onBack }: AboutSectionProps) {
               WE MASTER EVERYTHING
             </AnimatedText>
             <AnimatedText
-              className="text-white font-extrabold uppercase leading-tight tracking-[0.05em]"
-              style={{ fontSize: 'clamp(1.5rem, 4vw, 5vw)' }}
+              className="text-white/40 font-semibold uppercase leading-tight tracking-[0.05em]"
+              style={{ fontSize: 'clamp(1.2rem, 3.5vw, 4.5vw)' }}
               splitBy="words"
               stagger={0.04}
               duration={0.6}
@@ -235,9 +238,9 @@ export default function AboutSection({ onBack }: AboutSectionProps) {
           <div
             ref={flowerRef}
             className="absolute pointer-events-none
-              right-0 top-[35%] -translate-y-1/2 w-[65vw] opacity-35 translate-x-[10%]
-              md:top-1/2 md:w-[45vw] md:opacity-50 md:translate-x-[10%]
-              lg:w-[40vw] lg:opacity-80 lg:translate-x-[5%]"
+              right-0 top-[35%] -translate-y-1/2 w-[75vw] opacity-60 translate-x-[10%]
+              md:top-1/2 md:w-[52vw] md:opacity-80 md:translate-x-[5%]
+              lg:w-[46vw] lg:opacity-100 lg:translate-x-[0%]"
           >
             <Image
               src="/images/about/shapes/flower.png"
@@ -263,12 +266,12 @@ export default function AboutSection({ onBack }: AboutSectionProps) {
           <div className="relative z-10 max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             {/* Left: Mission Text */}
             <div>
-              <div className="backdrop-blur-xl bg-white/5 rounded-3xl p-8 md:p-12 border border-white/10">
-                <h2 className="text-white text-xl font-bold mb-4 uppercase tracking-wider">
+              <div className="mission-card bg-white/5 backdrop-blur-xl rounded-3xl p-8 md:p-12 border-l-4 border-l-[#00e92c] border border-white/8 shadow-lg">
+                <h2 className="text-xl font-bold mb-4 uppercase tracking-wider bg-gradient-to-r from-[#00e92c] to-[#00ffff] bg-clip-text text-transparent">
                   Our Mission
                 </h2>
                 <AnimatedText
-                  className="text-white text-2xl md:text-3xl lg:text-4xl font-light leading-relaxed"
+                  className="text-white/65 text-2xl md:text-3xl lg:text-4xl font-light leading-relaxed"
                   splitBy="words"
                   stagger={0.03}
                   duration={0.8}
@@ -285,17 +288,17 @@ export default function AboutSection({ onBack }: AboutSectionProps) {
               {aboutContent.mission.stats.map((stat, index) => (
                 <div
                   key={stat.label}
-                  className="backdrop-blur-xl bg-white/5 rounded-2xl p-6 border border-white/10 text-center"
+                  className="bg-white/5 backdrop-blur-xl rounded-2xl p-6 border border-white/8 shadow-md text-center"
                 >
                   <div
                     ref={(el) => {
                       statsRefs.current[index] = el;
                     }}
-                    className="text-4xl md:text-5xl font-bold text-white mb-2"
+                    className="text-4xl md:text-5xl font-bold mb-2 bg-gradient-to-r from-[#00e92c] to-[#00ffff] bg-clip-text text-transparent"
                   >
                     0+
                   </div>
-                  <div className="text-white/60 text-xs md:text-sm uppercase tracking-wider">
+                  <div className="text-white/40 text-xs md:text-sm uppercase tracking-wider">
                     {stat.label}
                   </div>
                 </div>
@@ -317,9 +320,9 @@ export default function AboutSection({ onBack }: AboutSectionProps) {
           <div
             ref={graphicsRef}
             className="absolute left-0 top-1/2 -translate-y-1/2 pointer-events-none
-              w-[50vw] opacity-20 -translate-x-[20%]
-              md:w-[40vw] md:opacity-40 md:-translate-x-[15%]
-              lg:w-[35vw] lg:opacity-60 lg:-translate-x-[10%]"
+              w-[55vw] opacity-30 -translate-x-[15%]
+              md:w-[45vw] md:opacity-55 md:-translate-x-[10%]
+              lg:w-[40vw] lg:opacity-75 lg:-translate-x-[5%]"
           >
             <Image
               src="/images/about/shapes/graphics-shapes.png"
@@ -332,8 +335,21 @@ export default function AboutSection({ onBack }: AboutSectionProps) {
 
           {/* Content */}
           <div className="relative z-10 text-center px-6">
+            {/* Watermark AGENZ behind headline */}
+            <div
+              className="cta-watermark absolute inset-0 flex items-center justify-center pointer-events-none select-none"
+              aria-hidden="true"
+            >
+              <span
+                className="font-extrabold uppercase text-white"
+                style={{ fontSize: 'clamp(6rem, 22vw, 28vw)', opacity: 0.04, letterSpacing: '0.05em' }}
+              >
+                AGENZ
+              </span>
+            </div>
+
             <AnimatedText
-              className="text-white text-5xl md:text-6xl lg:text-7xl font-bold mb-8"
+              className="text-white text-5xl md:text-6xl lg:text-7xl font-bold mb-8 bg-gradient-to-r from-[#00e92c] to-[#00ffff] bg-clip-text text-transparent"
               splitBy="words"
               stagger={0.05}
               duration={0.8}
@@ -345,7 +361,7 @@ export default function AboutSection({ onBack }: AboutSectionProps) {
 
             <Link
               href="/contact"
-              className="inline-block px-12 py-5 text-xl font-bold text-black bg-gradient-to-r from-[#00e92c] to-[#00ffff] rounded-full hover:scale-105 transition-transform duration-300 shadow-2xl"
+              className="inline-block px-12 py-5 text-xl font-bold text-black bg-gradient-to-r from-[#00e92c] to-[#00ffff] rounded-full hover:scale-105 transition-transform duration-300 shadow-[0_0_40px_rgba(0,233,44,0.3)] hover:shadow-[0_0_60px_rgba(0,233,44,0.5)]"
             >
               {aboutContent.cta.buttonText}
             </Link>

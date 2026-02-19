@@ -67,27 +67,6 @@ export default function ContactForm({ onSuccess }: ContactFormProps) {
     recaptchaSiteKey !== 'your_recaptcha_site_key_here' &&
     recaptchaSiteKey !== '';
 
-  // If not configured, show configuration notice instead of broken form
-  if (!isRecaptchaConfigured) {
-    return (
-      <div className="relative max-w-3xl mx-auto px-4">
-        <div className="relative backdrop-blur-xl bg-white/10 rounded-3xl p-8 border border-white/20">
-          <h3 className="text-2xl font-bold text-gray-900 mb-4">
-            Contact Form Configuration Required
-          </h3>
-          <p className="text-gray-600 mb-4">
-            The contact form requires reCAPTCHA configuration.
-            Please set up your environment variables in Vercel.
-          </p>
-          <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
-            <p className="text-sm text-yellow-800">
-              <strong>Admin:</strong> Configure NEXT_PUBLIC_RECAPTCHA_SITE_KEY in Vercel dashboard
-            </p>
-          </div>
-        </div>
-      </div>
-    );
-  }
 
   // Validation functions
   const validateEmail = (email: string): string | undefined => {
@@ -220,10 +199,13 @@ export default function ContactForm({ onSuccess }: ContactFormProps) {
     setErrors({});
 
     try {
-      // Get reCAPTCHA token
-      const captchaToken = await recaptchaRef.current?.executeAsync();
-      if (!captchaToken) {
-        throw new Error('Captcha verification failed');
+      // Get reCAPTCHA token (only if configured)
+      let captchaToken: string | null = null;
+      if (isRecaptchaConfigured) {
+        captchaToken = await recaptchaRef.current?.executeAsync() || null;
+        if (!captchaToken) {
+          throw new Error('Captcha verification failed');
+        }
       }
 
       // Submit to API
@@ -262,20 +244,23 @@ export default function ContactForm({ onSuccess }: ContactFormProps) {
   };
 
   return (
-    <div className="relative max-w-3xl mx-auto px-4">
-      {/* Form Container with Liquid Glass */}
-      <div className="relative p-8 md:p-12 rounded-3xl bg-white/5 backdrop-blur-2xl border border-white/10 shadow-2xl">
+    <div className="relative">
+      {/* Outer soft shadow glow */}
+      <div className="absolute -inset-2 bg-gradient-to-br from-[#00e92c]/10 via-transparent to-[#00b8a0]/10 rounded-3xl blur-2xl" />
 
-        {/* Gradient Glow Background */}
-        <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/20 via-transparent to-green-500/20 blur-3xl -z-10 rounded-3xl" />
+      {/* Form Container — Dark Glass */}
+      <div className="relative p-8 md:p-10 rounded-3xl bg-white/5 backdrop-blur-2xl border border-white/8 shadow-2xl shadow-black/20">
+
+        {/* Subtle inner shimmer */}
+        <div className="absolute inset-0 bg-gradient-to-br from-white/5 via-transparent to-white/3 rounded-3xl pointer-events-none" />
 
         {/* Form Header */}
-        <div className="text-center mb-8">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">
-            Let&apos;s Work Together
+        <div className="mb-8">
+          <h2 className="text-2xl md:text-3xl font-bold text-white mb-2">
+            Send a Message
           </h2>
-          <p className="text-gray-600">
-            Fill out the form below and we&apos;ll get back to you within 24 hours
+          <p className="text-white/40 text-sm">
+            All fields marked <span className="text-red-500">*</span> are required
           </p>
         </div>
 
@@ -358,7 +343,7 @@ export default function ContactForm({ onSuccess }: ContactFormProps) {
 
           {/* General Error Message */}
           {errors.general && (
-            <div className="p-4 rounded-xl bg-red-50/80 backdrop-blur-sm border border-red-200 text-red-600 flex items-start gap-3">
+            <div className="p-4 rounded-xl bg-red-900/20 border border-red-500/30 text-red-400 flex items-start gap-3">
               <svg className="w-5 h-5 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
                 <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
               </svg>
@@ -366,12 +351,14 @@ export default function ContactForm({ onSuccess }: ContactFormProps) {
             </div>
           )}
 
-          {/* Invisible reCAPTCHA */}
-          <ReCAPTCHA
-            ref={recaptchaRef}
-            size="invisible"
-            sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || ''}
-          />
+          {/* Invisible reCAPTCHA — only rendered when configured */}
+          {isRecaptchaConfigured && (
+            <ReCAPTCHA
+              ref={recaptchaRef}
+              size="invisible"
+              sitekey={recaptchaSiteKey!}
+            />
+          )}
 
           {/* Submit Button */}
           <button
@@ -411,8 +398,8 @@ export default function ContactForm({ onSuccess }: ContactFormProps) {
           </button>
 
           {/* Privacy Note */}
-          <p className="text-xs text-gray-500 text-center">
-            Protected by reCAPTCHA. Your information is secure and will never be shared.
+          <p className="text-xs text-white/40 text-center">
+            Your information is secure and will never be shared.
           </p>
         </form>
 

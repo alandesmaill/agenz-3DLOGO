@@ -22,7 +22,7 @@ export default function RelatedProjects({
   return (
     <div className="max-w-6xl mx-auto">
       <AnimatedText
-        className="text-3xl md:text-4xl font-['Gibson'] font-bold text-gray-900 mb-8 text-center"
+        className="text-3xl md:text-4xl font-['Gibson'] font-bold text-white mb-8 text-center"
         splitBy="words"
         stagger={0.03}
         duration={0.6}

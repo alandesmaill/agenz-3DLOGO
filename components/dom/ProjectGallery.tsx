@@ -73,7 +73,7 @@ export default function ProjectGallery({ items, accentColor }: ProjectGalleryPro
             className="block w-10 h-1 rounded-full"
             style={{ backgroundColor: accentColor }}
           />
-          <h2 className="text-2xl md:text-3xl font-['Gibson'] font-bold text-gray-900">
+          <h2 className="text-2xl md:text-3xl font-['Gibson'] font-bold text-white">
             Project Gallery
           </h2>
         </div>
@@ -84,7 +84,7 @@ export default function ProjectGallery({ items, accentColor }: ProjectGalleryPro
             <button
               key={i}
               onClick={() => setActiveIndex(i)}
-              className="group relative aspect-video rounded-2xl overflow-hidden bg-gray-100 focus:outline-none focus-visible:ring-2"
+              className="group relative aspect-video rounded-2xl overflow-hidden bg-white/5 focus:outline-none focus-visible:ring-2"
               style={{ '--accent': accentColor } as React.CSSProperties}
             >
               {/* Thumbnail */}

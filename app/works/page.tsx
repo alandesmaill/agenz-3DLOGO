@@ -34,6 +34,7 @@ export default function WorksPage() {
   return (
     <>
       <Header
+        variant="dark"
         onLogoClick={() => window.location.href = '/'}
         onGetInTouch={() => window.location.href = '/contact'}
         onMenuClick={() => setMenuOpen(true)}
@@ -41,7 +42,7 @@ export default function WorksPage() {
       <WorksListHeader />
 
       <SmoothScrolling>
-        <main className="scrollable-page relative min-h-screen bg-gray-100">
+        <main className="scrollable-page relative min-h-screen" style={{ background: 'radial-gradient(ellipse 80% 60% at 0% 0%, rgba(0, 233, 44, 0.10) 0%, transparent 50%), radial-gradient(ellipse 60% 50% at 100% 0%, rgba(0, 255, 255, 0.08) 0%, transparent 50%), radial-gradient(ellipse 70% 50% at 10% 100%, rgba(0, 233, 44, 0.08) 0%, transparent 50%), radial-gradient(ellipse 70% 50% at 100% 100%, rgba(0, 255, 255, 0.07) 0%, transparent 50%), #050505' }}>
           {/* Portfolio Cards */}
           <div className="max-w-6xl mx-auto px-4 sm:px-6 md:px-12 py-12 space-y-4">
             {portfolioItems.map((item) => (
