@@ -109,9 +109,8 @@ export default function RootLayout({
   };
 
   return (
-    <html lang="en" className="light">
+    <html lang="en">
       <head>
-        <meta name="color-scheme" content="light" />
         <StructuredData data={organizationSchema} />
       </head>
       <body>

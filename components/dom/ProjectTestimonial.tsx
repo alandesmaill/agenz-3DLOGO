@@ -22,8 +22,8 @@ export default function ProjectTestimonial({
           relative
           p-6 md:p-8
           rounded-3xl
-          bg-gray-100/80 backdrop-blur-xl
-          border border-white/30
+          bg-white/5 backdrop-blur-xl
+          border border-white/8
           shadow-2xl
         "
         style={{
@@ -39,7 +39,7 @@ export default function ProjectTestimonial({
         </div>
 
         {/* Quote */}
-        <blockquote className="relative z-10 text-xl md:text-2xl font-['Gibson'] text-gray-800 leading-relaxed mb-8">
+        <blockquote className="relative z-10 text-xl md:text-2xl font-['Gibson'] text-white leading-relaxed mb-8">
           {quote}
         </blockquote>
 
@@ -55,10 +55,10 @@ export default function ProjectTestimonial({
 
           {/* Name & Role */}
           <div>
-            <div className="text-lg font-['Gibson'] font-bold text-gray-900">
+            <div className="text-lg font-['Gibson'] font-bold text-white">
               {author}
             </div>
-            <div className="text-sm font-['Gibson'] text-gray-600">
+            <div className="text-sm font-['Gibson'] text-white/50">
               {role}, {company}
             </div>
           </div>

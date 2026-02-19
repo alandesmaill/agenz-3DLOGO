@@ -42,12 +42,13 @@ export default function PortfolioDetailPage() {
   return (
     <>
       <Header
+        variant="dark"
         onLogoClick={() => window.location.href = '/'}
         onGetInTouch={() => window.location.href = '/contact'}
         onMenuClick={() => setMenuOpen(true)}
       />
       <SmoothScrolling>
-        <main className="scrollable-page relative min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100">
+        <main className="scrollable-page relative min-h-screen bg-[#050505]">
           {/* Compact Header */}
           <CompactProjectHeader
             clientName={portfolio.clientName}
@@ -61,7 +62,7 @@ export default function PortfolioDetailPage() {
 
           {/* The Challenge */}
           <ProjectStorySection title="The Challenge" accentColor={portfolio.accentColor}>
-            <p className="text-lg font-['Gibson'] text-gray-700 leading-relaxed">
+            <p className="text-lg font-['Gibson'] text-white/65 leading-relaxed">
               {portfolio.overview.challenge}
             </p>
           </ProjectStorySection>
@@ -71,7 +72,7 @@ export default function PortfolioDetailPage() {
             <p className="text-lg font-['Gibson'] text-gray-700 leading-relaxed mb-6">
               {portfolio.overview.solution}
             </p>
-            <h4 className="text-lg font-['Gibson'] font-bold text-gray-900 mb-3">Approach</h4>
+            <h4 className="text-lg font-['Gibson'] font-bold text-white mb-3">Approach</h4>
             <ul className="space-y-2">
               {portfolio.overview.approach.map((item, i) => (
                 <li key={i} className="flex items-start gap-3">
@@ -83,7 +84,7 @@ export default function PortfolioDetailPage() {
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                     </svg>
                   </span>
-                  <span className="text-base font-['Gibson'] text-gray-700">{item}</span>
+                  <span className="text-base font-['Gibson'] text-white/65">{item}</span>
                 </li>
               ))}
             </ul>
@@ -102,7 +103,7 @@ export default function PortfolioDetailPage() {
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                     </svg>
                   </span>
-                  <span className="text-sm font-['Gibson'] text-gray-700">{item}</span>
+                  <span className="text-sm font-['Gibson'] text-white/65">{item}</span>
                 </div>
               ))}
             </div>

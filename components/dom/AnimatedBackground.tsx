@@ -13,7 +13,7 @@ export default function AnimatedBackground() {
       <div
         className="absolute inset-0"
         style={{
-          background: 'radial-gradient(circle at center, #ffffff 0%, #f8f8f8 100%)',
+          background: 'radial-gradient(circle at center, #0a0a0a 0%, #050505 100%)',
         }}
       />
     </div>

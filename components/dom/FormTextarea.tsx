@@ -85,7 +85,7 @@ export default function FormTextarea({
 
   // Character counter color based on length
   const getCounterColor = () => {
-    if (charCount < 50) return 'text-gray-400';
+    if (charCount < 50) return 'text-white/40';
     if (charCount < 100) return 'text-[#00a820]';
     return 'text-transparent bg-gradient-to-r from-[#00e92c] to-[#00b8a0] bg-clip-text';
   };
@@ -104,8 +104,8 @@ export default function FormTextarea({
         <div
           className={`
             relative rounded-2xl transition-all duration-300
-            ${isFocused ? 'bg-white' : 'bg-gray-50'}
-            ${error ? 'border-2 border-red-400/60 shadow-sm shadow-red-500/10' : 'border border-gray-200'}
+            ${isFocused ? 'bg-white/10' : 'bg-white/5'}
+            ${error ? 'border-2 border-red-400/60 shadow-sm shadow-red-500/10' : 'border border-white/10'}
           `}
         >
           {/* Floating Label */}
@@ -114,7 +114,7 @@ export default function FormTextarea({
             className={`
               absolute left-5 transition-all duration-300 pointer-events-none z-10
               ${isFocused || value ? 'top-2 text-xs' : 'top-4 text-base'}
-              ${isFocused ? 'text-[#00a820]' : error ? 'text-red-500' : 'text-gray-400'}
+              ${isFocused ? 'text-[#00e92c]' : error ? 'text-red-400' : 'text-white/40'}
               font-medium
             `}
           >
@@ -138,7 +138,7 @@ export default function FormTextarea({
             aria-describedby={error ? `${name}-error` : undefined}
             className={`
               w-full px-5 pt-6 pb-2 bg-transparent outline-none resize-none
-              text-gray-900 placeholder-gray-300 transition-all duration-200
+              text-white placeholder-white/20 transition-all duration-200
               ${isFocused || value ? 'text-base' : 'text-transparent'}
             `}
             style={{ minHeight: '120px', maxHeight: '300px' }}
@@ -207,7 +207,7 @@ export default function FormTextarea({
 
           {/* Progress Bar (bottom of container) */}
           {isFocused && charPercentage > 0 && (
-            <div className="absolute bottom-0 left-0 right-0 h-1 bg-gray-200/30 rounded-b-2xl overflow-hidden">
+            <div className="absolute bottom-0 left-0 right-0 h-1 bg-white/10 rounded-b-2xl overflow-hidden">
               <div
                 className="h-full bg-gradient-to-r from-cyan-400 to-green-400 transition-all duration-300"
                 style={{ width: `${Math.min(charPercentage, 100)}%` }}

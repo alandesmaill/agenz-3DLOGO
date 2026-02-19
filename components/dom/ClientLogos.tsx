@@ -61,7 +61,7 @@ export default function ClientLogos() {
       {/* Section Heading */}
       <div className="text-center mb-12">
         <AnimatedText
-          className="text-3xl md:text-4xl lg:text-5xl font-['Gibson'] font-bold text-gray-900 tracking-tight"
+          className="text-3xl md:text-4xl lg:text-5xl font-['Gibson'] font-bold text-white tracking-tight"
           splitBy="chars"
           stagger={0.02}
           duration={0.5}
@@ -79,7 +79,7 @@ export default function ClientLogos() {
             ref={(el) => {
               logoRefs.current[index] = el;
             }}
-            className="group relative aspect-square rounded-xl bg-gray-100 shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden"
+            className="group relative aspect-square rounded-xl bg-white/5 border border-white/8 hover:shadow-xl hover:shadow-black/30 transition-all duration-300 overflow-hidden"
           >
             {/* Logo Image */}
             <div className="relative w-full h-full p-6 flex items-center justify-center">

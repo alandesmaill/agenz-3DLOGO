@@ -52,8 +52,8 @@ export default function InfiniteText({ text, length = 5, className = '' }: Infin
           key={`${index}-${text}`}
           className={`flex items-center px-10 ${
             index % 2 === 0
-              ? 'text-gray-400'
-              : 'text-transparent [-webkit-text-stroke:1px_rgba(0,0,0,0.3)]'
+              ? 'text-white/30'
+              : 'text-transparent [-webkit-text-stroke:1px_rgba(255,255,255,0.2)]'
           }`}
         >
           <span className="text-sm font-bold tracking-widest uppercase">{text}</span>

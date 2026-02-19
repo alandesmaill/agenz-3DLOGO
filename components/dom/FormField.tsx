@@ -67,8 +67,8 @@ export default function FormField({
         <div
           className={`
             relative rounded-2xl transition-all duration-300
-            ${isFocused ? 'bg-white' : 'bg-gray-50'}
-            ${error ? 'border-2 border-red-400/60 shadow-sm shadow-red-500/10' : 'border border-gray-200'}
+            ${isFocused ? 'bg-white/10' : 'bg-white/5'}
+            ${error ? 'border-2 border-red-400/60 shadow-sm shadow-red-500/10' : 'border border-white/10'}
           `}
         >
           {/* Floating Label */}
@@ -77,7 +77,7 @@ export default function FormField({
             className={`
               absolute left-5 transition-all duration-300 pointer-events-none
               ${isFocused || value ? 'top-2 text-xs' : 'top-4 text-base'}
-              ${isFocused ? 'text-[#00a820]' : error ? 'text-red-500' : 'text-gray-400'}
+              ${isFocused ? 'text-[#00e92c]' : error ? 'text-red-400' : 'text-white/40'}
               font-medium
             `}
           >
@@ -101,7 +101,7 @@ export default function FormField({
             aria-describedby={error ? `${name}-error` : undefined}
             className={`
               w-full px-5 pt-6 pb-2 bg-transparent outline-none
-              text-gray-900 placeholder-gray-300 transition-all duration-200
+              text-white placeholder-white/20 transition-all duration-200
               ${isFocused || value ? 'text-base' : 'text-transparent'}
             `}
             style={{ minHeight: '56px' }} // Touch-friendly height

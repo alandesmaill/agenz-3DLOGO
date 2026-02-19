@@ -18,16 +18,14 @@ interface AboutSectionProps {
   onBack?: () => void;
 }
 
-// Light gradient background style applied to scroll-container — 6 layers covering full page
-const lightGradientStyle: React.CSSProperties = {
+// Dark gradient background style applied to scroll-container — 4 layers on #050505
+const darkGradientStyle: React.CSSProperties = {
   background: `
-    radial-gradient(ellipse 80% 60% at 0% 0%, rgba(0, 233, 44, 0.13) 0%, transparent 50%),
-    radial-gradient(ellipse 60% 50% at 100% 0%, rgba(0, 184, 255, 0.12) 0%, transparent 50%),
-    radial-gradient(ellipse 60% 40% at 20% 50%, rgba(0, 233, 44, 0.07) 0%, transparent 50%),
-    radial-gradient(ellipse 60% 40% at 80% 50%, rgba(0, 184, 255, 0.07) 0%, transparent 50%),
-    radial-gradient(ellipse 70% 50% at 10% 100%, rgba(0, 233, 44, 0.10) 0%, transparent 50%),
-    radial-gradient(ellipse 70% 50% at 100% 100%, rgba(0, 184, 255, 0.09) 0%, transparent 50%),
-    #f5f4f0
+    radial-gradient(ellipse 80% 60% at 0% 0%, rgba(0, 233, 44, 0.10) 0%, transparent 50%),
+    radial-gradient(ellipse 60% 50% at 100% 0%, rgba(0, 255, 255, 0.08) 0%, transparent 50%),
+    radial-gradient(ellipse 70% 50% at 10% 100%, rgba(0, 233, 44, 0.08) 0%, transparent 50%),
+    radial-gradient(ellipse 70% 50% at 100% 100%, rgba(0, 255, 255, 0.07) 0%, transparent 50%),
+    #050505
   `,
 };
 
@@ -176,11 +174,11 @@ export default function AboutSection({ onBack }: AboutSectionProps) {
       <div
         ref={rootRef}
         className="scroll-container"
-        style={lightGradientStyle}
+        style={darkGradientStyle}
       >
         {/* Header - Fixed, Light Variant */}
         <Header
-          variant="light"
+          variant="dark"
           onLogoClick={onBack}
           onGetInTouch={() => (window.location.href = '/contact')}
           onMenuClick={() => setMenuOpen(true)}
@@ -197,7 +195,7 @@ export default function AboutSection({ onBack }: AboutSectionProps) {
 
             {/* WELCOME TO */}
             <h2
-              className="text-gray-900 font-bold uppercase tracking-[0.2em]"
+              className="text-white font-bold uppercase tracking-[0.2em]"
               style={{ fontSize: 'clamp(1.4rem, 5vw, 7vw)', lineHeight: 1.1 }}
             >
               {aboutContent.hero.welcomeText}
@@ -213,7 +211,7 @@ export default function AboutSection({ onBack }: AboutSectionProps) {
 
             {/* Tagline — lighter weight, softer colour for hierarchy contrast */}
             <AnimatedText
-              className="text-gray-500 font-semibold uppercase leading-tight mt-2 tracking-[0.05em]"
+              className="text-white/40 font-semibold uppercase leading-tight mt-2 tracking-[0.05em]"
               style={{ fontSize: 'clamp(1.2rem, 3.5vw, 4.5vw)' }}
               splitBy="words"
               stagger={0.04}
@@ -224,7 +222,7 @@ export default function AboutSection({ onBack }: AboutSectionProps) {
               WE MASTER EVERYTHING
             </AnimatedText>
             <AnimatedText
-              className="text-gray-500 font-semibold uppercase leading-tight tracking-[0.05em]"
+              className="text-white/40 font-semibold uppercase leading-tight tracking-[0.05em]"
               style={{ fontSize: 'clamp(1.2rem, 3.5vw, 4.5vw)' }}
               splitBy="words"
               stagger={0.04}
@@ -268,12 +266,12 @@ export default function AboutSection({ onBack }: AboutSectionProps) {
           <div className="relative z-10 max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             {/* Left: Mission Text */}
             <div>
-              <div className="mission-card bg-white/70 backdrop-blur-xl rounded-3xl p-8 md:p-12 border-l-4 border-l-[#00e92c] border border-gray-100 shadow-lg">
+              <div className="mission-card bg-white/5 backdrop-blur-xl rounded-3xl p-8 md:p-12 border-l-4 border-l-[#00e92c] border border-white/8 shadow-lg">
                 <h2 className="text-xl font-bold mb-4 uppercase tracking-wider bg-gradient-to-r from-[#00e92c] to-[#00ffff] bg-clip-text text-transparent">
                   Our Mission
                 </h2>
                 <AnimatedText
-                  className="text-gray-700 text-2xl md:text-3xl lg:text-4xl font-light leading-relaxed"
+                  className="text-white/65 text-2xl md:text-3xl lg:text-4xl font-light leading-relaxed"
                   splitBy="words"
                   stagger={0.03}
                   duration={0.8}
@@ -290,7 +288,7 @@ export default function AboutSection({ onBack }: AboutSectionProps) {
               {aboutContent.mission.stats.map((stat, index) => (
                 <div
                   key={stat.label}
-                  className="bg-white/70 backdrop-blur-xl rounded-2xl p-6 border border-green-200 shadow-md text-center"
+                  className="bg-white/5 backdrop-blur-xl rounded-2xl p-6 border border-white/8 shadow-md text-center"
                 >
                   <div
                     ref={(el) => {
@@ -300,7 +298,7 @@ export default function AboutSection({ onBack }: AboutSectionProps) {
                   >
                     0+
                   </div>
-                  <div className="text-gray-500 text-xs md:text-sm uppercase tracking-wider">
+                  <div className="text-white/40 text-xs md:text-sm uppercase tracking-wider">
                     {stat.label}
                   </div>
                 </div>
@@ -343,7 +341,7 @@ export default function AboutSection({ onBack }: AboutSectionProps) {
               aria-hidden="true"
             >
               <span
-                className="font-extrabold uppercase text-gray-900"
+                className="font-extrabold uppercase text-white"
                 style={{ fontSize: 'clamp(6rem, 22vw, 28vw)', opacity: 0.04, letterSpacing: '0.05em' }}
               >
                 AGENZ
@@ -351,7 +349,7 @@ export default function AboutSection({ onBack }: AboutSectionProps) {
             </div>
 
             <AnimatedText
-              className="text-gray-900 text-5xl md:text-6xl lg:text-7xl font-bold mb-8 bg-gradient-to-r from-[#00e92c] to-[#00ffff] bg-clip-text text-transparent"
+              className="text-white text-5xl md:text-6xl lg:text-7xl font-bold mb-8 bg-gradient-to-r from-[#00e92c] to-[#00ffff] bg-clip-text text-transparent"
               splitBy="words"
               stagger={0.05}
               duration={0.8}

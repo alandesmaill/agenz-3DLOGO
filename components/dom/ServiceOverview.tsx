@@ -20,7 +20,7 @@ export default function ServiceOverview({
       {/* Left column: Heading */}
       <div className="md:sticky md:top-32">
         <AnimatedText
-          className="text-3xl md:text-4xl lg:text-5xl font-['Gibson'] font-bold text-gray-900 leading-tight"
+          className="text-3xl md:text-4xl lg:text-5xl font-['Gibson'] font-bold text-white leading-tight"
           splitBy="words"
           stagger={0.03}
           duration={0.6}
@@ -37,7 +37,7 @@ export default function ServiceOverview({
           {paragraphs.map((paragraph, index) => (
             <p
               key={index}
-              className="text-lg font-['Gibson'] text-gray-700 leading-relaxed"
+              className="text-lg font-['Gibson'] text-white/65 leading-relaxed"
             >
               {paragraph}
             </p>
@@ -47,7 +47,7 @@ export default function ServiceOverview({
         {/* Benefits list */}
         <div className="pt-4">
           <h4
-            className="text-xl font-['Gibson'] font-bold text-gray-900 mb-6"
+            className="text-xl font-['Gibson'] font-bold text-white mb-6"
             style={{ color: accentColor }}
           >
             What&apos;s Included:
@@ -56,7 +56,7 @@ export default function ServiceOverview({
             {benefits.map((benefit, index) => (
               <li
                 key={index}
-                className="flex items-start gap-4 font-['Gibson'] text-gray-700"
+                className="flex items-start gap-4 font-['Gibson'] text-white/65"
               >
                 <span
                   className="

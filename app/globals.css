@@ -44,9 +44,14 @@
 }
 
 :root {
-  color-scheme: light only;
-  --background: #f3f4f6;
-  --foreground: #1a1a1a;
+  --background: #050505;
+  --foreground: #ffffff;
+  --surface: #0e0e0e;
+  --surface-elevated: #1a1a1a;
+  --border: rgba(255, 255, 255, 0.08);
+  --text-primary: #ffffff;
+  --text-secondary: rgba(255, 255, 255, 0.65);
+  --text-muted: rgba(255, 255, 255, 0.40);
   --white: #ffffff;
 
   /* Brand Colors */
@@ -57,25 +62,6 @@
   /* Layout */
   --layout-margin: 2rem;
   --layout-columns-gap: 1rem;
-}
-
-/* Prevent dark mode from system preferences */
-@media (prefers-color-scheme: dark) {
-  :root {
-    color-scheme: light only;
-    --background: #f3f4f6;
-    --foreground: #1a1a1a;
-  }
-
-  body {
-    background: #f3f4f6 !important;
-    color: #1a1a1a !important;
-  }
-
-  /* Override any inherited dark mode styles */
-  * {
-    color-scheme: light only;
-  }
 }
 
 * {
@@ -105,24 +91,16 @@ body {
 body:has(.scroll-container) {
   overflow: auto;
   height: auto;
-  background: #f3f4f6;  /* bg-gray-100 */
-  color: #1a1a1a;      /* Dark text */
-}
-
-/* About dark bg overrides scroll-container defaults */
-body:has(.about-dark-bg) {
-  overflow: auto;
-  height: auto;
-  background: #050505 !important;
-  color: #ffffff !important;
+  background: #050505;
+  color: #ffffff;
 }
 
 /* Enable scroll for service routes and other scrollable pages */
 body:has(main.scrollable-page) {
   overflow: auto;
   height: auto;
-  background: #f3f4f6;
-  color: #1a1a1a;
+  background: #050505;
+  color: #ffffff;
 }
 
 /* Force enable scroll on mobile for all non-landing pages */
@@ -193,19 +171,6 @@ h6 {
   }
 }
 
-/* Dark background for About page - prevents light flash */
-body:has(.about-dark-bg) {
-  background: #050505 !important;
-  color: #ffffff !important;
-}
-
-/* Override dark mode prevention for about dark bg */
-@media (prefers-color-scheme: dark) {
-  body:has(.about-dark-bg) {
-    background: #050505 !important;
-    color: #ffffff !important;
-  }
-}
 
 /* Smooth scrolling - disabled for Lenis */
 html {
@@ -270,7 +235,7 @@ html {
   -webkit-user-select: none;
 }
 
-/* Custom scrollbar - auto-hide with black/gray colors */
+/* Custom scrollbar - auto-hide with white/gray colors for dark bg */
 ::-webkit-scrollbar {
   width: 8px;
 }
@@ -280,27 +245,18 @@ html {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(0, 0, 0, 0); /* Hidden by default */
+  background: rgba(255, 255, 255, 0); /* Hidden by default */
   border-radius: 4px;
   transition: background 0.3s ease;
 }
 
 /* Show scrollbar on page hover or scroll */
 body:hover ::-webkit-scrollbar-thumb {
-  background: rgba(0, 0, 0, 0.3); /* Semi-transparent black */
-}
-
-body:hover ::-webkit-scrollbar-thumb:hover {
-  background: rgba(60, 60, 60, 0.6); /* Darker gray on hover */
-}
-
-/* Light scrollbar for dark about page */
-.about-dark-bg::-webkit-scrollbar-thumb {
   background: rgba(255, 255, 255, 0.2);
 }
 
-.about-dark-bg:hover::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.3);
+body:hover ::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.4);
 }
 
 /* Firefox scrollbar support */
@@ -310,7 +266,7 @@ body:hover ::-webkit-scrollbar-thumb:hover {
 }
 
 body:hover * {
-  scrollbar-color: rgba(0, 0, 0, 0.3) transparent;
+  scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
 }
 
 /* =============================================

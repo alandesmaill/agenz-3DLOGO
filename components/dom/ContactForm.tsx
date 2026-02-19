@@ -248,18 +248,18 @@ export default function ContactForm({ onSuccess }: ContactFormProps) {
       {/* Outer soft shadow glow */}
       <div className="absolute -inset-2 bg-gradient-to-br from-[#00e92c]/10 via-transparent to-[#00b8a0]/10 rounded-3xl blur-2xl" />
 
-      {/* Form Container — Liquid Glass on light bg */}
-      <div className="relative p-8 md:p-10 rounded-3xl bg-white/80 backdrop-blur-2xl border border-gray-100 shadow-2xl shadow-black/8">
+      {/* Form Container — Dark Glass */}
+      <div className="relative p-8 md:p-10 rounded-3xl bg-white/5 backdrop-blur-2xl border border-white/8 shadow-2xl shadow-black/20">
 
         {/* Subtle inner shimmer */}
-        <div className="absolute inset-0 bg-gradient-to-br from-white via-transparent to-gray-50/50 rounded-3xl pointer-events-none" />
+        <div className="absolute inset-0 bg-gradient-to-br from-white/5 via-transparent to-white/3 rounded-3xl pointer-events-none" />
 
         {/* Form Header */}
         <div className="mb-8">
-          <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">
+          <h2 className="text-2xl md:text-3xl font-bold text-white mb-2">
             Send a Message
           </h2>
-          <p className="text-gray-400 text-sm">
+          <p className="text-white/40 text-sm">
             All fields marked <span className="text-red-500">*</span> are required
           </p>
         </div>
@@ -343,7 +343,7 @@ export default function ContactForm({ onSuccess }: ContactFormProps) {
 
           {/* General Error Message */}
           {errors.general && (
-            <div className="p-4 rounded-xl bg-red-50 border border-red-200 text-red-600 flex items-start gap-3">
+            <div className="p-4 rounded-xl bg-red-900/20 border border-red-500/30 text-red-400 flex items-start gap-3">
               <svg className="w-5 h-5 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
                 <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
               </svg>
@@ -398,7 +398,7 @@ export default function ContactForm({ onSuccess }: ContactFormProps) {
           </button>
 
           {/* Privacy Note */}
-          <p className="text-xs text-gray-400 text-center">
+          <p className="text-xs text-white/40 text-center">
             Your information is secure and will never be shared.
           </p>
         </form>

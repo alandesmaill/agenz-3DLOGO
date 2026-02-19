@@ -55,8 +55,8 @@ export default function ServiceFeatureGrid({
           className="
             p-4 sm:p-6 md:p-8
             rounded-2xl
-            bg-gray-100/80 backdrop-blur-xl
-            border border-white/30
+            bg-white/5 backdrop-blur-xl
+            border border-white/8
             shadow-lg hover:shadow-2xl
             transition-all duration-300
             hover:scale-[1.02]
@@ -93,7 +93,7 @@ export default function ServiceFeatureGrid({
             className="
               text-xl md:text-2xl
               font-['Gibson'] font-bold
-              text-gray-900
+              text-white
               mb-3
               tracking-tight
             "
@@ -102,7 +102,7 @@ export default function ServiceFeatureGrid({
           </h3>
 
           {/* Description */}
-          <p className="font-['Gibson'] text-gray-700 leading-relaxed">
+          <p className="font-['Gibson'] text-white/65 leading-relaxed">
             {feature.description}
           </p>
         </div>

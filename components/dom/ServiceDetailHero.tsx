@@ -39,7 +39,7 @@ export default function ServiceDetailHero({
       <div className="relative z-10">
         {/* Title with AnimatedText */}
         <AnimatedText
-          className="text-4xl md:text-5xl lg:text-6xl font-['Gibson'] font-bold text-gray-900 mb-4 tracking-tight"
+          className="text-4xl md:text-5xl lg:text-6xl font-['Gibson'] font-bold text-white mb-4 tracking-tight"
           splitBy="chars"
           stagger={0.02}
           duration={0.5}
@@ -49,12 +49,12 @@ export default function ServiceDetailHero({
         </AnimatedText>
 
         {/* Tagline */}
-        <p className="text-2xl md:text-3xl font-['Gibson'] font-medium text-gray-700 mb-6">
+        <p className="text-2xl md:text-3xl font-['Gibson'] font-medium text-white/65 mb-6">
           {tagline}
         </p>
 
         {/* Description */}
-        <p className="text-lg md:text-xl font-['Gibson'] text-gray-600 mb-12 max-w-4xl leading-relaxed">
+        <p className="text-lg md:text-xl font-['Gibson'] text-white/50 mb-12 max-w-4xl leading-relaxed">
           {description}
         </p>
 
