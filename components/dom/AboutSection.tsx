@@ -322,9 +322,9 @@ export default function AboutSection({ onBack }: AboutSectionProps) {
           <div
             ref={graphicsRef}
             className="absolute left-0 top-1/2 -translate-y-1/2 pointer-events-none
-              w-[50vw] opacity-20 -translate-x-[20%]
-              md:w-[40vw] md:opacity-40 md:-translate-x-[15%]
-              lg:w-[35vw] lg:opacity-60 lg:-translate-x-[10%]"
+              w-[55vw] opacity-30 -translate-x-[15%]
+              md:w-[45vw] md:opacity-55 md:-translate-x-[10%]
+              lg:w-[40vw] lg:opacity-75 lg:-translate-x-[5%]"
           >
             <Image
               src="/images/about/shapes/graphics-shapes.png"
@@ -337,8 +337,21 @@ export default function AboutSection({ onBack }: AboutSectionProps) {
 
           {/* Content */}
           <div className="relative z-10 text-center px-6">
+            {/* Watermark AGENZ behind headline */}
+            <div
+              className="cta-watermark absolute inset-0 flex items-center justify-center pointer-events-none select-none"
+              aria-hidden="true"
+            >
+              <span
+                className="font-extrabold uppercase text-gray-900"
+                style={{ fontSize: 'clamp(6rem, 22vw, 28vw)', opacity: 0.04, letterSpacing: '0.05em' }}
+              >
+                AGENZ
+              </span>
+            </div>
+
             <AnimatedText
-              className="text-gray-900 text-5xl md:text-6xl lg:text-7xl font-bold mb-8"
+              className="text-gray-900 text-5xl md:text-6xl lg:text-7xl font-bold mb-8 bg-gradient-to-r from-[#00e92c] to-[#00ffff] bg-clip-text text-transparent"
               splitBy="words"
               stagger={0.05}
               duration={0.8}
@@ -350,7 +363,7 @@ export default function AboutSection({ onBack }: AboutSectionProps) {
 
             <Link
               href="/contact"
-              className="inline-block px-12 py-5 text-xl font-bold text-black bg-gradient-to-r from-[#00e92c] to-[#00ffff] rounded-full hover:scale-105 transition-transform duration-300 shadow-2xl"
+              className="inline-block px-12 py-5 text-xl font-bold text-black bg-gradient-to-r from-[#00e92c] to-[#00ffff] rounded-full hover:scale-105 transition-transform duration-300 shadow-[0_0_40px_rgba(0,233,44,0.3)] hover:shadow-[0_0_60px_rgba(0,233,44,0.5)]"
             >
               {aboutContent.cta.buttonText}
             </Link>
