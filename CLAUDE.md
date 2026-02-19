@@ -9,12 +9,19 @@ npm install              # Install dependencies
 npm run dev              # Start dev server (http://localhost:3000)
 npm run build            # Production build
 npm run lint             # Run ESLint
+npm run analyze          # Bundle analysis (sets ANALYZE=true)
+
+# Jest unit tests (files in __tests__/)
+npm run test             # Run all Jest tests
+npm run test:watch       # Watch mode
+npm run test:coverage    # Coverage report
+
+# Playwright E2E/perf tests (files in tests/)
 npm run test:perf:headed # Run Playwright performance tests (accurate GPU rendering)
 npm run test:perf        # Run headless (faster but lower FPS due to software rendering)
 npm run test:perf:report # View HTML report from last run
-npm run analyze          # Bundle analysis (sets ANALYZE=true)
 
-# Run specific test suites
+# Run specific Playwright test suites
 npx playwright test tests/performance.spec.ts             # 3D scene
 npx playwright test tests/text-animation.spec.ts          # Text animations
 npx playwright test tests/navigation-flow.spec.ts         # Full nav flow
@@ -133,6 +140,18 @@ The staggered `setTimeout` calls in `SmoothScrolling`, section components, and `
 ### forwardRef Pattern
 
 `ServiceCard` uses `forwardRef` with a **named function** (not arrow function) for SWC compatibility.
+
+### Responsive Hook
+
+`hooks/useResponsive.ts` provides breakpoints: mobile `< 768px`, tablet `768–1024px`, desktop `> 1024px`.
+
+### CSP Headers
+
+`next.config.js` sets strict Content-Security-Policy. When integrating new external services (analytics, CDN fonts, API endpoints), update the CSP `connect-src`, `script-src`, or `img-src` directives accordingly — otherwise requests will be blocked in production.
+
+### Installed-but-Unused Dependencies
+
+`@clerk/nextjs`, `@sanity/client`, `next-sanity`, `drizzle-orm`, `@vercel/kv`, `@vercel/postgres`, and `@upstash/ratelimit` are in `package.json` but not yet wired into the app. Do not assume these are active — verify with `grep` before using.
 
 ## Environment Variables
 

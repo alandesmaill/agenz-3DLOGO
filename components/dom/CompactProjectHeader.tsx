@@ -11,7 +11,6 @@ interface CompactProjectHeaderProps {
   category: WorkCategory;
   accentColor: string;
   tagline: string;
-  stats: Array<{ value: string; label: string }>;
   coverImage?: string;
 }
 
@@ -22,7 +21,6 @@ export default function CompactProjectHeader({
   category,
   accentColor,
   tagline,
-  stats,
   coverImage,
 }: CompactProjectHeaderProps) {
   return (
@@ -59,20 +57,6 @@ export default function CompactProjectHeader({
             {/* Tagline */}
             <p className="mt-2 text-base font-['Gibson'] text-gray-400 max-w-xl">{tagline}</p>
 
-            {/* Stats row */}
-            <div className="flex flex-wrap gap-4 mt-8">
-              {stats.slice(0, 3).map((stat, i) => (
-                <div
-                  key={i}
-                  className="backdrop-blur-xl bg-white/60 border border-white/30 rounded-2xl px-5 py-4 shadow-sm"
-                >
-                  <div className="text-2xl font-['Gibson'] font-bold" style={{ color: accentColor }}>
-                    {stat.value}
-                  </div>
-                  <div className="text-xs font-['Gibson'] text-gray-500 mt-0.5">{stat.label}</div>
-                </div>
-              ))}
-            </div>
           </div>
 
           {/* Optional cover image — 2 cols on desktop */}
