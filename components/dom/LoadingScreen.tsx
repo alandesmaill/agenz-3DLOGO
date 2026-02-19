@@ -58,8 +58,9 @@ export default function LoadingScreen({ progress, isLoaded }: LoadingScreenProps
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-gray-100"
+      className="fixed inset-0 z-50 flex items-center justify-center"
       style={{
+        background: 'radial-gradient(ellipse 80% 60% at 0% 0%, rgba(0, 233, 44, 0.10) 0%, transparent 50%), radial-gradient(ellipse 60% 50% at 100% 0%, rgba(0, 255, 255, 0.08) 0%, transparent 50%), radial-gradient(ellipse 70% 50% at 10% 100%, rgba(0, 233, 44, 0.08) 0%, transparent 50%), radial-gradient(ellipse 70% 50% at 100% 100%, rgba(0, 255, 255, 0.07) 0%, transparent 50%), #050505',
         opacity,
         transition: 'opacity 0.8s ease-out',
         willChange: 'opacity',
@@ -74,7 +75,7 @@ export default function LoadingScreen({ progress, isLoaded }: LoadingScreenProps
             className="w-full h-auto"
             aria-hidden="true"
           >
-            <g fill="#e5e5e5">
+            <g fill="rgba(255,255,255,0.08)">
               <g>
                 <path d="M311.7,53.81v63.53c-14.49,14.49-31.96,23.82-64.92,23.82-36.13,0-73.46-19.06-73.46-70.68S211.44,0,248.77,0s54.79,16.08,58.76,20.45l-29.18,30.57c-4.37-4.37-14.1-9.13-26.6-9.13-14.29,0-26.4,9.53-26.4,28.39s10.13,29.38,26.8,29.38c8.34,0,15.09-1.59,19.26-5.36v-4.96h-25.02v-35.54h65.32Z"/>
                 <path d="M431.12,0v40.1h-52.17v10.64h49.51v39.07h-49.51v10.84h52.18v40.61h-104.75V0h104.74Z"/>
@@ -104,14 +105,14 @@ export default function LoadingScreen({ progress, isLoaded }: LoadingScreenProps
               </linearGradient>
             </defs>
             <g>
-              <g fill="#000000">
+              <g fill="#ffffff">
                 <path d="M311.7,53.81v63.53c-14.49,14.49-31.96,23.82-64.92,23.82-36.13,0-73.46-19.06-73.46-70.68S211.44,0,248.77,0s54.79,16.08,58.76,20.45l-29.18,30.57c-4.37-4.37-14.1-9.13-26.6-9.13-14.29,0-26.4,9.53-26.4,28.39s10.13,29.38,26.8,29.38c8.34,0,15.09-1.59,19.26-5.36v-4.96h-25.02v-35.54h65.32Z"/>
                 <path d="M431.12,0v40.1h-52.17v10.64h49.51v39.07h-49.51v10.84h52.18v40.61h-104.75V0h104.74Z"/>
                 <path d="M501.66,0l33.14,69.76s-1.23-15.55-1.23-21.89V0h51.76v141.26h-55.85l-33.14-70.27s1.23,14.52,1.23,22.3v47.98h-51.76V0h55.85Z"/>
               </g>
-              <path fill="#000000" d="M56.26,141.27H0L101.33,0h57.05L56.26,141.27ZM107.71,0h50.67s.26,141.26.26,141.26h-50.93V0Z"/>
+              <path fill="#ffffff" d="M56.26,141.27H0L101.33,0h57.05L56.26,141.27ZM107.71,0h50.67s.26,141.26.26,141.26h-50.93V0Z"/>
               <polygon fill="url(#loading-gradient)" points="600.02 0 600.02 42.34 659.28 42.34 617.61 87.42 682.03 87.42 762.91 0 600.02 0"/>
-              <polygon fill="#000000" points="680.89 53.85 600.02 141.27 636.54 141.26 762.91 141.26 762.91 98.93 703.65 98.93 745.32 53.85 680.89 53.85"/>
+              <polygon fill="#ffffff" points="680.89 53.85 600.02 141.27 636.54 141.26 762.91 141.26 762.91 98.93 703.65 98.93 745.32 53.85 680.89 53.85"/>
             </g>
           </svg>
         </div>
@@ -119,9 +120,9 @@ export default function LoadingScreen({ progress, isLoaded }: LoadingScreenProps
         {/* Minimal progress indicator */}
         <div className="mt-8 flex flex-col items-center gap-3">
           {/* Progress bar */}
-          <div className="w-[200px] h-[2px] bg-gray-300 rounded-full overflow-hidden">
+          <div className="w-[200px] h-[2px] bg-white/15 rounded-full overflow-hidden">
             <div
-              className="h-full bg-black rounded-full"
+              className="h-full bg-white rounded-full"
               style={{
                 width: `${smoothProgress}%`,
                 transition: 'width 0.1s ease-out',
@@ -130,7 +131,7 @@ export default function LoadingScreen({ progress, isLoaded }: LoadingScreenProps
           </div>
 
           {/* Progress text */}
-          <span className="text-sm text-gray-500 font-medium tracking-wider">
+          <span className="text-sm text-white/40 font-medium tracking-wider">
             {Math.round(smoothProgress)}%
           </span>
         </div>
