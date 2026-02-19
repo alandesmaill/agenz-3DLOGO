@@ -190,26 +190,31 @@ export default function AboutSection({ onBack }: AboutSectionProps) {
         <section className="relative h-screen w-full flex items-center md:items-end overflow-hidden md:pb-24">
           {/* Left-aligned text block */}
           <div className="relative z-10 w-full px-6 md:px-8 lg:px-12 mt-16 md:mt-0">
+            {/* Accent rule */}
+            <div
+              className="hero-accent-rule h-0.5 w-16 mb-4 rounded-full bg-gradient-to-r from-[#00e92c] to-[#00ffff]"
+            />
+
             {/* WELCOME TO */}
             <h2
-              className="text-gray-900 font-bold uppercase tracking-[0.15em]"
-              style={{ fontSize: 'clamp(2rem, 7vw, 10vw)', lineHeight: 1.1 }}
+              className="text-gray-900 font-bold uppercase tracking-[0.2em]"
+              style={{ fontSize: 'clamp(1.4rem, 5vw, 7vw)', lineHeight: 1.1 }}
             >
               {aboutContent.hero.welcomeText}
             </h2>
 
-            {/* AGENZ */}
+            {/* AGENZ — gradient fill */}
             <h1
-              className="text-gray-900 font-extrabold uppercase leading-none tracking-[0.1em]"
+              className="font-extrabold uppercase leading-none tracking-[0.1em] bg-gradient-to-r from-[#00e92c] to-[#00ffff] bg-clip-text text-transparent"
               style={{ fontSize: 'clamp(3.5rem, 14vw, 16vw)' }}
             >
               {aboutContent.hero.brandName}
             </h1>
 
-            {/* Tagline */}
+            {/* Tagline — lighter weight, softer colour for hierarchy contrast */}
             <AnimatedText
-              className="text-gray-900 font-extrabold uppercase leading-tight mt-2 tracking-[0.05em]"
-              style={{ fontSize: 'clamp(1.5rem, 4vw, 5vw)' }}
+              className="text-gray-500 font-semibold uppercase leading-tight mt-2 tracking-[0.05em]"
+              style={{ fontSize: 'clamp(1.2rem, 3.5vw, 4.5vw)' }}
               splitBy="words"
               stagger={0.04}
               duration={0.6}
@@ -219,8 +224,8 @@ export default function AboutSection({ onBack }: AboutSectionProps) {
               WE MASTER EVERYTHING
             </AnimatedText>
             <AnimatedText
-              className="text-gray-900 font-extrabold uppercase leading-tight tracking-[0.05em]"
-              style={{ fontSize: 'clamp(1.5rem, 4vw, 5vw)' }}
+              className="text-gray-500 font-semibold uppercase leading-tight tracking-[0.05em]"
+              style={{ fontSize: 'clamp(1.2rem, 3.5vw, 4.5vw)' }}
               splitBy="words"
               stagger={0.04}
               duration={0.6}
@@ -235,9 +240,9 @@ export default function AboutSection({ onBack }: AboutSectionProps) {
           <div
             ref={flowerRef}
             className="absolute pointer-events-none
-              right-0 top-[35%] -translate-y-1/2 w-[65vw] opacity-35 translate-x-[10%]
-              md:top-1/2 md:w-[45vw] md:opacity-50 md:translate-x-[10%]
-              lg:w-[40vw] lg:opacity-80 lg:translate-x-[5%]"
+              right-0 top-[35%] -translate-y-1/2 w-[75vw] opacity-60 translate-x-[10%]
+              md:top-1/2 md:w-[52vw] md:opacity-80 md:translate-x-[5%]
+              lg:w-[46vw] lg:opacity-100 lg:translate-x-[0%]"
           >
             <Image
               src="/images/about/shapes/flower.png"
