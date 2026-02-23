@@ -202,8 +202,13 @@ export default function Footer() {
 
             {/* Column 3: Services */}
             <div className="footer-column text-center md:text-left">
-              <h3 className="text-white font-semibold mb-4 text-sm uppercase tracking-wider">
-                Services
+              <h3 className="mb-4 text-sm uppercase tracking-wider">
+                <Link
+                  href="/services"
+                  className="text-white font-semibold hover:text-cyan-400 transition-colors duration-300"
+                >
+                  Services
+                </Link>
               </h3>
               <ul className="space-y-3">
                 {serviceLinks.map((link) => (

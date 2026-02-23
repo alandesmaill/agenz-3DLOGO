@@ -104,7 +104,7 @@ export default function FormTextarea({
         <div
           className={`
             relative rounded-2xl transition-all duration-300
-            ${isFocused ? 'bg-white/12' : 'bg-white/8'}
+            ${isFocused ? 'bg-[#111111]' : 'bg-white/8'}
             ${error ? 'border-2 border-red-400/60 shadow-sm shadow-red-500/10' : 'border border-white/14'}
           `}
         >
