@@ -24,7 +24,7 @@ export default function CompactProjectHeader({
   coverImage,
 }: CompactProjectHeaderProps) {
   return (
-    <section className="bg-[#050505] pt-28 pb-16 px-6 md:px-12">
+    <section className="pt-24 md:pt-28 pb-10 md:pb-14 px-6 md:px-12">
       <div className="max-w-6xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-10 items-start">
           {/* Text — 3 cols on desktop */}
