@@ -3,6 +3,7 @@
 import { useRef, useState, useEffect } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import Image from 'next/image';
 import ServiceCard from './ServiceCard';
 import InfiniteText from './InfiniteText';
 import MenuOverlay from './MenuOverlay';
@@ -23,6 +24,8 @@ export default function ServicesSection({ onBack }: ServicesSectionProps) {
   const sectionRef = useRef<HTMLElement>(null);
   const heroRef = useRef<HTMLDivElement>(null);
   const cardsRef = useRef<(HTMLDivElement | null)[]>([]);
+  const roseRef = useRef<HTMLDivElement>(null);
+  const roseFloatRef = useRef<gsap.core.Tween | null>(null);
 
   const [menuOpen, setMenuOpen] = useState(false);
   const { isMobile } = useResponsive();
@@ -45,6 +48,43 @@ export default function ServicesSection({ onBack }: ServicesSectionProps) {
     return () => {
       clearTimeout(refreshTimer);
       clearTimeout(updateTimer);
+    };
+  }, []);
+
+  // Rose shape float animation
+  useEffect(() => {
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (prefersReducedMotion || !roseRef.current) return;
+
+    // Scroll-triggered entrance: fade + slide from right
+    gsap.fromTo(
+      roseRef.current,
+      { opacity: 0, x: 80 },
+      {
+        opacity: 1,
+        x: 0,
+        duration: 1.2,
+        ease: 'power2.out',
+        scrollTrigger: {
+          trigger: roseRef.current,
+          start: 'top 85%',
+          once: true,
+        },
+      }
+    );
+
+    // Continuous float animation
+    roseFloatRef.current = gsap.to(roseRef.current, {
+      y: 12,
+      rotation: 4,
+      duration: 7,
+      ease: 'sine.inOut',
+      yoyo: true,
+      repeat: -1,
+    });
+
+    return () => {
+      roseFloatRef.current?.kill();
     };
   }, []);
 
@@ -108,7 +148,25 @@ export default function ServicesSection({ onBack }: ServicesSectionProps) {
           className="min-h-screen pt-24 md:pt-32 pb-16 md:pb-24 px-4 md:px-6 lg:px-12"
         >
           {/* Hero Section */}
-          <div ref={heroRef} className="max-w-7xl mx-auto mb-16">
+          <div ref={heroRef} className="relative overflow-visible max-w-7xl mx-auto mb-16">
+            {/* Rose flower — top-right, partially bleeding off edge */}
+            <div
+              ref={roseRef}
+              className="absolute pointer-events-none
+                right-0 top-0
+                w-[28vw] opacity-50 translate-x-[8%] -translate-y-[10%]
+                md:w-[22vw] md:opacity-70
+                lg:w-[18vw] lg:opacity-90"
+            >
+              <Image
+                src="/images/about/shapes/rose flower.webp"
+                alt=""
+                width={500}
+                height={500}
+                className="w-full h-auto"
+              />
+            </div>
+
             <AnimatedText
               className="text-5xl md:text-7xl font-['Gibson'] font-bold text-white tracking-tight mb-6"
               splitBy="chars"

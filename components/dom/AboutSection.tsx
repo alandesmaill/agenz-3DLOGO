@@ -122,9 +122,9 @@ export default function AboutSection({ onBack }: AboutSectionProps) {
 
       // Continuous float animation
       const flowerFloat = gsap.to(flowerRef.current, {
-        y: -20,
-        rotation: 3,
-        duration: 4,
+        y: 15,
+        rotation: -5,
+        duration: 6,
         ease: 'sine.inOut',
         yoyo: true,
         repeat: -1,
@@ -243,7 +243,7 @@ export default function AboutSection({ onBack }: AboutSectionProps) {
               lg:w-[46vw] lg:opacity-100 lg:translate-x-[0%]"
           >
             <Image
-              src="/images/about/shapes/flower.png"
+              src="/images/about/shapes/flower.webp"
               alt=""
               width={800}
               height={800}
@@ -325,7 +325,7 @@ export default function AboutSection({ onBack }: AboutSectionProps) {
               lg:w-[40vw] lg:opacity-75 lg:-translate-x-[5%]"
           >
             <Image
-              src="/images/about/shapes/graphics-shapes.png"
+              src="/images/about/shapes/graphics-shapes.webp"
               alt=""
               width={700}
               height={700}

@@ -1,6 +1,8 @@
 'use client';
 
 import { useState, useCallback } from 'react';
+import { Instagram, Linkedin, Twitter, Facebook } from 'lucide-react';
+import Image from 'next/image';
 import MenuOverlay from './MenuOverlay';
 import ContactForm from './ContactForm';
 import SubmissionSuccess from './SubmissionSuccess';
@@ -38,6 +40,24 @@ export default function ContactSection({ onBack }: ContactSectionProps) {
         #050505
       `,
     }}>
+
+      {/* Glass Agenz logo watermark — right side background decoration */}
+      <div
+        className="absolute pointer-events-none select-none
+          right-0 top-1/2 -translate-y-1/2
+          w-[55vw] md:w-[42vw] lg:w-[36vw]
+          opacity-[0.06] md:opacity-[0.09]
+          translate-x-[15%]"
+        aria-hidden="true"
+      >
+        <Image
+          src="/images/about/shapes/glass agenz logo.webp"
+          alt=""
+          width={700}
+          height={700}
+          className="w-full h-auto"
+        />
+      </div>
 
       {/* Fixed Header */}
       <Header
@@ -102,6 +122,30 @@ export default function ContactSection({ onBack }: ContactSectionProps) {
                     <p className="text-white/60 text-xs uppercase tracking-wider mb-0.5">Response Time</p>
                     <p className="text-white font-medium">Within 24 hours</p>
                   </div>
+                </div>
+              </div>
+
+              {/* Social Links */}
+              <div className="mt-10 pt-8 border-t border-white/10">
+                <p className="text-white/40 text-xs uppercase tracking-wider mb-4">Follow Us</p>
+                <div className="flex items-center gap-3">
+                  {[
+                    { name: 'Instagram', href: 'https://instagram.com/agenz', icon: Instagram },
+                    { name: 'LinkedIn', href: 'https://linkedin.com/company/agenz', icon: Linkedin },
+                    { name: 'Twitter', href: 'https://twitter.com/agenz', icon: Twitter },
+                    { name: 'Facebook', href: 'https://facebook.com/agenz', icon: Facebook },
+                  ].map((social) => (
+                    <a
+                      key={social.name}
+                      href={social.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={social.name}
+                      className="w-11 h-11 rounded-2xl bg-white/8 border border-white/14 flex items-center justify-center hover:bg-white/14 hover:border-[#00ffff]/50 hover:shadow-[0_0_20px_rgba(0,255,255,0.2)] transition-all duration-300"
+                    >
+                      <social.icon className="w-4 h-4 text-white/60" />
+                    </a>
+                  ))}
                 </div>
               </div>
             </div>
