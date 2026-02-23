@@ -53,7 +53,7 @@ export default function ServiceCTA({
       </Link>
 
       {/* Supporting text */}
-      <p className="mt-8 text-sm font-['Gibson'] text-white/40">
+      <p className="mt-8 text-sm font-['Gibson'] text-white/60">
         No commitment required • Free consultation • Response within 24 hours
       </p>
     </div>

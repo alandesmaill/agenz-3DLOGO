@@ -47,7 +47,7 @@ export default function GalleryCard({ item }: GalleryCardProps) {
       onMouseLeave={handleMouseLeave}
       className={cn(
         'group relative block overflow-hidden rounded-2xl',
-        'bg-white/5 backdrop-blur-sm border border-white/10',
+        'bg-white/8 backdrop-blur-sm border border-white/14',
         'transition-shadow duration-300',
         'hover:shadow-2xl',
         // Desktop: 500×600px, Mobile: full width with aspect ratio

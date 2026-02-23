@@ -75,7 +75,7 @@ export default function WorksCard({ item }: WorksCardProps) {
     <Link href={`/works/${item.id}`} className="block">
       <div
         ref={cardRef}
-        className="bg-white/5 border border-white/8 rounded-2xl overflow-hidden transition-colors duration-200"
+        className="bg-white/8 border border-white/14 rounded-2xl overflow-hidden transition-colors duration-200"
         style={{ borderLeftColor: isMobile ? item.accentColor : undefined, borderLeftWidth: isMobile ? 4 : undefined }}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
@@ -102,20 +102,20 @@ export default function WorksCard({ item }: WorksCardProps) {
               >
                 {getCategoryLabel(item.category)}
               </span>
-              <span className="text-xs font-['Gibson'] text-white/40">{item.year}</span>
+              <span className="text-xs font-['Gibson'] text-white/60">{item.year}</span>
             </div>
             <h3 className="text-xl font-['Gibson'] font-bold text-white leading-tight">
               {item.projectTitle}
             </h3>
-            <p className="text-lg font-['Gibson'] text-white/40 mt-0.5">{item.clientName}</p>
-            <p className="text-sm font-['Gibson'] text-white/30 mt-1 line-clamp-1">{item.hero.tagline}</p>
+            <p className="text-lg font-['Gibson'] text-white/60 mt-0.5">{item.clientName}</p>
+            <p className="text-sm font-['Gibson'] text-white/50 mt-1 line-clamp-1">{item.hero.tagline}</p>
           </div>
 
           {/* Arrow */}
           <div className="hidden sm:flex items-center flex-shrink-0">
             <svg
               ref={arrowRef}
-              className="w-5 h-5 text-white/30"
+              className="w-5 h-5 text-white/50"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -134,7 +134,7 @@ export default function WorksCard({ item }: WorksCardProps) {
         >
           <div
             ref={panelContentRef}
-            className="bg-white/3 py-4 px-5 sm:px-6 border-t border-white/5"
+            className="bg-white/5 py-4 px-5 sm:px-6 border-t border-white/10"
             style={{ opacity: isMobile ? 1 : 0 }}
           >
             {/* Stats row */}
@@ -144,13 +144,13 @@ export default function WorksCard({ item }: WorksCardProps) {
                   <span className="text-lg font-['Gibson'] font-bold" style={{ color: item.accentColor }}>
                     {stat.value}
                   </span>
-                  <span className="text-xs font-['Gibson'] text-white/40 ml-1.5">{stat.label}</span>
+                  <span className="text-xs font-['Gibson'] text-white/60 ml-1.5">{stat.label}</span>
                 </div>
               ))}
             </div>
 
             {/* Quote snippet */}
-            <p className="text-sm font-['Gibson'] text-white/40 italic mb-3">
+            <p className="text-sm font-['Gibson'] text-white/60 italic mb-3">
               &ldquo;{quoteSnippet}&rdquo;
             </p>
 
@@ -159,7 +159,7 @@ export default function WorksCard({ item }: WorksCardProps) {
               {topDeliverables.map((d, i) => (
                 <span
                   key={i}
-                  className="text-xs font-['Gibson'] px-2.5 py-1 rounded-full bg-white/10 text-white/65"
+                  className="text-xs font-['Gibson'] px-2.5 py-1 rounded-full bg-white/12 text-white/75"
                 >
                   {d.length > 40 ? d.slice(0, 40) + '...' : d}
                 </span>

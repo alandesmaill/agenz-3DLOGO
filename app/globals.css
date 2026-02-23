@@ -48,10 +48,10 @@
   --foreground: #ffffff;
   --surface: #0e0e0e;
   --surface-elevated: #1a1a1a;
-  --border: rgba(255, 255, 255, 0.08);
+  --border: rgba(255, 255, 255, 0.14);
   --text-primary: #ffffff;
   --text-secondary: rgba(255, 255, 255, 0.65);
-  --text-muted: rgba(255, 255, 255, 0.40);
+  --text-muted: rgba(255, 255, 255, 0.60);
   --white: #ffffff;
 
   /* Brand Colors */

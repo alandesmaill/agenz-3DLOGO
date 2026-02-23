@@ -37,7 +37,7 @@ export default function CompactProjectHeader({
               >
                 {getCategoryLabel(category)}
               </span>
-              <span className="text-sm font-['Gibson'] text-white/40">{year}</span>
+              <span className="text-sm font-['Gibson'] text-white/60">{year}</span>
             </div>
 
             {/* Title */}
@@ -52,10 +52,10 @@ export default function CompactProjectHeader({
             </AnimatedText>
 
             {/* Client name */}
-            <p className="mt-3 text-xl font-['Gibson'] text-white/40">{clientName}</p>
+            <p className="mt-3 text-xl font-['Gibson'] text-white/60">{clientName}</p>
 
             {/* Tagline */}
-            <p className="mt-2 text-base font-['Gibson'] text-white/30 max-w-xl">{tagline}</p>
+            <p className="mt-2 text-base font-['Gibson'] text-white/50 max-w-xl">{tagline}</p>
 
           </div>
 
