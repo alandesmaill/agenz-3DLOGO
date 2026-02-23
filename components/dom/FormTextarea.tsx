@@ -85,7 +85,7 @@ export default function FormTextarea({
 
   // Character counter color based on length
   const getCounterColor = () => {
-    if (charCount < 50) return 'text-white/40';
+    if (charCount < 50) return 'text-white/60';
     if (charCount < 100) return 'text-[#00a820]';
     return 'text-transparent bg-gradient-to-r from-[#00e92c] to-[#00b8a0] bg-clip-text';
   };
@@ -104,8 +104,8 @@ export default function FormTextarea({
         <div
           className={`
             relative rounded-2xl transition-all duration-300
-            ${isFocused ? 'bg-white/10' : 'bg-white/5'}
-            ${error ? 'border-2 border-red-400/60 shadow-sm shadow-red-500/10' : 'border border-white/10'}
+            ${isFocused ? 'bg-[#111111]' : 'bg-white/8'}
+            ${error ? 'border-2 border-red-400/60 shadow-sm shadow-red-500/10' : 'border border-white/14'}
           `}
         >
           {/* Floating Label */}
@@ -114,7 +114,7 @@ export default function FormTextarea({
             className={`
               absolute left-5 transition-all duration-300 pointer-events-none z-10
               ${isFocused || value ? 'top-2 text-xs' : 'top-4 text-base'}
-              ${isFocused ? 'text-[#00e92c]' : error ? 'text-red-400' : 'text-white/40'}
+              ${isFocused ? 'text-[#00e92c]' : error ? 'text-red-400' : 'text-white/60'}
               font-medium
             `}
           >

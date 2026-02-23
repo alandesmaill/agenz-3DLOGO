@@ -86,10 +86,10 @@ export default function ServicesSection({ onBack }: ServicesSectionProps) {
         className="scroll-container"
         style={{
           background: `
-            radial-gradient(ellipse 80% 60% at 0% 0%, rgba(0, 233, 44, 0.10) 0%, transparent 50%),
-            radial-gradient(ellipse 60% 50% at 100% 0%, rgba(0, 255, 255, 0.08) 0%, transparent 50%),
-            radial-gradient(ellipse 70% 50% at 10% 100%, rgba(0, 233, 44, 0.08) 0%, transparent 50%),
-            radial-gradient(ellipse 70% 50% at 100% 100%, rgba(0, 255, 255, 0.07) 0%, transparent 50%),
+            radial-gradient(ellipse 80% 60% at 0% 0%, rgba(0, 233, 44, 0.20) 0%, transparent 50%),
+            radial-gradient(ellipse 60% 50% at 100% 0%, rgba(0, 255, 255, 0.18) 0%, transparent 50%),
+            radial-gradient(ellipse 70% 50% at 10% 100%, rgba(0, 233, 44, 0.18) 0%, transparent 50%),
+            radial-gradient(ellipse 70% 50% at 100% 100%, rgba(0, 255, 255, 0.16) 0%, transparent 50%),
             #050505
           `,
         }}
@@ -118,7 +118,7 @@ export default function ServicesSection({ onBack }: ServicesSectionProps) {
             >
               OUR SERVICES
             </AnimatedText>
-            <p className="text-lg md:text-xl font-['Gibson'] text-white/65 max-w-2xl leading-relaxed">
+            <p className="text-lg md:text-xl font-['Gibson'] text-white/75 max-w-2xl leading-relaxed">
               Comprehensive creative solutions that elevate your brand across every touchpoint.
               From strategy to execution, we deliver excellence.
             </p>

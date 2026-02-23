@@ -84,7 +84,7 @@ export default function ProjectGallery({ items, accentColor }: ProjectGalleryPro
             <button
               key={i}
               onClick={() => setActiveIndex(i)}
-              className="group relative aspect-video rounded-2xl overflow-hidden bg-white/5 focus:outline-none focus-visible:ring-2"
+              className="group relative aspect-video rounded-2xl overflow-hidden bg-white/8 focus:outline-none focus-visible:ring-2"
               style={{ '--accent': accentColor } as React.CSSProperties}
             >
               {/* Thumbnail */}

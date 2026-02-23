@@ -131,7 +131,7 @@ export default function LoadingScreen({ progress, isLoaded }: LoadingScreenProps
           </div>
 
           {/* Progress text */}
-          <span className="text-sm text-white/40 font-medium tracking-wider">
+          <span className="text-sm text-white/60 font-medium tracking-wider">
             {Math.round(smoothProgress)}%
           </span>
         </div>

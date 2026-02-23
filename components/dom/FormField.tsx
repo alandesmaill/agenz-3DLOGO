@@ -67,8 +67,8 @@ export default function FormField({
         <div
           className={`
             relative rounded-2xl transition-all duration-300
-            ${isFocused ? 'bg-white/10' : 'bg-white/5'}
-            ${error ? 'border-2 border-red-400/60 shadow-sm shadow-red-500/10' : 'border border-white/10'}
+            ${isFocused ? 'bg-[#111111]' : 'bg-white/8'}
+            ${error ? 'border-2 border-red-400/60 shadow-sm shadow-red-500/10' : 'border border-white/14'}
           `}
         >
           {/* Floating Label */}
@@ -77,7 +77,7 @@ export default function FormField({
             className={`
               absolute left-5 transition-all duration-300 pointer-events-none
               ${isFocused || value ? 'top-2 text-xs' : 'top-4 text-base'}
-              ${isFocused ? 'text-[#00e92c]' : error ? 'text-red-400' : 'text-white/40'}
+              ${isFocused ? 'text-[#00e92c]' : error ? 'text-red-400' : 'text-white/60'}
               font-medium
             `}
           >

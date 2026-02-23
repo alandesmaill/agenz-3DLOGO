@@ -137,7 +137,7 @@ export default function Footer() {
       </div>
 
       {/* Glass overlay */}
-      <div className="relative bg-white/5 backdrop-blur-2xl">
+      <div className="relative bg-white/8 backdrop-blur-2xl">
         <div className="max-w-7xl mx-auto px-6 lg:px-8 py-12 lg:py-16">
           {/* 4-Column Footer Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
@@ -166,7 +166,7 @@ export default function Footer() {
                       href={social.href}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="group relative w-10 h-10 rounded-xl bg-white/5 backdrop-blur-xl border border-white/10 flex items-center justify-center transition-all duration-300 hover:bg-white/10 hover:border-cyan-400/50 hover:shadow-lg hover:shadow-cyan-500/30 md:hover:scale-110 md:hover:-translate-y-1"
+                      className="group relative w-10 h-10 rounded-xl bg-white/8 backdrop-blur-xl border border-white/14 flex items-center justify-center transition-all duration-300 hover:bg-white/14 hover:border-cyan-400/50 hover:shadow-lg hover:shadow-cyan-500/30 md:hover:scale-110 md:hover:-translate-y-1"
                       aria-label={social.name}
                     >
                       <Icon className="w-4 h-4 text-gray-400 group-hover:text-cyan-400 transition-all duration-300 group-hover:scale-110" />
@@ -202,8 +202,13 @@ export default function Footer() {
 
             {/* Column 3: Services */}
             <div className="footer-column text-center md:text-left">
-              <h3 className="text-white font-semibold mb-4 text-sm uppercase tracking-wider">
-                Services
+              <h3 className="mb-4 text-sm uppercase tracking-wider">
+                <Link
+                  href="/services"
+                  className="text-white font-semibold hover:text-cyan-400 transition-colors duration-300"
+                >
+                  Services
+                </Link>
               </h3>
               <ul className="space-y-3">
                 {serviceLinks.map((link) => (

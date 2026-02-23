@@ -80,16 +80,16 @@ export default function MenuOverlay({ isOpen, onClose }: MenuOverlayProps) {
   }, [isOpen, onClose]);
 
   const handleItemClick = (item: NavItem) => {
-    if (item.submenu) {
-      // Toggle accordion for Services
-      setExpandedItem(isServicesExpanded ? null : 'services');
-    } else {
-      // Navigate to route
-      onClose();
-      setTimeout(() => {
-        router.push(item.path);
-      }, 300);
-    }
+    // Always navigate to route
+    onClose();
+    setTimeout(() => {
+      router.push(item.path);
+    }, 300);
+  };
+
+  const handleToggleSubmenu = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setExpandedItem(isServicesExpanded ? null : 'services');
   };
 
   const handleSubmenuClick = (path: string) => {
@@ -154,14 +154,13 @@ export default function MenuOverlay({ isOpen, onClose }: MenuOverlayProps) {
               {NAV_ITEMS.map((item, index) => (
                 <div key={item.path}>
                   {/* Main navigation item */}
-                  <button
-                    onClick={() => handleItemClick(item)}
-                    onMouseEnter={() => setHoveredItem(item.path)}
-                    onMouseLeave={() => setHoveredItem(null)}
+                  <div
                     className={`w-full text-left transition-all duration-300 group flex items-center gap-4 ${
                       isAnimating ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-4'
                     }`}
                     style={{ transitionDelay: isAnimating ? `${200 + index * 60}ms` : '0ms' }}
+                    onMouseEnter={() => setHoveredItem(item.path)}
+                    onMouseLeave={() => setHoveredItem(null)}
                   >
                     {/* Dash indicator */}
                     <span className={`text-2xl font-bold transition-colors duration-300 ${
@@ -172,34 +171,43 @@ export default function MenuOverlay({ isOpen, onClose }: MenuOverlayProps) {
                       —
                     </span>
 
-                    {/* Label */}
-                    <span className={`text-3xl sm:text-4xl font-bold tracking-tight transition-all duration-300 ${
-                      hoveredItem === item.path
-                        ? 'text-white translate-x-2'
-                        : 'text-gray-400'
-                    }`}>
+                    {/* Label — always navigates */}
+                    <button
+                      onClick={() => handleItemClick(item)}
+                      className={`text-3xl sm:text-4xl font-bold tracking-tight transition-all duration-300 ${
+                        hoveredItem === item.path
+                          ? 'text-white translate-x-2'
+                          : 'text-gray-400'
+                      }`}
+                    >
                       {item.label}
-                    </span>
+                    </button>
 
-                    {/* Chevron icon for Services */}
+                    {/* Chevron icon for Services — only toggles submenu */}
                     {item.submenu && (
-                      <svg
-                        width="24"
-                        height="24"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        className={`text-gray-400 transition-transform duration-400 ml-2 ${
-                          isServicesExpanded ? 'rotate-180' : 'rotate-0'
-                        }`}
+                      <button
+                        onClick={handleToggleSubmenu}
+                        className="ml-2 p-1 text-gray-400 hover:text-cyan-400 transition-colors duration-300"
+                        aria-label="Toggle services submenu"
                       >
-                        <polyline points="6 9 12 15 18 9" />
-                      </svg>
+                        <svg
+                          width="24"
+                          height="24"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          className={`transition-transform duration-400 ${
+                            isServicesExpanded ? 'rotate-180' : 'rotate-0'
+                          }`}
+                        >
+                          <polyline points="6 9 12 15 18 9" />
+                        </svg>
+                      </button>
                     )}
-                  </button>
+                  </div>
 
                   {/* Submenu (accordion) */}
                   {item.submenu && (

@@ -79,7 +79,7 @@ export default function ClientLogos() {
             ref={(el) => {
               logoRefs.current[index] = el;
             }}
-            className="group relative aspect-square rounded-xl bg-white/5 border border-white/8 hover:shadow-xl hover:shadow-black/30 transition-all duration-300 overflow-hidden"
+            className="group relative aspect-square rounded-xl bg-white/8 border border-white/14 hover:shadow-xl hover:shadow-black/30 transition-all duration-300 overflow-hidden"
           >
             {/* Logo Image */}
             <div className="relative w-full h-full p-6 flex items-center justify-center">
@@ -87,7 +87,7 @@ export default function ClientLogos() {
                 src={client.image}
                 alt={client.name}
                 fill
-                className="object-contain p-6 grayscale group-hover:grayscale-0 transition-all duration-300 group-hover:scale-105"
+                className="object-contain p-6 grayscale-[50%] group-hover:grayscale-0 transition-all duration-300 group-hover:scale-105"
                 sizes="(max-width: 768px) 50vw, 25vw"
               />
             </div>

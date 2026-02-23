@@ -22,8 +22,8 @@ export default function ProjectTestimonial({
           relative
           p-6 md:p-8
           rounded-3xl
-          bg-white/5 backdrop-blur-xl
-          border border-white/8
+          bg-white/8 backdrop-blur-xl
+          border border-white/14
           shadow-2xl
         "
         style={{

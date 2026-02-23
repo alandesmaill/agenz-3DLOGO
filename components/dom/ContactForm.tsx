@@ -249,7 +249,7 @@ export default function ContactForm({ onSuccess }: ContactFormProps) {
       <div className="absolute -inset-2 bg-gradient-to-br from-[#00e92c]/10 via-transparent to-[#00b8a0]/10 rounded-3xl blur-2xl" />
 
       {/* Form Container — Dark Glass */}
-      <div className="relative p-8 md:p-10 rounded-3xl bg-white/5 backdrop-blur-2xl border border-white/8 shadow-2xl shadow-black/20">
+      <div className="relative p-8 md:p-10 rounded-3xl bg-white/8 backdrop-blur-2xl border border-white/14 shadow-2xl shadow-black/20">
 
         {/* Subtle inner shimmer */}
         <div className="absolute inset-0 bg-gradient-to-br from-white/5 via-transparent to-white/3 rounded-3xl pointer-events-none" />
@@ -259,7 +259,7 @@ export default function ContactForm({ onSuccess }: ContactFormProps) {
           <h2 className="text-2xl md:text-3xl font-bold text-white mb-2">
             Send a Message
           </h2>
-          <p className="text-white/40 text-sm">
+          <p className="text-white/60 text-sm">
             All fields marked <span className="text-red-500">*</span> are required
           </p>
         </div>
@@ -398,7 +398,7 @@ export default function ContactForm({ onSuccess }: ContactFormProps) {
           </button>
 
           {/* Privacy Note */}
-          <p className="text-xs text-white/40 text-center">
+          <p className="text-xs text-white/60 text-center">
             Your information is secure and will never be shared.
           </p>
         </form>
