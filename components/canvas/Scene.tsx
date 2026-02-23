@@ -28,31 +28,36 @@ export default function Scene({ children }: SceneProps) {
         zoomSpeed={0.8}
       />
 
-      {/* Lighting - Optimized for dark surfaces on white background */}
+      {/* Lighting */}
 
-      {/* Bright ambient fill - increased for dark surfaces visibility */}
-      <ambientLight intensity={2.0} />
+      {/* Ambient floor - high enough that dark pieces stay readable */}
+      <ambientLight intensity={0.9} />
 
-      {/* Key directional light from top - no shadows */}
-      <directionalLight position={[10, 10, 5]} intensity={1.0} />
+      {/* Key light from top-right - main illumination */}
+      <directionalLight position={[8, 10, 6]} intensity={1.6} />
 
-      {/* Fill light from side - subtle depth */}
-      <directionalLight position={[-5, 5, -5]} intensity={0.5} />
+      {/* Front fill - straight-on, ensures all forward-facing surfaces are lit */}
+      <directionalLight position={[0, 0, 10]} intensity={1.2} />
 
-      {/* Rim/back light - separates dark pieces from white background */}
-      <directionalLight position={[0, 5, -10]} intensity={0.8} />
+      {/* Green brand point light - front-left, colors the surface */}
+      <pointLight position={[-3, 2, 4]} intensity={8} color="#00e92c" distance={14} />
+
+      {/* Cyan rim light - back-right, creates a glowing edge separation */}
+      <pointLight position={[4, 1, -4]} intensity={5} color="#00ffff" distance={12} />
+
+      {/* Bottom fill so lower pieces don't go black */}
+      <directionalLight position={[0, -6, 4]} intensity={0.6} />
 
       {/* Children (your 3D objects) */}
       {children}
 
-      {/* Post-processing Effects - Enhanced bloom for brand colors */}
+      {/* Post-processing Effects */}
       <EffectComposer>
-        {/* Bloom effect - Make cyan/green brand colors glow */}
         <Bloom
-          intensity={0.2}
-          luminanceThreshold={0.9}
-          luminanceSmoothing={0.5}
-          height={100}
+          intensity={1.2}
+          luminanceThreshold={0.55}
+          luminanceSmoothing={0.4}
+          height={200}
           mipmapBlur
         />
       </EffectComposer>

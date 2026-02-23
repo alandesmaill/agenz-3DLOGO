@@ -38,6 +38,17 @@ interface NavigationPiece extends PieceData {
   section: string;
 }
 
+interface DebrisOrbit {
+  orbitAngle: number;       // current angle in orbit (advances each frame)
+  orbitSpeed: number;       // rad/s (positive or negative = CW/CCW direction)
+  orbitRadius: number;      // distance from orbit center
+  orbitCenter: THREE.Vector3;
+  orbitU: THREE.Vector3;    // first basis vector of orbital plane
+  orbitV: THREE.Vector3;    // second basis vector of orbital plane
+  rotSpeedX: number;        // self-tumble speed around X axis
+  rotSpeedY: number;        // self-tumble speed around Y axis
+}
+
 // Navigation sections and their target positions
 // Compact U-shaped arrangement - tight horizontal, clear vertical spacing
 const NAV_SECTIONS = [
@@ -72,6 +83,8 @@ const FracturedLogo = forwardRef<FracturedLogoHandle, FracturedLogoProps>(functi
   const tweensRef = useRef<gsap.core.Tween[]>([]);
   // Track hover tweens per piece to prevent animation conflicts
   const hoverTweensRef = useRef<Map<string, gsap.core.Tween[]>>(new Map());
+  const debrisOrbitsRef = useRef<DebrisOrbit[]>([]);
+  const hoveredNavPiecesRef = useRef<Set<string>>(new Set());
 
   // OPTIMIZATION: Detect reduced motion preference for accessibility
   const prefersReducedMotion = useMemo(() => {
@@ -176,20 +189,20 @@ const FracturedLogo = forwardRef<FracturedLogoHandle, FracturedLogoProps>(functi
 
           // Detect if this navigation piece is too dark
           if (brightness < 0.25) {
-            // DARK NAVIGATION PIECE - Lighten significantly to show geometry
-            material.color.multiplyScalar(2.2); // Brighten dark pieces
-            material.emissiveIntensity = 0.2; // Higher emissive for dark pieces
+            // DARK NAVIGATION PIECE - Lighten and give strong emissive so it's never invisible
+            material.color.multiplyScalar(2.5);
+            material.emissiveIntensity = 0.45;
           } else {
             // BRIGHT NAVIGATION PIECE (cyan/green) - Keep as is
-            material.emissiveIntensity = 0.1; // Subtle inner glow
+            material.emissiveIntensity = 0.25;
           }
 
           // Add emissive glow in brand colors for depth
           material.emissive.copy(material.color);
 
-          // Premium solid look with higher metalness and lower roughness
-          material.metalness = 0.7; // More reflective for better visibility
-          material.roughness = 0.4; // Shinier, premium feel
+          // High metalness + low roughness = picks up colored lights, specular highlights
+          material.metalness = 0.9;
+          material.roughness = 0.15;
 
           // Enable transparency for animations
           material.transparent = true;
@@ -197,20 +210,17 @@ const FracturedLogo = forwardRef<FracturedLogoHandle, FracturedLogoProps>(functi
           // DEBRIS PIECES - Handle dark vs bright pieces differently
 
           if (brightness < 0.25) {
-            // DARK DEBRIS PIECE - Lighten to show geometry (opposite of bright pieces)
-            material.color.multiplyScalar(1.8); // Lighten instead of darken
-            material.emissiveIntensity = 0.15; // Add emissive to dark debris
+            material.color.multiplyScalar(2.0);
+            material.emissiveIntensity = 0.3;
             material.emissive.copy(material.color);
           } else {
-            // BRIGHT DEBRIS PIECE - Darken slightly for contrast
-            material.color.multiplyScalar(0.7); // Darken bright pieces
-            material.emissiveIntensity = 0.05; // Subtle emissive
+            material.color.multiplyScalar(0.75);
+            material.emissiveIntensity = 0.15;
             material.emissive.copy(material.color);
           }
 
-          // Same material properties for consistency
-          material.metalness = 0.7; // Increased from 0.6 for more reflections
-          material.roughness = 0.4;
+          material.metalness = 0.9;
+          material.roughness = 0.15;
           material.transparent = true;
         }
       }
@@ -303,34 +313,42 @@ const FracturedLogo = forwardRef<FracturedLogoHandle, FracturedLogoProps>(functi
       const time = state.clock.getElapsedTime();
 
       navigationPieces.forEach((piece, index) => {
-        // Gentle up-down floating motion with offset per piece
-        const floatOffset = index * 0.5; // Offset the wave for each piece
+        // Gentle float
+        const floatOffset = index * 0.5;
         const floatY = Math.sin(time * 0.8 + floatOffset) * 0.1;
         piece.mesh.position.y = piece.targetPosition.y + floatY;
-
-        // FIXED: Use delta for frame-rate independence
-        // Slowed down rotation from 1.5 to 0.5 (3x slower)
         piece.mesh.rotation.y += delta * 0.5;
+
+        // Pulse glow only when not being hovered (to avoid fighting GSAP hover tween)
+        if (
+          !hoveredNavPiecesRef.current.has(piece.name) &&
+          piece.mesh.material instanceof THREE.MeshStandardMaterial
+        ) {
+          piece.mesh.material.emissiveIntensity = 0.65 + 0.25 * Math.sin(time * 1.5 + index * 0.8);
+          // Range: 0.4–0.9
+        }
       });
 
-      // Subtle looping motion for debris pieces in background
-      debrisPieces.forEach((piece) => {
-        // Each piece has unique timing based on its index
-        const offset = piece.index * 0.3;
+      // Orbital motion for debris pieces
+      debrisPieces.forEach((piece, i) => {
+        const orbit = debrisOrbitsRef.current[i];
+        if (!orbit) return;
 
-        // Very gentle floating motion with very slow frequencies
-        const floatX = Math.sin(time * 0.1 + offset) * 0.05;
-        const floatY = Math.cos(time * 0.12 + offset * 1.5) * 0.08;
-        const floatZ = Math.sin(time * 0.08 + offset * 2) * 0.05;
+        // Advance orbit angle
+        orbit.orbitAngle += delta * orbit.orbitSpeed;
 
-        // Apply extremely subtle movement to current position
-        piece.mesh.position.x += floatX * 0.02;
-        piece.mesh.position.y += floatY * 0.02;
-        piece.mesh.position.z += floatZ * 0.02;
+        // Compute absolute orbital position (2 trig calls per piece)
+        const cosA = Math.cos(orbit.orbitAngle);
+        const sinA = Math.sin(orbit.orbitAngle);
+        piece.mesh.position.set(
+          orbit.orbitCenter.x + orbit.orbitU.x * cosA * orbit.orbitRadius + orbit.orbitV.x * sinA * orbit.orbitRadius,
+          orbit.orbitCenter.y + orbit.orbitU.y * cosA * orbit.orbitRadius + orbit.orbitV.y * sinA * orbit.orbitRadius,
+          orbit.orbitCenter.z + orbit.orbitU.z * cosA * orbit.orbitRadius + orbit.orbitV.z * sinA * orbit.orbitRadius,
+        );
 
-        // Extremely slow continuous rotation (barely noticeable)
-        piece.mesh.rotation.x += delta * 0.01;
-        piece.mesh.rotation.y += delta * 0.015;
+        // Self-tumble rotation
+        piece.mesh.rotation.x += delta * orbit.rotSpeedX;
+        piece.mesh.rotation.y += delta * orbit.rotSpeedY;
       });
     }
   });
@@ -375,48 +393,99 @@ const FracturedLogo = forwardRef<FracturedLogoHandle, FracturedLogoProps>(functi
       tweensRef.current.push(scaleTween);
     });
 
-    // Animate debris pieces to BACK (negative z)
-    // NO DELAY - all execute at once
-    debrisPieces.forEach((piece) => {
-      // Calculate random scatter in x/y, but ALWAYS push to back (negative z)
-      const angle = Math.random() * Math.PI * 2;
-      const distance = 2 + Math.random() * 3; // 2-5 units
-      const height = (Math.random() - 0.5) * 2;
+    // Animate debris pieces to orbital start positions
+    debrisOrbitsRef.current = []; // reset
 
-      const targetX = piece.originalPosition.x + Math.cos(angle) * distance;
-      const targetY = piece.originalPosition.y + height;
-      // PUSH TO BACK: negative z between -0.5 and -1 (very close, just behind nav)
-      const targetZ = piece.originalPosition.z - (0.5 + Math.random() * 0.5);
+    debrisPieces.forEach((piece, i) => {
+      // --- Compute orbital parameters ---
+      const radius = 2.0 + Math.random() * 2.5;          // 2.0–4.5 units
+      const speed = (0.015 + Math.random() * 0.04) * (Math.random() < 0.5 ? 1 : -1); // ~5x slower: ±0.015–0.055 rad/s
+      const startAngle = Math.random() * Math.PI * 2;
+      const inclination = Math.random() * Math.PI;         // 0–180°
+      const lan = Math.random() * Math.PI * 2;             // longitude of ascending node
 
+      // Orbital plane basis vectors (perpendicular pair)
+      const orbitU = new THREE.Vector3(
+        Math.cos(lan),
+        0,
+        Math.sin(lan)
+      );
+      const orbitV = new THREE.Vector3(
+        -Math.sin(lan) * Math.cos(inclination),
+        Math.sin(inclination),
+        Math.cos(lan) * Math.cos(inclination)
+      );
+
+      // Orbit center is always behind nav pieces (nav pieces at Z=+1.0)
+      const orbitCenter = new THREE.Vector3(
+        (Math.random() - 0.5) * 1.5,
+        (Math.random() - 0.5) * 1.0,
+        -2.5 + (Math.random() - 0.5) * 1.0   // Z range: -2.0 to -3.0
+      );
+
+      // Store orbit params (indexed to match debrisPieces array)
+      debrisOrbitsRef.current[i] = {
+        orbitAngle: startAngle,
+        orbitSpeed: speed,
+        orbitRadius: radius,
+        orbitCenter,
+        orbitU,
+        orbitV,
+        rotSpeedX: (Math.random() - 0.5) * 0.08,
+        rotSpeedY: (Math.random() - 0.5) * 0.10,
+      };
+
+      // Compute target position = orbital starting position
+      const cosA = Math.cos(startAngle);
+      const sinA = Math.sin(startAngle);
+      const targetX = orbitCenter.x + orbitU.x * cosA * radius + orbitV.x * sinA * radius;
+      const targetY = orbitCenter.y + orbitU.y * cosA * radius + orbitV.y * sinA * radius;
+      const targetZ = orbitCenter.z + orbitU.z * cosA * radius + orbitV.z * sinA * radius;
+
+      // GSAP animate to orbital start position
       const posTween = gsap.to(piece.mesh.position, {
         x: targetX,
         y: targetY,
-        z: targetZ, // NEGATIVE Z = BACK
+        z: targetZ,
         duration: animDuration,
         ease: 'power3.out',
-        delay: 0, // ALL AT ONCE
+        delay: 0,
       });
       tweensRef.current.push(posTween);
 
-      // Random rotation
+      // Random rotation during explosion
       const rotTween = gsap.to(piece.mesh.rotation, {
         x: piece.originalRotation.x + (Math.random() - 0.5) * Math.PI * 2,
         y: piece.originalRotation.y + (Math.random() - 0.5) * Math.PI * 2,
         z: piece.originalRotation.z + (Math.random() - 0.5) * Math.PI * 2,
         duration: animDuration,
         ease: 'power3.out',
-        delay: 0, // ALL AT ONCE
+        delay: 0,
       });
       tweensRef.current.push(rotTween);
 
-      // Fade out debris
+      // Fade debris to semi-transparent
       if (piece.mesh.material instanceof THREE.MeshStandardMaterial) {
         const opacityTween = gsap.to(piece.mesh.material, {
-          opacity: 0.3 + Math.random() * 0.3, // 0.3-0.6
+          opacity: 0.25 + Math.random() * 0.2,  // 0.25–0.45
           duration: animDuration,
-          delay: 0, // ALL AT ONCE
+          delay: 0,
         });
         tweensRef.current.push(opacityTween);
+      }
+    });
+
+    // Ramp up emissive glow on all 4 nav pieces once explosion starts
+    navigationPieces.forEach((piece) => {
+      if (piece.mesh.material instanceof THREE.MeshStandardMaterial) {
+        piece.mesh.material.emissive.copy(piece.mesh.material.color);
+        const glowTween = gsap.to(piece.mesh.material, {
+          emissiveIntensity: 0.8,
+          duration: 2.0,
+          ease: 'power2.out',
+          delay: 0,
+        });
+        tweensRef.current.push(glowTween);
       }
     });
 
@@ -450,6 +519,8 @@ const FracturedLogo = forwardRef<FracturedLogoHandle, FracturedLogoProps>(functi
     const newTweens: gsap.core.Tween[] = [];
 
     if (isHovering) {
+      hoveredNavPiecesRef.current.add(piece.name);
+
       // Scale up on hover (from 1.0 to 1.2)
       const scaleTween = gsap.to(piece.mesh.scale, {
         x: piece.originalScale.x * 1.2,
@@ -463,8 +534,6 @@ const FracturedLogo = forwardRef<FracturedLogoHandle, FracturedLogoProps>(functi
 
       // Add glow effect with bloom
       if (piece.mesh.material instanceof THREE.MeshStandardMaterial) {
-        // Set emissive color to brand colors for bloom effect
-        const originalEmissive = piece.mesh.material.emissive.clone();
         const glowColor = new THREE.Color(0x00ffff); // Cyan glow
 
         const emissiveTween = gsap.to(piece.mesh.material.emissive, {
@@ -478,7 +547,7 @@ const FracturedLogo = forwardRef<FracturedLogoHandle, FracturedLogoProps>(functi
         tweensRef.current.push(emissiveTween);
 
         const intensityTween = gsap.to(piece.mesh.material, {
-          emissiveIntensity: 0.5, // Gentle glow (reduced from 2.5)
+          emissiveIntensity: 1.4, // More dramatic hover glow
           duration: 0.3,
           ease: 'power2.out',
         });
@@ -503,6 +572,8 @@ const FracturedLogo = forwardRef<FracturedLogoHandle, FracturedLogoProps>(functi
         onNavigationHover(piece.name, piece.label, { x: screenX, y: screenY });
       }
     } else {
+      hoveredNavPiecesRef.current.delete(piece.name);
+
       // Scale back to decomposed size (1.0)
       const scaleTween = gsap.to(piece.mesh.scale, {
         x: piece.originalScale.x * 1.0,
@@ -514,20 +585,21 @@ const FracturedLogo = forwardRef<FracturedLogoHandle, FracturedLogoProps>(functi
       newTweens.push(scaleTween);
       tweensRef.current.push(scaleTween);
 
-      // Remove glow effect
+      // Return emissive to piece's own color at base glow level (not dead/dark)
       if (piece.mesh.material instanceof THREE.MeshStandardMaterial) {
-        const emissiveTween = gsap.to(piece.mesh.material.emissive, {
-          r: 0,
-          g: 0,
-          b: 0,
+        const mat = piece.mesh.material;
+        const emissiveTween = gsap.to(mat.emissive, {
+          r: mat.color.r,
+          g: mat.color.g,
+          b: mat.color.b,
           duration: 0.3,
           ease: 'power2.out',
         });
         newTweens.push(emissiveTween);
         tweensRef.current.push(emissiveTween);
 
-        const intensityTween = gsap.to(piece.mesh.material, {
-          emissiveIntensity: 0,
+        const intensityTween = gsap.to(mat, {
+          emissiveIntensity: 0.7,   // return to base glow, not 0
           duration: 0.3,
           ease: 'power2.out',
         });
@@ -546,9 +618,6 @@ const FracturedLogo = forwardRef<FracturedLogoHandle, FracturedLogoProps>(functi
 
   // Navigation piece click handler with camera zoom animation
   const handleNavPieceClick = (piece: NavigationPiece) => {
-    // Store original camera position for potential reset
-    const originalCameraPos = camera.position.clone();
-
     // Create camera dive animation timeline (track for cleanup)
     const timeline = gsap.timeline({
       onStart: () => {
