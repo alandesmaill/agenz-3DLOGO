@@ -374,3 +374,16 @@ body:hover * {
     animation: none !important;
   }
 }
+
+/* =============================================
+   CTA Button Glow Animation
+   ============================================= */
+
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 20px rgba(0,233,44,0.3); }
+  50% { box-shadow: 0 0 40px rgba(0,233,44,0.6), 0 0 60px rgba(0,255,255,0.2); }
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 2s ease-in-out infinite;
+}
