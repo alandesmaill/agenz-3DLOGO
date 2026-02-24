@@ -1,12 +1,13 @@
 'use client';
 
 import { useRef, useEffect } from 'react';
+import type { LucideIcon } from 'lucide-react';
 import { gsap } from 'gsap';
 import { useResponsive } from '@/hooks/useResponsive';
 
 interface ServiceFeatureGridProps {
   features: Array<{
-    icon: string;
+    icon: LucideIcon;
     title: string;
     description: string;
   }>;
@@ -80,11 +81,7 @@ export default function ServiceFeatureGrid({
                 border: `2px solid ${accentColor}40`,
               }}
             >
-              <img
-                src={feature.icon}
-                alt={feature.title}
-                className="w-10 h-10 md:w-12 md:h-12"
-              />
+              {(() => { const Icon = feature.icon; return <Icon size={32} color={accentColor} strokeWidth={1.5} />; })()}
             </div>
           </div>
 
