@@ -1,13 +1,14 @@
 'use client';
 
 import { forwardRef } from 'react';
+import type { LucideIcon } from 'lucide-react';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
 
 interface ServiceCardProps {
   title: string;
   description: string;
-  icon: string;
+  icon: LucideIcon;
   accentColor: string;
   ctaText: string;
   ctaLink: string;
@@ -19,6 +20,7 @@ const ServiceCard = forwardRef<HTMLDivElement, ServiceCardProps>(
     { title, description, icon, accentColor, ctaText, ctaLink },
     ref
   ) {
+    const Icon = icon;
     return (
       <div
         ref={ref}
@@ -49,14 +51,7 @@ const ServiceCard = forwardRef<HTMLDivElement, ServiceCardProps>(
               border: `2px solid ${accentColor}40`,
             }}
           >
-            <img
-              src={icon}
-              alt={`${title} icon`}
-              className="w-10 h-10 md:w-12 md:h-12 lg:w-14 lg:h-14"
-              onError={(e) => {
-                e.currentTarget.style.display = 'none';
-              }}
-            />
+            <Icon size={40} color={accentColor} strokeWidth={1.5} />
           </div>
         </div>
 

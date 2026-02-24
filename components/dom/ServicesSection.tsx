@@ -23,7 +23,6 @@ export default function ServicesSection({ onBack }: ServicesSectionProps) {
   const sectionRef = useRef<HTMLElement>(null);
   const heroRef = useRef<HTMLDivElement>(null);
   const cardsRef = useRef<(HTMLDivElement | null)[]>([]);
-
   const [menuOpen, setMenuOpen] = useState(false);
   const { isMobile } = useResponsive();
 
@@ -47,6 +46,7 @@ export default function ServicesSection({ onBack }: ServicesSectionProps) {
       clearTimeout(updateTimer);
     };
   }, []);
+
 
   // Hero and cards animation
   useEffect(() => {
@@ -108,7 +108,8 @@ export default function ServicesSection({ onBack }: ServicesSectionProps) {
           className="min-h-screen pt-24 md:pt-32 pb-16 md:pb-24 px-4 md:px-6 lg:px-12"
         >
           {/* Hero Section */}
-          <div ref={heroRef} className="max-w-7xl mx-auto mb-16">
+          <div ref={heroRef} className="relative overflow-visible max-w-7xl mx-auto mb-16">
+            {/* Rose flower — top-right, partially bleeding off edge */}
             <AnimatedText
               className="text-5xl md:text-7xl font-['Gibson'] font-bold text-white tracking-tight mb-6"
               splitBy="chars"

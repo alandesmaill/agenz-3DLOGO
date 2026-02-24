@@ -4,7 +4,7 @@ import AnimatedText from '@/components/dom/AnimatedText';
 
 export default function WorksListHeader() {
   return (
-    <section className="pt-24 pb-10 md:pt-28 md:pb-12 px-6 md:px-12">
+    <section className="relative overflow-hidden pt-24 pb-10 md:pt-28 md:pb-12 px-6 md:px-12">
       <div className="max-w-6xl mx-auto">
         <AnimatedText
           className="text-4xl md:text-6xl lg:text-7xl font-['Gibson'] font-bold text-white leading-tight"

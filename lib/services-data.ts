@@ -1,8 +1,11 @@
+import type { LucideIcon } from 'lucide-react';
+import { Megaphone, Clapperboard, Palette, Target } from 'lucide-react';
+
 export interface Service {
   id: string;
   title: string;
   description: string;
-  icon: string;
+  icon: LucideIcon;
   accentColor: string;
   ctaText: string;
   ctaLink: string;
@@ -14,7 +17,7 @@ export const servicesData: Service[] = [
     title: 'Advertising & Social Media',
     description:
       'Strategic campaigns that amplify your brand across digital platforms with data-driven precision and creative excellence.',
-    icon: '/icons/service-advertising.svg',
+    icon: Megaphone,
     accentColor: '#00ffff',
     ctaText: 'Learn More',
     ctaLink: '/services/advertising',
@@ -24,7 +27,7 @@ export const servicesData: Service[] = [
     title: 'Video Production & Music',
     description:
       'Cinematic storytelling combined with custom soundscapes to create unforgettable brand experiences that resonate.',
-    icon: '/icons/service-video.svg',
+    icon: Clapperboard,
     accentColor: '#00e92c',
     ctaText: 'Learn More',
     ctaLink: '/services/video',
@@ -34,7 +37,7 @@ export const servicesData: Service[] = [
     title: 'Print & Graphic Design',
     description:
       'Timeless visual identities that bridge digital and physical touchpoints with creative excellence and attention to detail.',
-    icon: '/icons/service-design.svg',
+    icon: Palette,
     accentColor: '#00d4aa',
     ctaText: 'Learn More',
     ctaLink: '/services/design',
@@ -44,7 +47,7 @@ export const servicesData: Service[] = [
     title: 'Strategic Media Services',
     description:
       'Comprehensive media planning and buying that maximizes ROI through intelligent channel optimization and market insights.',
-    icon: '/icons/service-strategy.svg',
+    icon: Target,
     accentColor: '#00b8ff',
     ctaText: 'Learn More',
     ctaLink: '/services/strategy',
