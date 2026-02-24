@@ -17,7 +17,7 @@ interface HoverHintProps {
 
 export default function HoverHint({ isVisible, isDecomposed = false, onNavigationClick }: HoverHintProps) {
   const [displayText, setDisplayText] = useState('');
-  const fullText = 'hover the logo';
+  const fullText = 'click the logo';
   const [isTypingComplete, setIsTypingComplete] = useState(false);
   const [showNav, setShowNav] = useState(false);
   const [navReady, setNavReady] = useState(false);
@@ -93,9 +93,24 @@ export default function HoverHint({ isVisible, isDecomposed = false, onNavigatio
               xmlns="http://www.w3.org/2000/svg"
               className={`${isTypingComplete ? 'animate-bounce' : ''}`}
             >
+              {/* Mouse body */}
               <path
-                d="M5.5 3.21V20.8c0 .45.54.67.85.35l4.86-4.86a.5.5 0 0 1 .35-.15h6.87a.5.5 0 0 0 .35-.85L6.35 2.86a.5.5 0 0 0-.85.35Z"
-                fill="currentColor"
+                d="M5 9a7 7 0 0 1 14 0v6a7 7 0 0 1-14 0V9Z"
+                stroke="currentColor"
+                strokeWidth="1.5"
+              />
+              {/* Center divider line */}
+              <path
+                d="M12 3v7"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+              />
+              {/* Left/right click divider */}
+              <path
+                d="M5 10h14"
+                stroke="currentColor"
+                strokeWidth="1.5"
               />
             </svg>
 

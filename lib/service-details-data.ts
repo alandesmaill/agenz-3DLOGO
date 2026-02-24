@@ -8,6 +8,14 @@
  * - Strategic Media Services
  */
 
+import type { LucideIcon } from 'lucide-react';
+import {
+  TrendingUp, Target, PenLine, Users, BarChart2, Star, SplitSquareHorizontal, ShieldAlert,
+  Film, BookOpen, Music, Volume2, Sparkles, Navigation, Radio, Share2,
+  Fingerprint, Printer, Package, Monitor, Megaphone, PieChart, BookMarked, Building2,
+  Calendar, Search, SlidersHorizontal, Activity, Network, Cpu, GitBranch, Calculator,
+} from 'lucide-react';
+
 export interface ServiceDetail {
   id: string;
   number: string;
@@ -30,7 +38,7 @@ export interface ServiceDetail {
   };
 
   features: Array<{
-    icon: string;
+    icon: LucideIcon;
     title: string;
     description: string;
   }>;
@@ -105,42 +113,42 @@ export const serviceDetailsData: Record<string, ServiceDetail> = {
 
     features: [
       {
-        icon: '/icons/strategy.svg',
+        icon: TrendingUp,
         title: 'Social Media Strategy',
         description: 'Comprehensive platform analysis, audience research, content calendars, and growth roadmaps tailored to your business objectives.',
       },
       {
-        icon: '/icons/ads.svg',
+        icon: Target,
         title: 'Paid Advertising Campaigns',
         description: 'Expert management of Google Ads, Meta (Facebook/Instagram), LinkedIn, TikTok, and Twitter campaigns with advanced targeting.',
       },
       {
-        icon: '/icons/content.svg',
+        icon: PenLine,
         title: 'Content Creation & Copywriting',
         description: 'High-quality visual content, engaging copy, video scripts, and storytelling that captures attention and drives action.',
       },
       {
-        icon: '/icons/community.svg',
+        icon: Users,
         title: 'Community Management',
         description: 'Proactive engagement, comment moderation, DM responses, and building loyal brand communities that advocate for you.',
       },
       {
-        icon: '/icons/analytics.svg',
+        icon: BarChart2,
         title: 'Analytics & Reporting',
         description: 'In-depth performance tracking, ROI analysis, competitor benchmarking, and monthly strategy sessions with your team.',
       },
       {
-        icon: '/icons/influencer.svg',
+        icon: Star,
         title: 'Influencer Partnerships',
         description: 'Strategic collaborations with micro and macro influencers, contract negotiation, and campaign performance tracking.',
       },
       {
-        icon: '/icons/testing.svg',
+        icon: SplitSquareHorizontal,
         title: 'A/B Testing & Optimization',
         description: 'Continuous experimentation with ad creative, messaging, targeting, and timing to maximize campaign effectiveness.',
       },
       {
-        icon: '/icons/crisis.svg',
+        icon: ShieldAlert,
         title: 'Crisis Management',
         description: '24/7 monitoring, rapid response protocols, and reputation protection strategies to safeguard your brand during challenges.',
       },
@@ -273,42 +281,42 @@ export const serviceDetailsData: Record<string, ServiceDetail> = {
 
     features: [
       {
-        icon: '/icons/camera.svg',
+        icon: Film,
         title: 'Commercial Video Production',
         description: 'Broadcast-quality commercials for TV, streaming platforms, and social media with professional crews, lighting, and cinema cameras.',
       },
       {
-        icon: '/icons/story.svg',
+        icon: BookOpen,
         title: 'Brand Storytelling',
         description: 'Documentary-style brand films, customer testimonials, founder stories, and cultural narratives that build emotional connections.',
       },
       {
-        icon: '/icons/music.svg',
+        icon: Music,
         title: 'Custom Music Composition',
         description: 'Original scores, brand anthems, and soundtracks composed specifically for your video, ensuring unique audio identity.',
       },
       {
-        icon: '/icons/sound.svg',
+        icon: Volume2,
         title: 'Audio Post-Production',
         description: 'Professional sound design, Foley effects, voiceover recording, mixing, and mastering for pristine audio quality.',
       },
       {
-        icon: '/icons/animation.svg',
+        icon: Sparkles,
         title: 'Motion Graphics & VFX',
         description: '2D/3D animation, visual effects, title sequences, and motion design that elevate your video to the next level.',
       },
       {
-        icon: '/icons/drone.svg',
+        icon: Navigation,
         title: 'Aerial Cinematography',
         description: 'Licensed drone pilots capturing stunning aerial footage for real estate, tourism, events, and brand films.',
       },
       {
-        icon: '/icons/event.svg',
+        icon: Radio,
         title: 'Live Event Coverage',
         description: 'Multi-camera event filming, live streaming, conference coverage, and same-day highlight reels.',
       },
       {
-        icon: '/icons/distribution.svg',
+        icon: Share2,
         title: 'Video SEO & Distribution',
         description: 'Strategic distribution across YouTube, Vimeo, social platforms with optimized titles, descriptions, and closed captions.',
       },
@@ -441,42 +449,42 @@ export const serviceDetailsData: Record<string, ServiceDetail> = {
 
     features: [
       {
-        icon: '/icons/brand.svg',
+        icon: Fingerprint,
         title: 'Brand Identity & Logo Design',
         description: 'Complete visual identity systems including logo, color palette, typography, brand patterns, and usage guidelines.',
       },
       {
-        icon: '/icons/print.svg',
+        icon: Printer,
         title: 'Print Collateral Design',
         description: 'Brochures, flyers, posters, business cards, letterheads, and any print material designed for impact and print perfection.',
       },
       {
-        icon: '/icons/package.svg',
+        icon: Package,
         title: 'Packaging Design',
         description: 'Product packaging, labels, boxes, and retail displays that stand out on shelves and create unboxing experiences.',
       },
       {
-        icon: '/icons/digital-graphics.svg',
+        icon: Monitor,
         title: 'Digital Graphics',
         description: 'Social media templates, email headers, presentation decks, digital ads, and UI elements for your digital presence.',
       },
       {
-        icon: '/icons/marketing.svg',
+        icon: Megaphone,
         title: 'Marketing Materials',
         description: 'Trade show booths, banners, signage, vehicle wraps, and promotional items that extend your brand into the physical world.',
       },
       {
-        icon: '/icons/infographic.svg',
+        icon: PieChart,
         title: 'Infographics & Data Visualization',
         description: 'Complex data transformed into engaging visual stories that make information digestible and shareable.',
       },
       {
-        icon: '/icons/guidelines.svg',
+        icon: BookMarked,
         title: 'Brand Style Guides',
         description: 'Comprehensive brand books documenting logo usage, color specs, typography, imagery style, and tone of voice.',
       },
       {
-        icon: '/icons/environmental.svg',
+        icon: Building2,
         title: 'Environmental Graphics',
         description: 'Office branding, wall murals, wayfinding systems, and spatial design that transforms physical spaces.',
       },
@@ -609,42 +617,42 @@ export const serviceDetailsData: Record<string, ServiceDetail> = {
 
     features: [
       {
-        icon: '/icons/planning.svg',
+        icon: Calendar,
         title: 'Media Planning & Buying',
         description: 'Strategic channel selection, budget allocation, negotiation with media vendors, and placement optimization across all channels.',
       },
       {
-        icon: '/icons/research.svg',
+        icon: Search,
         title: 'Market Research & Insights',
         description: 'Deep audience analysis, competitive intelligence, market trends, and consumer behavior research to inform strategy.',
       },
       {
-        icon: '/icons/optimization.svg',
+        icon: SlidersHorizontal,
         title: 'Campaign Optimization',
         description: 'Continuous A/B testing, creative rotation, bid management, and performance analysis to maximize campaign effectiveness.',
       },
       {
-        icon: '/icons/reporting.svg',
+        icon: Activity,
         title: 'Performance Analytics',
         description: 'Comprehensive reporting, ROI tracking, attribution modeling, and actionable insights delivered weekly or monthly.',
       },
       {
-        icon: '/icons/multichannel.svg',
+        icon: Network,
         title: 'Multi-Channel Strategy',
         description: 'Integrated campaigns across TV, radio, digital, print, outdoor, and emerging channels for maximum reach and frequency.',
       },
       {
-        icon: '/icons/programmatic.svg',
+        icon: Cpu,
         title: 'Programmatic Advertising',
         description: 'Automated media buying with advanced targeting, real-time bidding, and AI-powered optimization for digital channels.',
       },
       {
-        icon: '/icons/attribution.svg',
+        icon: GitBranch,
         title: 'Attribution Modeling',
         description: 'Multi-touch attribution to understand customer journey and assign credit to touchpoints that drive conversions.',
       },
       {
-        icon: '/icons/forecasting.svg',
+        icon: Calculator,
         title: 'Budget Allocation & Forecasting',
         description: 'Predictive modeling, scenario planning, and strategic budget recommendations to maximize ROI and minimize waste.',
       },

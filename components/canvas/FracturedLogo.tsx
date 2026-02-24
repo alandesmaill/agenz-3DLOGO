@@ -300,10 +300,12 @@ const FracturedLogo = forwardRef<FracturedLogoHandle, FracturedLogoProps>(functi
   // OPTIMIZATION: Frame-rate independent animation with delta
   useFrame((state, delta) => {
     if (groupRef.current && !isDecomposed && !isAnimating) {
-      // FIXED: Use delta for frame-rate independence
-      // Very slow rotation (reduced from 0.3 to 0.02)
       if (!prefersReducedMotion) {
-        groupRef.current.rotation.y += delta * 0.02;
+        const targetRotX = -state.mouse.y * 0.3;  // tilt up/down (inverted Y)
+        const targetRotY =  state.mouse.x * 0.5;  // rotate left/right
+        // Smooth lerp toward target (frame-rate independent)
+        groupRef.current.rotation.x += (targetRotX - groupRef.current.rotation.x) * Math.min(delta * 3, 1);
+        groupRef.current.rotation.y += (targetRotY - groupRef.current.rotation.y) * Math.min(delta * 3, 1);
       }
     }
 
@@ -699,7 +701,7 @@ const FracturedLogo = forwardRef<FracturedLogoHandle, FracturedLogoProps>(functi
         <mesh
           ref={collisionRef}
           position={[0, 0, 0]}
-          onPointerEnter={handlePointerEnter}
+          onClick={handlePointerEnter}
           visible={false}
         >
           <boxGeometry args={[3, 3, 2]} />

@@ -2,7 +2,6 @@
 
 import { useState, useCallback } from 'react';
 import { Instagram, Linkedin, Twitter, Facebook } from 'lucide-react';
-import Image from 'next/image';
 import MenuOverlay from './MenuOverlay';
 import ContactForm from './ContactForm';
 import SubmissionSuccess from './SubmissionSuccess';
@@ -41,24 +40,6 @@ export default function ContactSection({ onBack }: ContactSectionProps) {
       `,
     }}>
 
-      {/* Glass Agenz logo watermark — right side background decoration */}
-      <div
-        className="absolute pointer-events-none select-none
-          right-0 top-1/2 -translate-y-1/2
-          w-[55vw] md:w-[42vw] lg:w-[36vw]
-          opacity-[0.06] md:opacity-[0.09]
-          translate-x-[15%]"
-        aria-hidden="true"
-      >
-        <Image
-          src="/images/about/shapes/glass agenz logo.webp"
-          alt=""
-          width={700}
-          height={700}
-          className="w-full h-auto"
-        />
-      </div>
-
       {/* Fixed Header */}
       <Header
         variant="dark"
@@ -90,7 +71,7 @@ export default function ContactSection({ onBack }: ContactSectionProps) {
               <div className="space-y-5">
                 <div className="flex items-center gap-4">
                   <div className="w-12 h-12 rounded-2xl bg-white/8 border border-white/14 flex items-center justify-center flex-shrink-0">
-                    <svg className="w-5 h-5 text-[#00a820]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <svg className="w-5 h-5 text-white/60" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                     </svg>
                   </div>
@@ -102,7 +83,7 @@ export default function ContactSection({ onBack }: ContactSectionProps) {
 
                 <div className="flex items-center gap-4">
                   <div className="w-12 h-12 rounded-2xl bg-white/8 border border-white/14 flex items-center justify-center flex-shrink-0">
-                    <svg className="w-5 h-5 text-[#00a820]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <svg className="w-5 h-5 text-white/60" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
                     </svg>
                   </div>
@@ -114,7 +95,7 @@ export default function ContactSection({ onBack }: ContactSectionProps) {
 
                 <div className="flex items-center gap-4">
                   <div className="w-12 h-12 rounded-2xl bg-white/8 border border-white/14 flex items-center justify-center flex-shrink-0">
-                    <svg className="w-5 h-5 text-[#00a820]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <svg className="w-5 h-5 text-white/60" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
                   </div>
@@ -128,7 +109,7 @@ export default function ContactSection({ onBack }: ContactSectionProps) {
               {/* Social Links */}
               <div className="mt-10 pt-8 border-t border-white/10">
                 <p className="text-white/40 text-xs uppercase tracking-wider mb-4">Follow Us</p>
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-4">
                   {[
                     { name: 'Instagram', href: 'https://instagram.com/agenz', icon: Instagram },
                     { name: 'LinkedIn', href: 'https://linkedin.com/company/agenz', icon: Linkedin },
@@ -141,9 +122,9 @@ export default function ContactSection({ onBack }: ContactSectionProps) {
                       target="_blank"
                       rel="noopener noreferrer"
                       aria-label={social.name}
-                      className="w-11 h-11 rounded-2xl bg-white/8 border border-white/14 flex items-center justify-center hover:bg-white/14 hover:border-[#00ffff]/50 hover:shadow-[0_0_20px_rgba(0,255,255,0.2)] transition-all duration-300"
+                      className="w-12 h-12 rounded-2xl bg-white/8 border border-white/14 flex items-center justify-center hover:bg-white/14 hover:border-[#00ffff]/50 hover:shadow-[0_0_20px_rgba(0,255,255,0.2)] transition-all duration-300"
                     >
-                      <social.icon className="w-4 h-4 text-white/60" />
+                      <social.icon className="w-5 h-5 text-white/60" />
                     </a>
                   ))}
                 </div>
