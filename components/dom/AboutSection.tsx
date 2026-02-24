@@ -3,7 +3,6 @@
 import { useRef, useState, useEffect } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import Image from 'next/image';
 import Link from 'next/link';
 import MenuOverlay from './MenuOverlay';
 import SmoothScrolling from './SmoothScrolling';
@@ -32,9 +31,6 @@ const darkGradientStyle: React.CSSProperties = {
 export default function AboutSection({ onBack }: AboutSectionProps) {
   const rootRef = useRef<HTMLDivElement>(null);
   const statsRefs = useRef<(HTMLDivElement | null)[]>([]);
-  const flowerRef = useRef<HTMLDivElement>(null);
-  const graphicsRef = useRef<HTMLDivElement>(null);
-  const shapeAnimationsRef = useRef<gsap.core.Tween[]>([]);
 
   // Menu state
   const [menuOpen, setMenuOpen] = useState(false);
@@ -96,78 +92,6 @@ export default function AboutSection({ onBack }: AboutSectionProps) {
     };
   }, []);
 
-  // Glass shape float animations + scroll-triggered entrances
-  useEffect(() => {
-    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (prefersReducedMotion) return;
-
-    // Flower shape - continuous float
-    if (flowerRef.current) {
-      // Scroll-triggered entrance: fade + slide from right
-      gsap.fromTo(
-        flowerRef.current,
-        { opacity: 0, x: 80 },
-        {
-          opacity: 1,
-          x: 0,
-          duration: 1.2,
-          ease: 'power2.out',
-          scrollTrigger: {
-            trigger: flowerRef.current,
-            start: 'top 85%',
-            once: true,
-          },
-        }
-      );
-
-      // Continuous float animation
-      const flowerFloat = gsap.to(flowerRef.current, {
-        y: 15,
-        rotation: -5,
-        duration: 6,
-        ease: 'sine.inOut',
-        yoyo: true,
-        repeat: -1,
-      });
-      shapeAnimationsRef.current.push(flowerFloat);
-    }
-
-    // Graphics shape - continuous float
-    if (graphicsRef.current) {
-      // Scroll-triggered entrance: fade + slide from left
-      gsap.fromTo(
-        graphicsRef.current,
-        { opacity: 0, x: -80 },
-        {
-          opacity: 1,
-          x: 0,
-          duration: 1.2,
-          ease: 'power2.out',
-          scrollTrigger: {
-            trigger: graphicsRef.current,
-            start: 'top 85%',
-            once: true,
-          },
-        }
-      );
-
-      // Continuous float animation
-      const graphicsFloat = gsap.to(graphicsRef.current, {
-        y: 15,
-        rotation: -5,
-        duration: 6,
-        ease: 'sine.inOut',
-        yoyo: true,
-        repeat: -1,
-      });
-      shapeAnimationsRef.current.push(graphicsFloat);
-    }
-
-    return () => {
-      shapeAnimationsRef.current.forEach((anim) => anim.kill());
-      shapeAnimationsRef.current = [];
-    };
-  }, []);
 
   return (
     <SmoothScrolling>
@@ -235,22 +159,6 @@ export default function AboutSection({ onBack }: AboutSectionProps) {
           </div>
 
           {/* Flower shape - right side */}
-          <div
-            ref={flowerRef}
-            className="absolute pointer-events-none
-              right-0 top-[35%] -translate-y-1/2 w-[75vw] opacity-60 translate-x-[10%]
-              md:top-1/2 md:w-[52vw] md:opacity-80 md:translate-x-[5%]
-              lg:w-[46vw] lg:opacity-100 lg:translate-x-[0%]"
-          >
-            <Image
-              src="/images/about/shapes/flower.webp"
-              alt=""
-              width={800}
-              height={800}
-              className="w-full h-auto"
-              priority
-            />
-          </div>
         </section>
 
         {/* 2. Mission Section - Split Layout */}
@@ -316,23 +224,6 @@ export default function AboutSection({ onBack }: AboutSectionProps) {
               radial-gradient(ellipse 60% 50% at 90% 80%, rgba(0, 184, 255, 0.16) 0%, transparent 55%)
             `,
           }} />
-          {/* Graphics shape - left side */}
-          <div
-            ref={graphicsRef}
-            className="absolute left-0 top-1/2 -translate-y-1/2 pointer-events-none
-              w-[55vw] opacity-30 -translate-x-[15%]
-              md:w-[45vw] md:opacity-55 md:-translate-x-[10%]
-              lg:w-[40vw] lg:opacity-75 lg:-translate-x-[5%]"
-          >
-            <Image
-              src="/images/about/shapes/graphics-shapes.webp"
-              alt=""
-              width={700}
-              height={700}
-              className="w-full h-auto"
-            />
-          </div>
-
           {/* Content */}
           <div className="relative z-10 text-center px-6">
             {/* Watermark AGENZ behind headline */}
