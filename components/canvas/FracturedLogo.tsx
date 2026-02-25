@@ -180,49 +180,11 @@ const FracturedLogo = forwardRef<FracturedLogoHandle, FracturedLogoProps>(functi
         const material = mesh.material.clone();
         mesh.material = material;
 
-        // Calculate brightness to detect dark pieces (0-1 range)
-        const brightness = (material.color.r + material.color.g + material.color.b) / 3;
-
-        if (largestIndex !== -1) {
-          // NAVIGATION PIECES - Keep brand colors, add visual weight
-          // Preserve original brand colors (cyan/green)
-
-          // Detect if this navigation piece is too dark
-          if (brightness < 0.25) {
-            // DARK NAVIGATION PIECE - Lighten and give strong emissive so it's never invisible
-            material.color.multiplyScalar(2.5);
-            material.emissiveIntensity = 0.45;
-          } else {
-            // BRIGHT NAVIGATION PIECE (cyan/green) - Keep as is
-            material.emissiveIntensity = 0.25;
-          }
-
-          // Add emissive glow in brand colors for depth
-          material.emissive.copy(material.color);
-
-          // High metalness + low roughness = picks up colored lights, specular highlights
-          material.metalness = 0.9;
-          material.roughness = 0.15;
-
-          // Enable transparency for animations
-          material.transparent = true;
-        } else {
-          // DEBRIS PIECES - Handle dark vs bright pieces differently
-
-          if (brightness < 0.25) {
-            material.color.multiplyScalar(2.0);
-            material.emissiveIntensity = 0.3;
-            material.emissive.copy(material.color);
-          } else {
-            material.color.multiplyScalar(0.75);
-            material.emissiveIntensity = 0.15;
-            material.emissive.copy(material.color);
-          }
-
-          material.metalness = 0.9;
-          material.roughness = 0.15;
-          material.transparent = true;
-        }
+        // ALL PIECES — same material so logo reads as one solid object before fracture
+        // No color or emissive overrides; GLB albedo renders as-is
+        material.metalness = 0.35;
+        material.roughness = 0.3;
+        material.transparent = true;
       }
 
       if (largestIndex !== -1) {
@@ -320,15 +282,6 @@ const FracturedLogo = forwardRef<FracturedLogoHandle, FracturedLogoProps>(functi
         const floatY = Math.sin(time * 0.8 + floatOffset) * 0.1;
         piece.mesh.position.y = piece.targetPosition.y + floatY;
         piece.mesh.rotation.y += delta * 0.5;
-
-        // Pulse glow only when not being hovered (to avoid fighting GSAP hover tween)
-        if (
-          !hoveredNavPiecesRef.current.has(piece.name) &&
-          piece.mesh.material instanceof THREE.MeshStandardMaterial
-        ) {
-          piece.mesh.material.emissiveIntensity = 0.65 + 0.25 * Math.sin(time * 1.5 + index * 0.8);
-          // Range: 0.4–0.9
-        }
       });
 
       // Orbital motion for debris pieces
