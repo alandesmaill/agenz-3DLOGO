@@ -39,8 +39,8 @@ export default function Scene({ children }: SceneProps) {
       {/* Front fill - straight-on, ensures all forward-facing surfaces are lit */}
       <directionalLight position={[0, 0, 10]} intensity={1.2} />
 
-      {/* Green brand point light - front-left, colors the surface */}
-      <pointLight position={[-3, 2, 4]} intensity={8} color="#00e92c" distance={14} />
+      {/* Cyan fill light - front-left, mirrors rim for full brand envelope */}
+      <pointLight position={[-3, 2, 4]} intensity={5} color="#00ffff" distance={14} />
 
       {/* Cyan rim light - back-right, creates a glowing edge separation */}
       <pointLight position={[4, 1, -4]} intensity={5} color="#00ffff" distance={12} />
