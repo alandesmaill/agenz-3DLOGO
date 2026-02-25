@@ -433,9 +433,9 @@ const FracturedLogo = forwardRef<FracturedLogoHandle, FracturedLogoProps>(functi
     // Ramp up emissive glow on all 4 nav pieces once explosion starts
     navigationPieces.forEach((piece) => {
       if (piece.mesh.material instanceof THREE.MeshStandardMaterial) {
-        piece.mesh.material.emissive.copy(piece.mesh.material.color);
+        piece.mesh.material.emissive.set(0x00ffff);  // subtle cyan identity, not piece color
         const glowTween = gsap.to(piece.mesh.material, {
-          emissiveIntensity: 0.8,
+          emissiveIntensity: 0,  // no at-rest emissive — pieces lit purely by scene lights
           duration: 2.0,
           ease: 'power2.out',
           delay: 0,
@@ -502,7 +502,7 @@ const FracturedLogo = forwardRef<FracturedLogoHandle, FracturedLogoProps>(functi
         tweensRef.current.push(emissiveTween);
 
         const intensityTween = gsap.to(piece.mesh.material, {
-          emissiveIntensity: 1.4, // More dramatic hover glow
+          emissiveIntensity: 0.5, // Visible interaction feedback without blinding bloom burst
           duration: 0.3,
           ease: 'power2.out',
         });
@@ -540,13 +540,14 @@ const FracturedLogo = forwardRef<FracturedLogoHandle, FracturedLogoProps>(functi
       newTweens.push(scaleTween);
       tweensRef.current.push(scaleTween);
 
-      // Return emissive to piece's own color at base glow level (not dead/dark)
+      // Return emissive to subtle cyan base (not piece color, not blown-out)
       if (piece.mesh.material instanceof THREE.MeshStandardMaterial) {
         const mat = piece.mesh.material;
+        const cyanColor = new THREE.Color(0x00ffff);
         const emissiveTween = gsap.to(mat.emissive, {
-          r: mat.color.r,
-          g: mat.color.g,
-          b: mat.color.b,
+          r: cyanColor.r,
+          g: cyanColor.g,
+          b: cyanColor.b,
           duration: 0.3,
           ease: 'power2.out',
         });
@@ -554,7 +555,7 @@ const FracturedLogo = forwardRef<FracturedLogoHandle, FracturedLogoProps>(functi
         tweensRef.current.push(emissiveTween);
 
         const intensityTween = gsap.to(mat, {
-          emissiveIntensity: 0.7,   // return to base glow, not 0
+          emissiveIntensity: 0,  // return to no emissive — match new base
           duration: 0.3,
           ease: 'power2.out',
         });
