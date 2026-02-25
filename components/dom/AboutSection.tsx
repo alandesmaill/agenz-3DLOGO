@@ -17,14 +17,12 @@ interface AboutSectionProps {
   onBack?: () => void;
 }
 
-// Dark gradient background style applied to scroll-container — 4 layers on #050505
+// Dark gradient background style applied to scroll-container — green atmospheric on #0d0d0d
 const darkGradientStyle: React.CSSProperties = {
   background: `
-    radial-gradient(ellipse 80% 60% at 0% 0%, rgba(0, 233, 44, 0.20) 0%, transparent 50%),
-    radial-gradient(ellipse 60% 50% at 100% 0%, rgba(0, 255, 255, 0.18) 0%, transparent 50%),
-    radial-gradient(ellipse 70% 50% at 10% 100%, rgba(0, 233, 44, 0.18) 0%, transparent 50%),
-    radial-gradient(ellipse 70% 50% at 100% 100%, rgba(0, 255, 255, 0.16) 0%, transparent 50%),
-    #050505
+    radial-gradient(ellipse 70% 60% at 20% 50%, rgba(0, 255, 255, 0.14) 0%, transparent 55%),
+    radial-gradient(ellipse 60% 50% at 60% 85%, rgba(0, 255, 255, 0.10) 0%, transparent 55%),
+    #0d0d0d
   `,
 };
 
@@ -158,14 +156,6 @@ export default function AboutSection({ onBack }: AboutSectionProps) {
 
         {/* 2. Mission Section - Big Statement */}
         <section className="relative min-h-screen w-full flex items-center py-24">
-          {/* Section gradient overlay */}
-          <div className="absolute inset-0 pointer-events-none" style={{
-            background: `
-              radial-gradient(ellipse 50% 50% at 0% 50%, rgba(0, 233, 44, 0.14) 0%, transparent 60%),
-              radial-gradient(ellipse 50% 50% at 100% 50%, rgba(0, 255, 255, 0.12) 0%, transparent 60%)
-            `,
-          }} />
-
           <div className="relative z-10 w-full px-6 md:px-12 lg:px-16">
             {/* Section label */}
             <div className="flex flex-col items-center mb-12">
@@ -202,18 +192,7 @@ export default function AboutSection({ onBack }: AboutSectionProps) {
         <section
           ref={ctaRef}
           className="relative h-screen flex items-center justify-center overflow-hidden"
-          style={{
-            background: `radial-gradient(ellipse 60% 40% at 50% 100%, rgba(0,233,44,0.08) 0%, transparent 70%)`,
-          }}
         >
-          {/* Existing CTA gradient overlays */}
-          <div className="absolute inset-0 pointer-events-none" style={{
-            background: `
-              radial-gradient(ellipse 60% 50% at 10% 80%, rgba(0, 233, 44, 0.18) 0%, transparent 55%),
-              radial-gradient(ellipse 60% 50% at 90% 80%, rgba(0, 184, 255, 0.16) 0%, transparent 55%)
-            `,
-          }} />
-
           {/* Content */}
           <div className="relative z-10 text-center px-6">
             {/* Parallax watermark */}

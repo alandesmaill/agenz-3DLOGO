@@ -43,7 +43,7 @@ export default function AdvertisingPage() {
         onMenuClick={() => setMenuOpen(true)}
       />
       <SmoothScrolling>
-        <main className="scrollable-page relative min-h-screen" style={{ background: 'radial-gradient(ellipse 80% 60% at 0% 0%, rgba(0, 233, 44, 0.10) 0%, transparent 50%), radial-gradient(ellipse 60% 50% at 100% 0%, rgba(0, 255, 255, 0.08) 0%, transparent 50%), radial-gradient(ellipse 70% 50% at 10% 100%, rgba(0, 233, 44, 0.08) 0%, transparent 50%), radial-gradient(ellipse 70% 50% at 100% 100%, rgba(0, 255, 255, 0.07) 0%, transparent 50%), #050505' }}>
+        <main className="scrollable-page relative min-h-screen" style={{ background: 'radial-gradient(ellipse 70% 60% at 20% 50%, rgba(0, 255, 255, 0.08) 0%, transparent 55%), radial-gradient(ellipse 60% 50% at 60% 85%, rgba(0, 255, 255, 0.06) 0%, transparent 55%), #0d0d0d' }}>
         {/* Hero Section */}
         <section className="relative py-20 md:py-32 px-6 md:px-12 overflow-hidden">
           <ServiceDetailHero
