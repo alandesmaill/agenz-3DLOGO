@@ -40,10 +40,10 @@ export default function Scene({ children }: SceneProps) {
       <directionalLight position={[0, 0, 10]} intensity={1.2} />
 
       {/* Cyan fill light - front-left, mirrors rim for full brand envelope */}
-      <pointLight position={[-3, 2, 4]} intensity={5} color="#00ffff" distance={14} />
+      <pointLight position={[-3, 2, 4]} intensity={1.5} color="#00ffff" distance={14} />
 
       {/* Cyan rim light - back-right, creates a glowing edge separation */}
-      <pointLight position={[4, 1, -4]} intensity={5} color="#00ffff" distance={12} />
+      <pointLight position={[4, 1, -4]} intensity={1.5} color="#00ffff" distance={12} />
 
       {/* Bottom fill so lower pieces don't go black */}
       <directionalLight position={[0, -6, 4]} intensity={0.6} />
@@ -54,9 +54,9 @@ export default function Scene({ children }: SceneProps) {
       {/* Post-processing Effects */}
       <EffectComposer>
         <Bloom
-          intensity={1.2}
-          luminanceThreshold={0.55}
-          luminanceSmoothing={0.4}
+          intensity={0.35}
+          luminanceThreshold={0.80}
+          luminanceSmoothing={0.3}
           height={200}
           mipmapBlur
         />
