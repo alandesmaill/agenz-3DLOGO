@@ -3,10 +3,10 @@
 import { useRef, useState, useEffect } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import Image from 'next/image';
 import Link from 'next/link';
 import MenuOverlay from './MenuOverlay';
 import SmoothScrolling from './SmoothScrolling';
-import AnimatedText from './AnimatedText';
 import Footer from './Footer';
 import Header from './Header';
 import { aboutContent } from '@/lib/about-content';
@@ -32,6 +32,41 @@ const grainStyle: React.CSSProperties = {
   opacity: 0.03,
   mixBlendMode: 'overlay' as const,
 };
+
+function HoverWords({
+  text,
+  className,
+  style,
+}: {
+  text: string;
+  className?: string;
+  style?: React.CSSProperties;
+}) {
+  const words = text.split(' ');
+
+  return (
+    <h1 className={className} style={style}>
+      {words.map((word, i) => (
+        <span
+          key={i}
+          className="group/word inline-block overflow-hidden relative mr-[0.22em] mb-[0.05em] cursor-default"
+          style={{ verticalAlign: 'bottom' }}
+        >
+          {/* Visible word — exits upward on hover */}
+          <span className="block transition-transform duration-300 ease-out group-hover/word:-translate-y-full">
+            {word}
+          </span>
+          {/* Clone — enters from below on hover, uses brand gradient */}
+          <span
+            className="absolute inset-0 block translate-y-full transition-transform duration-300 ease-out group-hover/word:translate-y-0 bg-gradient-to-r from-[#00e92c] to-[#00ffff] bg-clip-text text-transparent"
+          >
+            {word}
+          </span>
+        </span>
+      ))}
+    </h1>
+  );
+}
 
 export default function AboutSection({ onBack }: AboutSectionProps) {
   const rootRef = useRef<HTMLDivElement>(null);
@@ -126,31 +161,24 @@ export default function AboutSection({ onBack }: AboutSectionProps) {
 
           {/* Full-width text block */}
           <div className="relative z-10 w-full px-6 md:px-12 lg:px-16 mt-16 md:mt-0">
-            {/* Eyebrow label */}
-            <p className="text-sm tracking-[0.3em] uppercase text-white/60 mb-4">
-              {aboutContent.hero.welcomeText}
-            </p>
+            {/* SVG Logo */}
+            <div className="mb-8 md:mb-10">
+              <Image
+                src="/agenz creative hub.svg"
+                alt="Agenz Creative Hub"
+                width={360}
+                height={105}
+                priority
+                className="w-[220px] md:w-[300px] lg:w-[380px]"
+              />
+            </div>
 
-            {/* AGENZ — full-width display */}
-            <h1
-              className="font-extrabold uppercase leading-none tracking-[0.06em] bg-gradient-to-r from-[#00e92c] to-[#00ffff] bg-clip-text text-transparent"
-              style={{ fontSize: 'clamp(5rem, 18vw, 22rem)' }}
-            >
-              {aboutContent.hero.brandName}
-            </h1>
-
-            {/* Tagline */}
-            <AnimatedText
-              className="text-white/60 font-semibold uppercase leading-tight mt-4 tracking-[0.05em]"
-              style={{ fontSize: 'clamp(1rem, 2.8vw, 3.5vw)' }}
-              splitBy="words"
-              stagger={0.04}
-              duration={0.6}
-              y={40}
-              triggerStart="top 90%"
-            >
-              WE MASTER EVERYTHING FROM A TO Z!
-            </AnimatedText>
+            {/* Hover-animated tagline */}
+            <HoverWords
+              text={aboutContent.hero.headline}
+              className="text-white/90 font-extrabold uppercase leading-[0.92] tracking-[-0.01em]"
+              style={{ fontSize: 'clamp(3.2rem, 6.5vw, 8.5rem)' }}
+            />
           </div>
         </section>
 

@@ -34,6 +34,7 @@ export default function AnimatedText({
 }: AnimatedTextProps) {
   const textRef = useRef<HTMLDivElement>(null);
   const splitInstanceRef = useRef<SplitType | null>(null);
+  const tlRef = useRef<gsap.core.Timeline | null>(null);
 
   useEffect(() => {
     if (!textRef.current) return;
@@ -45,6 +46,8 @@ export default function AnimatedText({
       // Skip animation for users who prefer reduced motion
       return;
     }
+
+    let refreshTimer: ReturnType<typeof setTimeout>;
 
     // Small delay to ensure DOM is ready and Lenis is initialized
     const initTimer = setTimeout(() => {
@@ -87,6 +90,8 @@ export default function AnimatedText({
         },
       });
 
+      tlRef.current = tl;
+
       tl.to(elements, {
         opacity: 1,
         y: 0,
@@ -101,7 +106,7 @@ export default function AnimatedText({
       });
 
       // Refresh ScrollTrigger after animation is set up
-      setTimeout(() => {
+      refreshTimer = setTimeout(() => {
         ScrollTrigger.refresh();
       }, 100);
     }, 200); // Wait for DOM to be ready
@@ -109,8 +114,14 @@ export default function AnimatedText({
     // Cleanup
     return () => {
       clearTimeout(initTimer);
+      clearTimeout(refreshTimer);
+      if (tlRef.current) {
+        tlRef.current.kill();
+        tlRef.current = null;
+      }
       if (splitInstanceRef.current) {
         splitInstanceRef.current.revert();
+        splitInstanceRef.current = null;
       }
     };
   }, [splitBy, stagger, duration, delay, y, triggerStart, once]);

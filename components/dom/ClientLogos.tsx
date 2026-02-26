@@ -87,7 +87,7 @@ export default function ClientLogos() {
                 src={client.image}
                 alt={client.name}
                 fill
-                className="object-contain p-6 grayscale-[50%] group-hover:grayscale-0 transition-all duration-300 group-hover:scale-105"
+                className="object-contain p-6 [filter:brightness(0)_invert(1)] transition-all duration-500 group-hover:scale-105"
                 sizes="(max-width: 768px) 50vw, 25vw"
               />
             </div>

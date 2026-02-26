@@ -3,7 +3,7 @@
 import { useEffect, useRef } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Instagram, Linkedin, Twitter, Facebook, ArrowRight } from 'lucide-react';
+import { Instagram, Linkedin, ArrowRight } from 'lucide-react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
@@ -21,23 +21,13 @@ interface SocialLink {
 const socialLinks: SocialLink[] = [
   {
     name: 'Instagram',
-    href: 'https://instagram.com/agenz',
+    href: 'https://www.instagram.com/agenz.iq/',
     icon: Instagram,
   },
   {
     name: 'LinkedIn',
-    href: 'https://linkedin.com/company/agenz',
+    href: 'https://www.linkedin.com/company/agenz-iq/posts/?feedView=all',
     icon: Linkedin,
-  },
-  {
-    name: 'Twitter',
-    href: 'https://twitter.com/agenz',
-    icon: Twitter,
-  },
-  {
-    name: 'Facebook',
-    href: 'https://facebook.com/agenz',
-    icon: Facebook,
   },
 ];
 
@@ -142,39 +132,14 @@ export default function Footer() {
           {/* 4-Column Footer Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
             {/* Column 1: Brand */}
-            <div className="footer-column md:col-span-2 lg:col-span-1 text-center md:text-left space-y-4">
+            <div className="footer-column md:col-span-2 lg:col-span-1 text-center md:text-left">
               <Image
-                src="/Agenz-logo-white.svg"
-                alt="Agenz Logo"
-                width={150}
-                height={50}
-                className="h-10 w-auto transition-all duration-300 hover:scale-105 mx-auto md:mx-0"
+                src="/agenz creative hub.svg"
+                alt="Agenz Creative Hub"
+                width={180}
+                height={60}
+                className="h-14 w-auto transition-all duration-300 hover:scale-105 mx-auto md:mx-0"
               />
-
-              <p className="text-sm font-medium bg-gradient-to-r from-cyan-400 to-green-400 bg-clip-text text-transparent">
-                Creative Excellence.
-                <br />
-                Digital Innovation.
-              </p>
-
-              <div className="flex gap-3 justify-center md:justify-start mt-6">
-                {socialLinks.map((social) => {
-                  const Icon = social.icon;
-                  return (
-                    <a
-                      key={social.name}
-                      href={social.href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="group relative w-10 h-10 rounded-xl bg-white/8 backdrop-blur-xl border border-white/14 flex items-center justify-center transition-all duration-300 hover:bg-white/14 hover:border-cyan-400/50 hover:shadow-lg hover:shadow-cyan-500/30 md:hover:scale-110 md:hover:-translate-y-1"
-                      aria-label={social.name}
-                    >
-                      <Icon className="w-4 h-4 text-gray-400 group-hover:text-cyan-400 transition-all duration-300 group-hover:scale-110" />
-                      <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/0 to-green-500/0 group-hover:from-cyan-500/20 group-hover:to-green-500/20 rounded-xl transition-all duration-500 pointer-events-none blur-sm" />
-                    </a>
-                  );
-                })}
-              </div>
             </div>
 
             {/* Column 2: Quick Links */}
@@ -251,6 +216,25 @@ export default function Footer() {
                   </a>
                 </li>
               </ul>
+
+              <div className="flex gap-3 justify-center md:justify-start mt-6">
+                {socialLinks.map((social) => {
+                  const Icon = social.icon;
+                  return (
+                    <a
+                      key={social.name}
+                      href={social.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="group relative w-10 h-10 rounded-xl bg-white/8 backdrop-blur-xl border border-white/14 flex items-center justify-center transition-all duration-300 hover:bg-white/14 hover:border-cyan-400/50 hover:shadow-lg hover:shadow-cyan-500/30 md:hover:scale-110 md:hover:-translate-y-1"
+                      aria-label={social.name}
+                    >
+                      <Icon className="w-4 h-4 text-gray-400 group-hover:text-cyan-400 transition-all duration-300 group-hover:scale-110" />
+                      <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/0 to-green-500/0 group-hover:from-cyan-500/20 group-hover:to-green-500/20 rounded-xl transition-all duration-500 pointer-events-none blur-sm" />
+                    </a>
+                  );
+                })}
+              </div>
             </div>
           </div>
 

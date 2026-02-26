@@ -4,7 +4,7 @@ export const aboutContent = {
   hero: {
     welcomeText: "WELCOME TO",
     brandName: "AGENZ",
-    headline: "WE MASTER EVERYTHING FROM A TO Z!",
+    headline: "WE CREATE PURPOSEFUL CREATIVE WORK THAT WORKS!",
     subheading: "Award-winning agency specializing in advertising, video production, and strategic media.",
   },
   mission: {

@@ -31,10 +31,8 @@ const NAV_ITEMS: NavItem[] = [
 ];
 
 const SOCIAL_LINKS = [
-  { label: 'Instagram', href: 'https://instagram.com' },
-  { label: 'LinkedIn', href: 'https://linkedin.com' },
-  { label: 'Twitter', href: 'https://twitter.com' },
-  { label: 'Dribbble', href: 'https://dribbble.com' },
+  { label: 'Instagram', href: 'https://www.instagram.com/agenz.iq/' },
+  { label: 'LinkedIn', href: 'https://www.linkedin.com/company/agenz-iq/posts/?feedView=all' },
 ];
 
 export default function MenuOverlay({ isOpen, onClose }: MenuOverlayProps) {
