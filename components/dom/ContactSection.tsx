@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useCallback } from 'react';
-import { Instagram, Linkedin, Twitter, Facebook } from 'lucide-react';
+import { Instagram, Linkedin } from 'lucide-react';
 import MenuOverlay from './MenuOverlay';
 import ContactForm from './ContactForm';
 import SubmissionSuccess from './SubmissionSuccess';
@@ -109,10 +109,8 @@ export default function ContactSection({ onBack }: ContactSectionProps) {
                 <p className="text-white/40 text-xs uppercase tracking-wider mb-4">Follow Us</p>
                 <div className="flex items-center gap-4">
                   {[
-                    { name: 'Instagram', href: 'https://instagram.com/agenz', icon: Instagram },
-                    { name: 'LinkedIn', href: 'https://linkedin.com/company/agenz', icon: Linkedin },
-                    { name: 'Twitter', href: 'https://twitter.com/agenz', icon: Twitter },
-                    { name: 'Facebook', href: 'https://facebook.com/agenz', icon: Facebook },
+                    { name: 'Instagram', href: 'https://www.instagram.com/agenz.iq/', icon: Instagram },
+                    { name: 'LinkedIn', href: 'https://www.linkedin.com/company/agenz-iq/posts/?feedView=all', icon: Linkedin },
                   ].map((social) => (
                     <a
                       key={social.name}

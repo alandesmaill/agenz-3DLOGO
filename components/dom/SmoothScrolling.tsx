@@ -34,13 +34,14 @@ export default function SmoothScrolling({ children, className }: SmoothScrolling
     }
 
     // Desktop: Initialize Lenis with optimal settings
+    // autoRaf: false because we drive the loop manually via gsap.ticker
     const lenis = new Lenis({
       lerp: 0.1,              // Smooth interpolation (lower = smoother)
       duration: 1.2,          // Scroll duration
       wheelMultiplier: 1,     // Mouse wheel sensitivity
       touchMultiplier: 2,     // Touch sensitivity
       infinite: false,        // Disable infinite scroll
-      autoRaf: true,          // Auto requestAnimationFrame
+      autoRaf: false,         // We drive RAF manually via gsap.ticker
     });
 
     lenisRef.current = lenis;
@@ -48,10 +49,11 @@ export default function SmoothScrolling({ children, className }: SmoothScrolling
     // Integrate with GSAP ScrollTrigger
     lenis.on('scroll', ScrollTrigger.update);
 
-    // Update ScrollTrigger on Lenis scroll
-    gsap.ticker.add((time) => {
+    // Store the ticker callback so we can remove the exact same reference
+    const tickerCallback = (time: number) => {
       lenis.raf(time * 1000);
-    });
+    };
+    gsap.ticker.add(tickerCallback);
 
     gsap.ticker.lagSmoothing(0);
 
@@ -70,10 +72,8 @@ export default function SmoothScrolling({ children, className }: SmoothScrolling
     return () => {
       clearTimeout(refreshTimer);
       clearTimeout(lateRefreshTimer);
+      gsap.ticker.remove(tickerCallback);
       lenis.destroy();
-      gsap.ticker.remove((time) => {
-        lenis.raf(time * 1000);
-      });
       window.removeEventListener('resize', checkMobile);
     };
   }, []);
