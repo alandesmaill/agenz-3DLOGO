@@ -120,12 +120,20 @@ export const portfolioData: Record<string, PortfolioItem> = {
     },
 
     gallery: [
-      { type: 'image', src: '/images/works/sulaymaniyah-anniversary-2025/gallery-1.webp', alt: 'Suli Day event coverage' },
-      { type: 'image', src: '/images/works/sulaymaniyah-anniversary-2025/gallery-2.webp', alt: 'Nali stamp illustration' },
-      { type: 'image', src: '/images/works/sulaymaniyah-anniversary-2025/gallery-3.webp', alt: 'Social media campaign' },
-      { type: 'image', src: '/images/works/sulaymaniyah-anniversary-2025/gallery-4.webp', alt: 'Cultural branding materials' },
-      { type: 'image', src: '/images/works/sulaymaniyah-anniversary-2025/gallery-5.webp', alt: 'Event photography' },
-      { type: 'image', src: '/images/works/sulaymaniyah-anniversary-2025/gallery-6.webp', alt: 'Outdoor activation design' },
+      { type: 'image', src: '/images/works/sulaymaniyah-anniversary-2025/1 - 1.webp', alt: 'Sulaymaniyah Anniversary 2025 — Image 1' },
+      { type: 'image', src: '/images/works/sulaymaniyah-anniversary-2025/1 - 2.webp', alt: 'Sulaymaniyah Anniversary 2025 — Image 2' },
+      { type: 'image', src: '/images/works/sulaymaniyah-anniversary-2025/1 - 3.webp', alt: 'Sulaymaniyah Anniversary 2025 — Image 3' },
+      { type: 'image', src: '/images/works/sulaymaniyah-anniversary-2025/1 - 4.webp', alt: 'Sulaymaniyah Anniversary 2025 — Image 4' },
+      { type: 'image', src: '/images/works/sulaymaniyah-anniversary-2025/1 - 5.webp', alt: 'Sulaymaniyah Anniversary 2025 — Image 5' },
+      { type: 'image', src: '/images/works/sulaymaniyah-anniversary-2025/1 - 6.webp', alt: 'Sulaymaniyah Anniversary 2025 — Image 6' },
+      { type: 'image', src: '/images/works/sulaymaniyah-anniversary-2025/1 - 7.webp', alt: 'Sulaymaniyah Anniversary 2025 — Image 7' },
+      { type: 'image', src: '/images/works/sulaymaniyah-anniversary-2025/1 - 8.webp', alt: 'Sulaymaniyah Anniversary 2025 — Image 8' },
+      { type: 'image', src: '/images/works/sulaymaniyah-anniversary-2025/1 - 9.webp', alt: 'Sulaymaniyah Anniversary 2025 — Image 9' },
+      { type: 'image', src: '/images/works/sulaymaniyah-anniversary-2025/1 - 10.webp', alt: 'Sulaymaniyah Anniversary 2025 — Image 10' },
+      { type: 'image', src: '/images/works/sulaymaniyah-anniversary-2025/1 - 11.webp', alt: 'Sulaymaniyah Anniversary 2025 — Image 11' },
+      { type: 'image', src: '/images/works/sulaymaniyah-anniversary-2025/1 - 12.webp', alt: 'Sulaymaniyah Anniversary 2025 — Image 12' },
+      { type: 'image', src: '/images/works/sulaymaniyah-anniversary-2025/1 - 13.webp', alt: 'Sulaymaniyah Anniversary 2025 — Image 13' },
+      { type: 'image', src: '/images/works/sulaymaniyah-anniversary-2025/1 - 14.webp', alt: 'Sulaymaniyah Anniversary 2025 — Image 14' },
     ],
 
     results: [
