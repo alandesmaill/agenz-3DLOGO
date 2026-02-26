@@ -133,13 +133,15 @@ export default function Footer() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
             {/* Column 1: Brand */}
             <div className="footer-column md:col-span-2 lg:col-span-1 text-center md:text-left">
-              <Image
-                src="/agenz creative hub.svg"
-                alt="Agenz Creative Hub"
-                width={180}
-                height={60}
-                className="h-14 w-auto transition-all duration-300 hover:scale-105 mx-auto md:mx-0"
-              />
+              <Link href="/">
+                <Image
+                  src="/agenz creative hub.svg"
+                  alt="Agenz Creative Hub"
+                  width={180}
+                  height={60}
+                  className="h-14 w-auto transition-all duration-300 hover:scale-105 mx-auto md:mx-0"
+                />
+              </Link>
             </div>
 
             {/* Column 2: Quick Links */}
