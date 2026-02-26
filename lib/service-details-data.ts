@@ -3,7 +3,7 @@
  *
  * This file contains detailed content for all 4 service pages:
  * - Advertising & Social Media
- * - Video Production & Music
+ * - Video Production
  * - Print & Graphic Design
  * - Strategic Media Services
  */
@@ -11,7 +11,7 @@
 import type { LucideIcon } from 'lucide-react';
 import {
   TrendingUp, Target, PenLine, Users, BarChart2, Star, SplitSquareHorizontal, ShieldAlert,
-  Film, BookOpen, Music, Volume2, Sparkles, Navigation, Radio, Share2,
+  Film, BookOpen, Volume2, Sparkles, Navigation, Radio, Share2,
   Fingerprint, Printer, Package, Monitor, Megaphone, PieChart, BookMarked, Building2,
   Calendar, Search, SlidersHorizontal, Activity, Network, Cpu, GitBranch, Calculator,
 } from 'lucide-react';
@@ -244,17 +244,17 @@ export const serviceDetailsData: Record<string, ServiceDetail> = {
   },
 
   // ========================================
-  // SERVICE 2: VIDEO PRODUCTION & MUSIC
+  // SERVICE 2: VIDEO PRODUCTION
   // ========================================
   video: {
     id: 'video',
     number: '02',
-    title: 'Video Production & Music',
+    title: 'Video Production',
     accentColor: '#00e92c', // Green
 
     hero: {
       tagline: 'Cinematic Storytelling That Resonates',
-      description: 'Award-winning video production combined with custom music composition to create unforgettable brand experiences that captivate audiences and drive action.',
+      description: 'Award-winning video production to create unforgettable brand experiences that captivate audiences and drive action.',
       stats: [
         { value: '100+', label: 'Videos Produced' },
         { value: '15M+', label: 'Total Views' },
@@ -266,13 +266,13 @@ export const serviceDetailsData: Record<string, ServiceDetail> = {
       heading: 'From Concept to Screen, We Bring Your Vision to Life',
       paragraphs: [
         'In a world where attention is currency, exceptional video content isn\'t optional—it\'s essential. We craft cinematic brand stories that don\'t just look beautiful, but drive real business results.',
-        'Our full-service production studio handles everything from concept development and scriptwriting to filming, editing, and custom music composition. Whether you need a 30-second commercial, a feature-length brand documentary, or an entire video series, we deliver content that stands out.',
-        'What sets us apart? Our in-house music composition team. Every project can feature custom soundtracks tailored to your brand\'s emotional tone, creating a truly unique audiovisual experience that your audience will remember.',
+        'Our full-service production studio handles everything from concept development and scriptwriting to filming, editing, and post-production. Whether you need a 30-second commercial, a feature-length brand documentary, or an entire video series, we deliver content that stands out.',
+        'What sets us apart? Our meticulous attention to storytelling and visual quality. Every project is crafted to reflect your brand\'s identity, creating a truly unique audiovisual experience that your audience will remember.',
       ],
       benefits: [
         'Full-service production from pre-production to final delivery',
         'In-house studio with 4K and cinema-quality equipment',
-        'Custom music composition and audio post-production',
+        'Professional audio post-production and sound design',
         'Drone cinematography and aerial footage',
         'Multi-format delivery optimized for every platform',
         'Unlimited revisions until you\'re 100% satisfied',
@@ -289,11 +289,6 @@ export const serviceDetailsData: Record<string, ServiceDetail> = {
         icon: BookOpen,
         title: 'Brand Storytelling',
         description: 'Documentary-style brand films, customer testimonials, founder stories, and cultural narratives that build emotional connections.',
-      },
-      {
-        icon: Music,
-        title: 'Custom Music Composition',
-        description: 'Original scores, brand anthems, and soundtracks composed specifically for your video, ensuring unique audio identity.',
       },
       {
         icon: Volume2,
@@ -328,14 +323,14 @@ export const serviceDetailsData: Record<string, ServiceDetail> = {
         clientLogo: '/images/clients/startupxyz-logo.svg',
         industry: 'Technology Startup',
         challenge: 'StartupXYZ needed a compelling product launch video to secure Series A funding and attract early adopters, but their previous video attempts felt generic and failed to convey their innovation.',
-        solution: 'We developed a 2-minute narrative-driven video showcasing real customers using the product to solve real problems. Shot on location across 3 cities, featuring customer interviews, product demos, and a custom orchestral soundtrack that built tension and excitement.',
+        solution: 'We developed a 2-minute narrative-driven video showcasing real customers using the product to solve real problems. Shot on location across 3 cities, featuring customer interviews, product demos, and dynamic sound design that built tension and excitement.',
         results: [
           { metric: 'funding', value: '$5M', label: 'Funding Secured' },
           { metric: 'video-views', value: '2M+', label: 'Video Views' },
           { metric: 'signups', value: '12,000', label: 'Signups in 30 Days' },
         ],
         testimonial: {
-          quote: 'The video didn\'t just explain our product—it made investors feel our vision. The custom music gave it an emotional weight that stock tracks could never achieve.',
+          quote: 'The video didn\'t just explain our product—it made investors feel our vision. The storytelling and production quality gave it an emotional weight we never expected.',
           author: 'David Park',
           role: 'Co-Founder & CEO, StartupXYZ',
         },
@@ -345,7 +340,7 @@ export const serviceDetailsData: Record<string, ServiceDetail> = {
         clientLogo: '/images/clients/luxe-logo.svg',
         industry: 'Hospitality',
         challenge: 'Luxe Hotels wanted a brand film that captured the essence of their boutique properties—intimate, culturally rich, and experiential—to differentiate from corporate hotel chains.',
-        solution: 'Created a 5-minute cinematic brand film featuring real guests, local chefs, and cultural experiences at their flagship property. Used drone footage for sweeping vistas, intimate interviews, and a jazz-inspired original score that reflected the location\'s artistic heritage.',
+        solution: 'Created a 5-minute cinematic brand film featuring real guests, local chefs, and cultural experiences at their flagship property. Used drone footage for sweeping vistas, intimate interviews, and carefully selected audio that reflected the location\'s artistic heritage.',
         results: [
           { metric: 'award', value: '🏆', label: 'Vimeo Staff Pick' },
           { metric: 'organic-views', value: '500K+', label: 'Organic Views' },
@@ -386,8 +381,8 @@ export const serviceDetailsData: Record<string, ServiceDetail> = {
         answer: 'Yes, we can provide raw footage for an additional fee. Standard packages include final edited videos in multiple formats (16:9, 9:16, 1:1) optimized for different platforms. Raw footage packages include all filmed content organized by scene/take, which is useful if you want to create additional edits in-house later.',
       },
       {
-        question: 'Can you create music specifically for my brand?',
-        answer: 'Absolutely—this is one of our specialties. Our in-house composers create original scores tailored to your brand\'s personality and video\'s emotional arc. You\'ll own the full rights to the music, and we can create variations for different video lengths or use cases. Typical turnaround is 1-2 weeks with up to 3 revision rounds included.',
+        question: 'Can you handle audio and sound design for my video?',
+        answer: 'Yes—our post-production team handles all audio needs including sound design, Foley effects, voiceover recording, mixing, and mastering. We source licensed tracks that fit your brand\'s tone and ensure pristine audio quality across all delivery formats.',
       },
       {
         question: 'What equipment do you use for filming?',

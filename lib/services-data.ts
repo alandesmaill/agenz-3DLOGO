@@ -24,9 +24,9 @@ export const servicesData: Service[] = [
   },
   {
     id: 'video',
-    title: 'Video Production & Music',
+    title: 'Video Production',
     description:
-      'Cinematic storytelling combined with custom soundscapes to create unforgettable brand experiences that resonate.',
+      'Cinematic storytelling crafted with precision to create unforgettable brand experiences that captivate and resonate.',
     icon: Clapperboard,
     accentColor: '#00e92c',
     ctaText: 'Learn More',

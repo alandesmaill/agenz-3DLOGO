@@ -4,7 +4,7 @@ import { TARGET_FPS, MIN_ACCEPTABLE_FPS } from './helpers/constants';
 
 const SERVICE_PAGES = [
   { path: '/services/advertising', name: 'Advertising & Social Media', color: '#00ffff' },
-  { path: '/services/video', name: 'Video Production & Music', color: '#00e92c' },
+  { path: '/services/video', name: 'Video Production', color: '#00e92c' },
   { path: '/services/design', name: 'Print & Graphic Design', color: '#00d4aa' },
   { path: '/services/strategy', name: 'Strategic Media Services', color: '#00b8ff' },
 ];

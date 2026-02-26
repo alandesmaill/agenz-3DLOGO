@@ -50,7 +50,7 @@ test.describe('Route Accessibility', () => {
 
     // Verify 4 service cards render
     await expect(page.getByText('Advertising & Social Media')).toBeVisible();
-    await expect(page.getByText('Video Production & Music')).toBeVisible();
+    await expect(page.getByText('Video Production')).toBeVisible();
     await expect(page.getByText('Print & Graphic Design')).toBeVisible();
     await expect(page.getByText('Strategic Media Services')).toBeVisible();
   });
