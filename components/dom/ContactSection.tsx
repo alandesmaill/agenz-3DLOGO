@@ -31,7 +31,7 @@ export default function ContactSection({ onBack }: ContactSectionProps) {
   }, []);
 
   return (
-    <div className="min-h-screen relative overflow-hidden" style={{
+    <div className="min-h-screen relative" style={{
       background: `
         radial-gradient(ellipse 70% 60% at 20% 50%, rgba(0, 255, 255, 0.14) 0%, transparent 55%),
         radial-gradient(ellipse 60% 50% at 60% 85%, rgba(0, 255, 255, 0.10) 0%, transparent 55%),

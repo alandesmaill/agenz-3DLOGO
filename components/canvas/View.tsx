@@ -140,7 +140,7 @@ export default function View() {
 
   // Header button handlers
   const handleGetInTouch = useCallback(() => {
-    setContactModalOpen(true);
+    window.location.href = '/contact';
   }, []);
 
   const handleMenuClick = useCallback(() => {
