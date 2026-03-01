@@ -5,7 +5,7 @@ import { gsap } from 'gsap';
 
 interface CaseStudy {
   clientName: string;
-  clientLogo: string;
+  clientLogo?: string;
   industry: string;
   challenge: string;
   solution: string;
@@ -140,11 +140,9 @@ export default function CaseStudyCarousel({
                       border: `2px solid ${accentColor}40`,
                     }}
                   >
-                    <img
-                      src={caseStudy.clientLogo}
-                      alt={caseStudy.clientName}
-                      className="w-12 h-12 object-contain"
-                    />
+                    <span className="text-2xl font-['Gibson'] font-bold" style={{ color: accentColor }}>
+                      {caseStudy.clientName.charAt(0)}
+                    </span>
                   </div>
                   <div>
                     <h3 className="text-2xl font-['Gibson'] font-bold text-gray-900">

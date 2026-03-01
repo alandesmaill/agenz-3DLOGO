@@ -42,13 +42,14 @@ async function fetchWithTimeout(url: string, options: RequestInit): Promise<Resp
 }
 
 // --- Validation Schema ---
-const phoneRegex = /^[+]?[\d\s\-()]{7,20}$/;
+const phoneRegex = /^[+]?(?=.*\d)[\d\s\-()]{7,20}$/;
 
 const contactSchema = z.object({
   name: z.string().min(2, 'Name must be at least 2 characters').max(100, 'Name is too long'),
   email: z.string().email('Invalid email address'),
   phone: z
     .string()
+    .trim()
     .refine((val) => val === '' || phoneRegex.test(val), {
       message: 'Invalid phone number format',
     })
@@ -93,7 +94,7 @@ async function sendEmailJS(templateId: string, params: Record<string, string>) {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
-      service_id: process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID,
+      service_id: process.env.EMAILJS_SERVICE_ID,
       template_id: templateId,
       user_id: process.env.EMAILJS_PUBLIC_KEY,
       accessToken: process.env.EMAILJS_PRIVATE_KEY,
@@ -156,13 +157,13 @@ export async function POST(request: NextRequest) {
 
     // Send main notification email to site owner
     await sendEmailJS(
-      process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID!,
+      process.env.EMAILJS_TEMPLATE_ID!,
       emailParams
     );
 
     // Send auto-reply to user
     await sendEmailJS(
-      process.env.NEXT_PUBLIC_EMAILJS_AUTOREPLY_TEMPLATE_ID!,
+      process.env.EMAILJS_AUTOREPLY_TEMPLATE_ID!,
       {
         from_name: validated.name,
         from_email: validated.email,

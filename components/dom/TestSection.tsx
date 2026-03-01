@@ -32,17 +32,29 @@ export default function TestSection({
 
   // Render AboutSection for the "about" section
   if (section === 'about') {
-    return <AboutSection onBack={onBack} />;
+    return (
+      <div id="section-scroll-container" className="fixed inset-0 overflow-y-auto z-50">
+        <AboutSection onBack={onBack} />
+      </div>
+    );
   }
 
   // Render ContactSection for the "contact" section
   if (section === 'contact') {
-    return <ContactSection onBack={onBack} />;
+    return (
+      <div id="section-scroll-container" className="fixed inset-0 overflow-y-auto z-50">
+        <ContactSection onBack={onBack} />
+      </div>
+    );
   }
 
   // Render ServicesSection for the "services" section
   if (section === 'services') {
-    return <ServicesSection onBack={onBack} />;
+    return (
+      <div id="section-scroll-container" className="fixed inset-0 overflow-y-auto z-50">
+        <ServicesSection onBack={onBack} />
+      </div>
+    );
   }
 
   // Redirect to /works page for the "works" section

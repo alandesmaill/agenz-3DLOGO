@@ -51,7 +51,6 @@ export interface PortfolioItem {
     metric: string;
     value: string;
     label: string;
-    icon: string;
   }>;
 
   testimonial: {
@@ -137,10 +136,10 @@ export const portfolioData: Record<string, PortfolioItem> = {
     ],
 
     results: [
-      { metric: 'theme', value: 'Nali', label: 'Cultural Theme', icon: '/icons/brand.svg' },
-      { metric: 'coverage', value: 'Full', label: 'Event Coverage', icon: '/icons/camera.svg' },
-      { metric: 'assets', value: '50+', label: 'Assets Delivered', icon: '/icons/package.svg' },
-      { metric: 'city', value: 'Suli', label: 'City of Sulaymaniyah', icon: '/icons/community.svg' },
+      { metric: 'theme', value: 'Nali', label: 'Cultural Theme' },
+      { metric: 'coverage', value: 'Full', label: 'Event Coverage' },
+      { metric: 'assets', value: '50+', label: 'Assets Delivered' },
+      { metric: 'city', value: 'Suli', label: 'City of Sulaymaniyah' },
     ],
 
     testimonial: {
@@ -151,7 +150,76 @@ export const portfolioData: Record<string, PortfolioItem> = {
       company: 'Sulaymaniyah, Kurdistan Region',
     },
 
-    relatedProjects: [],
+    relatedProjects: ['galawezh-festival', 'bla-awards'],
+  },
+
+  // ========================================
+  // Galawezh Festival
+  // ========================================
+  'galawezh-festival': {
+    id: 'galawezh-festival',
+    category: 'event-branding',
+    clientName: 'Galawezh International Festival',
+    projectTitle: 'Galawezh Festival — Event Branding',
+    year: '2024',
+    accentColor: '#00e92c',
+
+    thumbnail: {
+      image: '/images/works/galawezh-festival/160x120 px.webp',
+      alt: 'Galawezh Festival — Event Branding',
+    },
+
+    hero: {
+      coverImage: '/images/works/galawezh-festival/600x400 px.webp',
+      tagline: 'Culturally Rooted Design for an Iconic Festival',
+      description:
+        'We crafted sleek, culturally rooted designs for Galawezh Festival, capturing the event\'s iconic spirit. The visuals honored its legacy while appealing to modern audiences — blending heritage motifs, bold typography, and a cohesive visual language that resonated across every touchpoint.',
+      stats: [
+        { value: 'Cultural', label: 'Theme' },
+        { value: '2024', label: 'Year' },
+        { value: 'Branding', label: 'Scope' },
+      ],
+    },
+
+    overview: {
+      challenge:
+        'Galawezh Festival needed a visual identity that honored its deep cultural roots while feeling fresh and compelling to modern audiences — a system that could translate across posters, digital media, stage design, and printed collateral.',
+      solution:
+        'We built a comprehensive event branding system that fused Kurdish heritage aesthetics with contemporary design principles. Rich calligraphy, botanical motifs, and earthy tones were woven into a cohesive identity that elevated every aspect of the festival experience.',
+      approach: [
+        "Cultural research into Galawezh Festival's history and visual heritage",
+        'Development of a bilingual typographic system (Kurdish / Arabic / Latin)',
+        'Custom illustration system drawing from botanical and calligraphic motifs',
+        'Full asset suite covering print, digital, and environmental design',
+        'Social media content designed for pre-event, live, and post-event phases',
+      ],
+      deliverables: [
+        'Full event visual identity (logo, color palette, typography, patterns)',
+        'Poster series and printed collateral',
+        'Stage and environmental design assets',
+        'Social media graphics and story templates',
+        'Digital campaign assets',
+      ],
+    },
+
+    gallery: [],
+
+    results: [
+      { metric: 'theme', value: 'Cultural', label: 'Heritage Theme' },
+      { metric: 'scope', value: 'Full', label: 'Event Identity' },
+      { metric: 'assets', value: '40+', label: 'Assets Delivered' },
+      { metric: 'event', value: 'Festival', label: 'Event Branding' },
+    ],
+
+    testimonial: {
+      quote:
+        'Agenz gave Galawezh Festival a visual identity that felt both timeless and alive — deeply rooted in our culture yet bold enough to captivate a new generation of audiences.',
+      author: 'Galawezh International Festival',
+      role: 'Festival Committee',
+      company: 'Galawezh Festival, 2024',
+    },
+
+    relatedProjects: ['sulaymaniyah-anniversary-2025', 'bla-awards'],
   },
 
   // ========================================
@@ -204,10 +272,10 @@ export const portfolioData: Record<string, PortfolioItem> = {
     gallery: [],
 
     results: [
-      { metric: 'theme', value: 'Literary', label: 'Creative Theme', icon: '/icons/brand.svg' },
-      { metric: 'scope', value: 'Full', label: 'Brand Identity', icon: '/icons/package.svg' },
-      { metric: 'assets', value: '30+', label: 'Assets Delivered', icon: '/icons/camera.svg' },
-      { metric: 'event', value: 'Awards', label: 'Event Branding', icon: '/icons/community.svg' },
+      { metric: 'theme', value: 'Literary', label: 'Creative Theme' },
+      { metric: 'scope', value: 'Full', label: 'Brand Identity' },
+      { metric: 'assets', value: '30+', label: 'Assets Delivered' },
+      { metric: 'event', value: 'Awards', label: 'Event Branding' },
     ],
 
     testimonial: {
