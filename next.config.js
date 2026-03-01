@@ -6,6 +6,8 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
 const securityHeaders = [
   { key: 'X-Frame-Options', value: 'DENY' },
   { key: 'X-Content-Type-Options', value: 'nosniff' },
+  { key: 'X-XSS-Protection', value: '1; mode=block' },
+  { key: 'X-DNS-Prefetch-Control', value: 'off' },
   { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
   { key: 'Permissions-Policy', value: 'camera=(), microphone=(), geolocation=()' },
   {
@@ -16,9 +18,9 @@ const securityHeaders = [
     key: 'Content-Security-Policy',
     value: [
       "default-src 'self'",
-      "script-src 'self' 'unsafe-eval' 'unsafe-inline' https://www.google.com https://www.gstatic.com",
+      `script-src 'self' 'unsafe-inline'${process.env.NODE_ENV === 'development' ? " 'unsafe-eval'" : ''} https://www.google.com https://www.gstatic.com`,
       "style-src 'self' 'unsafe-inline'",
-      "img-src 'self' data: blob: https:",
+      "img-src 'self' data: blob:",
       "font-src 'self' data:",
       "connect-src 'self' blob: https://api.emailjs.com https://www.google.com https://vitals.vercel-insights.com https://va.vercel-scripts.com",
       "frame-src https://www.google.com",

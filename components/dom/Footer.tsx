@@ -40,7 +40,7 @@ const quickLinks = [
 
 const serviceLinks = [
   { name: 'Advertising & Social Media', href: '/services/advertising' },
-  { name: 'Video Production & Music', href: '/services/video' },
+  { name: 'Video Production', href: '/services/video' },
   { name: 'Print & Graphic Design', href: '/services/design' },
   { name: 'Strategic Media Services', href: '/services/strategy' },
 ];
@@ -56,6 +56,9 @@ export default function Footer() {
   useEffect(() => {
     if (!footerRef.current) return;
 
+    const scrollContainer = document.getElementById('section-scroll-container');
+    const scrollerOverride = scrollContainer ? { scroller: scrollContainer } : {};
+
     const ctx = gsap.context(() => {
       // Main footer entrance animation
       gsap.fromTo(
@@ -70,6 +73,7 @@ export default function Footer() {
             trigger: footerRef.current,
             start: 'top 90%',
             once: true,
+            ...scrollerOverride,
           },
         }
       );
@@ -90,6 +94,7 @@ export default function Footer() {
               trigger: footerRef.current,
               start: 'top 85%',
               once: true,
+              ...scrollerOverride,
             },
           }
         );
@@ -106,6 +111,7 @@ export default function Footer() {
             start: 'top bottom',
             end: 'bottom top',
             scrub: true,
+            ...scrollerOverride,
           },
         });
       }

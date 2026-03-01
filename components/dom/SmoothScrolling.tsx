@@ -33,6 +33,15 @@ export default function SmoothScrolling({ children, className }: SmoothScrolling
       };
     }
 
+    // If rendered inside TestSection's fixed overlay, skip Lenis entirely.
+    // The fixed div handles native scroll; Lenis would preventDefault wheel
+    // events and block the div's own overflow-y-auto scrolling.
+    if (document.getElementById('section-scroll-container')) {
+      return () => {
+        window.removeEventListener('resize', checkMobile);
+      };
+    }
+
     // Desktop: Initialize Lenis with optimal settings
     // autoRaf: false because we drive the loop manually via gsap.ticker
     const lenis = new Lenis({

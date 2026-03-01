@@ -45,7 +45,6 @@ export interface ServiceDetail {
 
   caseStudies: Array<{
     clientName: string;
-    clientLogo: string;
     industry: string;
     challenge: string;
     solution: string;
@@ -157,7 +156,6 @@ export const serviceDetailsData: Record<string, ServiceDetail> = {
     caseStudies: [
       {
         clientName: 'TechFlow Inc.',
-        clientLogo: '/images/clients/techflow-logo.svg',
         industry: 'SaaS Technology',
         challenge: 'TechFlow, a B2B SaaS startup, struggled to generate qualified leads through their LinkedIn presence. Their engagement rate was below 1%, and content wasn\'t resonating with decision-makers.',
         solution: 'We developed a thought leadership strategy featuring executive interviews, industry insights, and customer success stories. Implemented LinkedIn Ads with precision targeting for IT directors and CTOs, plus weekly educational webinars.',
@@ -174,7 +172,6 @@ export const serviceDetailsData: Record<string, ServiceDetail> = {
       },
       {
         clientName: 'Luxe Hotels Group',
-        clientLogo: '/images/clients/luxe-logo.svg',
         industry: 'Hospitality',
         challenge: 'Luxe Hotels wanted to attract younger travelers (25-40) to their boutique properties but their Instagram presence felt outdated and wasn\'t driving bookings.',
         solution: 'Created a visual storytelling strategy showcasing unique experiences, local culture, and behind-the-scenes content. Launched Instagram Stories and Reels series featuring guest testimonials and staff recommendations. Implemented Instagram Shopping for direct booking links.',
@@ -191,7 +188,6 @@ export const serviceDetailsData: Record<string, ServiceDetail> = {
       },
       {
         clientName: 'Organics Co.',
-        clientLogo: '/images/clients/organics-logo.svg',
         industry: 'E-commerce (Health & Wellness)',
         challenge: 'Organics Co. faced fierce competition in the organic supplements market. Their social ads weren\'t profitable, with a high cost per acquisition and low conversion rates.',
         solution: 'Developed a content strategy focused on education rather than hard selling. Created carousel ads showcasing product benefits with scientific backing, UGC content from real customers, and retargeting campaigns with limited-time offers.',
@@ -320,7 +316,6 @@ export const serviceDetailsData: Record<string, ServiceDetail> = {
     caseStudies: [
       {
         clientName: 'StartupXYZ',
-        clientLogo: '/images/clients/startupxyz-logo.svg',
         industry: 'Technology Startup',
         challenge: 'StartupXYZ needed a compelling product launch video to secure Series A funding and attract early adopters, but their previous video attempts felt generic and failed to convey their innovation.',
         solution: 'We developed a 2-minute narrative-driven video showcasing real customers using the product to solve real problems. Shot on location across 3 cities, featuring customer interviews, product demos, and dynamic sound design that built tension and excitement.',
@@ -337,7 +332,6 @@ export const serviceDetailsData: Record<string, ServiceDetail> = {
       },
       {
         clientName: 'Luxe Hotels Group',
-        clientLogo: '/images/clients/luxe-logo.svg',
         industry: 'Hospitality',
         challenge: 'Luxe Hotels wanted a brand film that captured the essence of their boutique properties—intimate, culturally rich, and experiential—to differentiate from corporate hotel chains.',
         solution: 'Created a 5-minute cinematic brand film featuring real guests, local chefs, and cultural experiences at their flagship property. Used drone footage for sweeping vistas, intimate interviews, and carefully selected audio that reflected the location\'s artistic heritage.',
@@ -354,7 +348,6 @@ export const serviceDetailsData: Record<string, ServiceDetail> = {
       },
       {
         clientName: 'EcoTech Solutions',
-        clientLogo: '/images/clients/ecotech-logo.svg',
         industry: 'Renewable Energy',
         challenge: 'EcoTech needed to explain their complex solar technology to residential customers who found technical jargon overwhelming and intimidating.',
         solution: 'Produced a series of 5 educational videos (60-90 seconds each) using motion graphics, simple analogies, and real customer installations. Each video focused on one concern: cost, installation, maintenance, savings, and environmental impact.',
@@ -488,7 +481,6 @@ export const serviceDetailsData: Record<string, ServiceDetail> = {
     caseStudies: [
       {
         clientName: 'Organics Co.',
-        clientLogo: '/images/clients/organics-logo.svg',
         industry: 'Health & Wellness',
         challenge: 'Organics Co.\'s packaging looked outdated compared to competitors. Their products were getting lost on shelves, and the brand didn\'t communicate the premium quality of their organic ingredients.',
         solution: 'Designed a complete packaging system featuring minimalist aesthetics, earth-tone colors, and tactile finishes (soft-touch lamination, embossing). Emphasized ingredient transparency with illustrated botanical elements. Created cohesive design across 12 product lines.',
@@ -505,7 +497,6 @@ export const serviceDetailsData: Record<string, ServiceDetail> = {
       },
       {
         clientName: 'TechFlow Inc.',
-        clientLogo: '/images/clients/techflow-logo.svg',
         industry: 'B2B SaaS',
         challenge: 'TechFlow\'s brand identity felt generic and dated. They looked like every other SaaS company with blue/gray branding and couldn\'t differentiate in a crowded market.',
         solution: 'Created a bold, modern brand identity featuring vibrant gradients, geometric patterns, and dynamic typography. Developed comprehensive brand guidelines including presentation templates, social media assets, and email signatures. The identity conveyed innovation while maintaining B2B credibility.',
@@ -522,7 +513,6 @@ export const serviceDetailsData: Record<string, ServiceDetail> = {
       },
       {
         clientName: 'Cascade Music Festival',
-        clientLogo: '/images/clients/cascade-logo.svg',
         industry: 'Events & Entertainment',
         challenge: 'Cascade Music Festival needed to create buzz for their inaugural event and attract both attendees and sponsors without an established brand presence.',
         solution: 'Designed a vibrant, psychedelic-inspired brand identity with custom typography and fluid illustrations representing music\'s movement. Created poster series, social media graphics, sponsor packages, and environmental signage. The design became instantly recognizable and shareable.',
@@ -656,7 +646,6 @@ export const serviceDetailsData: Record<string, ServiceDetail> = {
     caseStudies: [
       {
         clientName: 'StartupXYZ',
-        clientLogo: '/images/clients/startupxyz-logo.svg',
         industry: 'Technology Startup',
         challenge: 'StartupXYZ was spending $200K/month across Google, Facebook, and LinkedIn with poor attribution and rising acquisition costs. They couldn\'t identify which channels drove actual revenue.',
         solution: 'Implemented comprehensive attribution modeling connecting ad spend to closed deals. Shifted budget from broad awareness campaigns to high-intent search and retargeting. Introduced programmatic display for remarketing and reduced CPC through bid optimization.',
@@ -673,7 +662,6 @@ export const serviceDetailsData: Record<string, ServiceDetail> = {
       },
       {
         clientName: 'Regional Auto Group',
-        clientLogo: '/images/clients/autogroup-logo.svg',
         industry: 'Automotive Retail',
         challenge: 'Regional Auto Group needed to drive showroom traffic across 8 dealerships in 3 markets but their TV and radio campaigns weren\'t trackable or optimized.',
         solution: 'Created a multi-channel strategy combining local TV during prime automotive shopping times, targeted radio during commute hours, digital retargeting for website visitors, and geo-fenced mobile ads near competitor dealerships. Implemented call tracking and unique URLs for attribution.',
@@ -690,7 +678,6 @@ export const serviceDetailsData: Record<string, ServiceDetail> = {
       },
       {
         clientName: 'National Healthcare Provider',
-        clientLogo: '/images/clients/healthcare-logo.svg',
         industry: 'Healthcare',
         challenge: 'A national healthcare provider needed to launch urgent care centers in 12 new markets with limited brand awareness and strict compliance requirements.',
         solution: 'Developed market-specific strategies combining out-of-home advertising (billboards near hospitals and urgent cares), local search optimization, healthcare directory listings, and geo-targeted social campaigns. All creative met HIPAA and medical advertising regulations.',
