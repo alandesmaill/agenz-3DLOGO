@@ -86,11 +86,13 @@ export const metadata: Metadata = {
 
   // Favicon Configuration
   icons: {
+    shortcut: "/favicon.ico",
     icon: [
-      { url: "/favicon/web/favicon-16x16.svg", sizes: "16x16", type: "image/svg+xml" },
-      { url: "/favicon/web/favicon-32x32.svg", sizes: "32x32", type: "image/svg+xml" },
-      { url: "/favicon/web/favicon-96x96.svg", sizes: "96x96", type: "image/svg+xml" },
-      { url: "/favicon/web/favicon-196x196.svg", sizes: "196x196", type: "image/svg+xml" },
+      { url: "/favicon/web/favicon-16x16.png", sizes: "16x16", type: "image/png" },
+      { url: "/favicon/web/favicon-32x32.png", sizes: "32x32", type: "image/png" },
+      { url: "/favicon/web/favicon-96x96.png", sizes: "96x96", type: "image/png" },
+      { url: "/favicon/web/favicon-128x128.png", sizes: "128x128", type: "image/png" },
+      { url: "/favicon/web/favicon-196x196.png", sizes: "196x196", type: "image/png" },
     ],
     apple: [
       { url: "/favicon/apple/apple-touch-icon-180x180.png", sizes: "180x180", type: "image/png" },
@@ -108,6 +110,11 @@ export const metadata: Metadata = {
 
   // Web App Manifest
   manifest: "/manifest.json",
+
+  // Windows tile config
+  other: {
+    "msapplication-config": "/browserconfig.xml",
+  },
 };
 
 export default function RootLayout({
