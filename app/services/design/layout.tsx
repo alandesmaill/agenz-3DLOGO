@@ -11,12 +11,14 @@ export const metadata: Metadata = {
     'logo design',
     'branding',
     'creative design',
+    'graphic design Sulaymaniyah',
+    'branding agency Kurdistan',
   ],
   openGraph: {
     title: 'Print & Graphic Design Services - AGENZ',
     description: 'Timeless visual identities that bridge digital and physical touchpoints with creative excellence.',
     type: 'website',
-    url: 'https://agenz.com/services/design',
+    url: 'https://agenz-iq.com/services/design',
   },
   twitter: {
     card: 'summary_large_image',

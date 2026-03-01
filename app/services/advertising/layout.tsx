@@ -11,12 +11,14 @@ export const metadata: Metadata = {
     'social media strategy',
     'paid social advertising',
     'content marketing',
+    'advertising agency Sulaymaniyah',
+    'social media marketing Kurdistan',
   ],
   openGraph: {
     title: 'Advertising & Social Media Services - AGENZ',
     description: 'Strategic campaigns that amplify your brand across digital platforms with data-driven precision and creative excellence.',
     type: 'website',
-    url: 'https://agenz.com/services/advertising',
+    url: 'https://agenz-iq.com/services/advertising',
   },
   twitter: {
     card: 'summary_large_image',

@@ -11,12 +11,14 @@ export const metadata: Metadata = {
     'ROI optimization',
     'market insights',
     'media strategy',
+    'media planning Kurdistan',
+    'marketing strategy Iraq',
   ],
   openGraph: {
     title: 'Strategic Media Services - AGENZ',
     description: 'Comprehensive media planning and buying that maximizes ROI through intelligent channel optimization.',
     type: 'website',
-    url: 'https://agenz.com/services/strategy',
+    url: 'https://agenz-iq.com/services/strategy',
   },
   twitter: {
     card: 'summary_large_image',

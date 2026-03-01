@@ -11,12 +11,14 @@ export const metadata: Metadata = {
     'commercial production',
     'sound design',
     'custom music',
+    'video production Sulaymaniyah',
+    'commercial video Iraq',
   ],
   openGraph: {
     title: 'Video Production & Music Services - AGENZ',
     description: 'Cinematic storytelling combined with custom soundscapes to create unforgettable brand experiences.',
     type: 'website',
-    url: 'https://agenz.com/services/video',
+    url: 'https://agenz-iq.com/services/video',
   },
   twitter: {
     card: 'summary_large_image',
