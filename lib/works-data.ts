@@ -153,6 +153,73 @@ export const portfolioData: Record<string, PortfolioItem> = {
 
     relatedProjects: [],
   },
+
+  // ========================================
+  // BLA Awards
+  // ========================================
+  'bla-awards': {
+    id: 'bla-awards',
+    category: 'event-branding',
+    clientName: 'BLA Awards',
+    projectTitle: 'BLA Awards — Visual Identity & Branding',
+    year: '2024',
+    accentColor: '#00e92c',
+
+    thumbnail: {
+      image: '/images/works/bla-awards/160x120 px.webp',
+      alt: 'BLA Awards — Visual Identity & Branding',
+    },
+
+    hero: {
+      coverImage: '/images/works/bla-awards/600x400 px.webp',
+      tagline: 'Celebrating the Brilliance of Writers and Poets',
+      description:
+        'We crafted the visual identity and branding for the BLA Awards, celebrating the brilliance of renowned writers and poets. From elegant graphics to cohesive event design, our work highlighted the prestige, creativity, and inspiration of the literary world, turning each moment into a lasting impression.',
+      stats: [
+        { value: 'Literary', label: 'Theme' },
+        { value: '2024', label: 'Year' },
+        { value: 'Branding', label: 'Scope' },
+      ],
+    },
+
+    overview: {
+      challenge:
+        'The BLA Awards needed a visual identity that conveyed literary prestige and artistic depth — an aesthetic that would resonate with writers, poets, and cultural institutions while feeling both timeless and contemporary.',
+      solution:
+        'We developed a cohesive branding system anchored in elegance and creative expression. Every element — from typography to graphic language — was crafted to reflect the prestige of literature and the vibrant energy of the awards ceremony.',
+      approach: [
+        'In-depth research into literary awards aesthetics and cultural references',
+        'Custom visual identity system with logo, color palette, and typography',
+        'Cohesive event design spanning stage, print, and digital touchpoints',
+        'Branded collateral designed to elevate every moment of the ceremony',
+      ],
+      deliverables: [
+        'Full visual identity system (logo, color palette, typography)',
+        'Event branding and stage design assets',
+        'Printed materials and ceremony collateral',
+        'Digital graphics and social media templates',
+      ],
+    },
+
+    gallery: [],
+
+    results: [
+      { metric: 'theme', value: 'Literary', label: 'Creative Theme', icon: '/icons/brand.svg' },
+      { metric: 'scope', value: 'Full', label: 'Brand Identity', icon: '/icons/package.svg' },
+      { metric: 'assets', value: '30+', label: 'Assets Delivered', icon: '/icons/camera.svg' },
+      { metric: 'event', value: 'Awards', label: 'Event Branding', icon: '/icons/community.svg' },
+    ],
+
+    testimonial: {
+      quote:
+        'Agenz transformed our vision into a visual language that truly honored the spirit of literature. The branding gave our awards ceremony the prestige and elegance it deserved.',
+      author: 'BLA Awards',
+      role: 'Awards Committee',
+      company: 'BLA Awards, 2024',
+    },
+
+    relatedProjects: [],
+  },
 };
 
 // ============================================
