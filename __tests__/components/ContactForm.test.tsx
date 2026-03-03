@@ -21,10 +21,11 @@ jest.mock('@emailjs/browser', () => ({
   send: jest.fn(() => Promise.resolve({ status: 200, text: 'OK' })),
 }));
 
-// Mock Google reCAPTCHA
-jest.mock('react-google-recaptcha', () => ({
-  __esModule: true,
-  default: jest.fn(() => null),
+// Mock Google reCAPTCHA v3
+jest.mock('react-google-recaptcha-v3', () => ({
+  useGoogleReCaptcha: jest.fn(() => ({
+    executeRecaptcha: jest.fn(() => Promise.resolve('test-captcha-token')),
+  })),
 }));
 
 describe('ContactForm', () => {

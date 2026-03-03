@@ -13,7 +13,7 @@ import {
   TrendingUp, Target, PenLine, Users, BarChart2, Star, SplitSquareHorizontal, ShieldAlert,
   Film, BookOpen, Volume2, Sparkles, Navigation, Radio, Share2,
   Fingerprint, Printer, Package, Monitor, Megaphone, PieChart, BookMarked, Building2,
-  Calendar, Search, SlidersHorizontal, Activity, Network, Cpu, GitBranch, Calculator,
+  Calendar, Search, SlidersHorizontal, Activity, Network, Cpu,
 } from 'lucide-react';
 
 export interface ServiceDetail {
@@ -310,6 +310,11 @@ export const serviceDetailsData: Record<string, ServiceDetail> = {
         icon: Share2,
         title: 'Video SEO & Distribution',
         description: 'Strategic distribution across YouTube, Vimeo, social platforms with optimized titles, descriptions, and closed captions.',
+      },
+      {
+        icon: Package,
+        title: 'AgenZ Rental Service',
+        description: 'Professional production equipment and creative resources available for rent, including cameras, lighting, audio gear, and studio essentials, empowering creators and brands to execute high-quality productions with ease.',
       },
     ],
 
@@ -630,16 +635,6 @@ export const serviceDetailsData: Record<string, ServiceDetail> = {
         icon: Cpu,
         title: 'Programmatic Advertising',
         description: 'Automated media buying with advanced targeting, real-time bidding, and AI-powered optimization for digital channels.',
-      },
-      {
-        icon: GitBranch,
-        title: 'Attribution Modeling',
-        description: 'Multi-touch attribution to understand customer journey and assign credit to touchpoints that drive conversions.',
-      },
-      {
-        icon: Calculator,
-        title: 'Budget Allocation & Forecasting',
-        description: 'Predictive modeling, scenario planning, and strategic budget recommendations to maximize ROI and minimize waste.',
       },
     ],
 

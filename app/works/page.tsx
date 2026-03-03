@@ -60,7 +60,7 @@ export default function WorksPage() {
           <section className="relative py-16 md:py-20 px-6 md:px-12">
             <ServiceCTA
               heading="Ready to Create Something Unforgettable?"
-              description="Let's discuss your project and explore how we can transform your brand through strategic design, engaging content, and compelling storytelling."
+              description="Let's start a conversation about your vision and explore how we can transform your brand through strategic thinking, purposeful design, and storytelling that truly connects. We combine creativity with clarity, crafting experiences that capture attention, build emotion, and drive meaningful results."
               buttonText="Start Your Project"
               buttonLink="/contact"
               accentColor="#00ffff"

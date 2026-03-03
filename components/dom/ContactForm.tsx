@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
-import ReCAPTCHA from 'react-google-recaptcha';
+import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
 import FormField from './FormField';
 import FormTextarea from './FormTextarea';
 import gsap from 'gsap';
@@ -41,7 +41,7 @@ export default function ContactForm({ onSuccess }: ContactFormProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitAttempted, setSubmitAttempted] = useState(false);
   const [isOnline, setIsOnline] = useState(true);
-  const recaptchaRef = useRef<ReCAPTCHA>(null);
+  const { executeRecaptcha } = useGoogleReCaptcha();
   const formRef = useRef<HTMLFormElement>(null);
 
   // Offline detection
@@ -60,13 +60,6 @@ export default function ContactForm({ onSuccess }: ContactFormProps) {
       window.removeEventListener('offline', handleOffline);
     };
   }, []);
-
-  // Check if reCAPTCHA is properly configured
-  const recaptchaSiteKey = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY;
-  const isRecaptchaConfigured = recaptchaSiteKey &&
-    recaptchaSiteKey !== 'your_recaptcha_site_key_here' &&
-    recaptchaSiteKey !== '';
-
 
   // Validation functions
   const validateEmail = (email: string): string | undefined => {
@@ -199,10 +192,10 @@ export default function ContactForm({ onSuccess }: ContactFormProps) {
     setErrors({});
 
     try {
-      // Get reCAPTCHA token (only if configured)
+      // Get reCAPTCHA v3 token
       let captchaToken: string | null = null;
-      if (isRecaptchaConfigured) {
-        captchaToken = await recaptchaRef.current?.executeAsync() || null;
+      if (executeRecaptcha) {
+        captchaToken = await executeRecaptcha('contact_form');
         if (!captchaToken) {
           throw new Error('Captcha verification failed');
         }
@@ -239,7 +232,6 @@ export default function ContactForm({ onSuccess }: ContactFormProps) {
       });
     } finally {
       setIsSubmitting(false);
-      recaptchaRef.current?.reset();
     }
   };
 
@@ -349,15 +341,6 @@ export default function ContactForm({ onSuccess }: ContactFormProps) {
               </svg>
               <span>{errors.general}</span>
             </div>
-          )}
-
-          {/* Invisible reCAPTCHA — only rendered when configured */}
-          {isRecaptchaConfigured && (
-            <ReCAPTCHA
-              ref={recaptchaRef}
-              size="invisible"
-              sitekey={recaptchaSiteKey!}
-            />
           )}
 
           {/* Submit Button */}

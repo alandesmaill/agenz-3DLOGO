@@ -70,10 +70,27 @@ function HoverWords({
 
 export default function AboutSection({ onBack }: AboutSectionProps) {
   const rootRef = useRef<HTMLDivElement>(null);
+
+  // CTA refs
   const watermarkRef = useRef<HTMLDivElement>(null);
   const ctaRef = useRef<HTMLElement>(null);
-  const underlineRef = useRef<HTMLSpanElement>(null);
+
+  // Mission refs
+  const missionRef = useRef<HTMLElement>(null);
+  const missionWatermarkRef = useRef<HTMLDivElement>(null);
   const missionTextRef = useRef<HTMLDivElement>(null);
+  const underlineRef = useRef<HTMLSpanElement>(null);
+  const missionDividerRef = useRef<HTMLDivElement>(null);
+  const missionBeliefRef = useRef<HTMLParagraphElement>(null);
+
+  // Vision refs
+  const visionRef = useRef<HTMLElement>(null);
+  const visionLabelRef = useRef<HTMLDivElement>(null);
+  const visionFirstParaRef = useRef<HTMLParagraphElement>(null);
+  const visionUnderlineRef = useRef<HTMLSpanElement>(null);
+  const visionDividerRef = useRef<HTMLDivElement>(null);
+  const visionBeliefRef = useRef<HTMLParagraphElement>(null);
+  const visionWatermarkRef = useRef<HTMLDivElement>(null);
 
   // Menu state
   const [menuOpen, setMenuOpen] = useState(false);
@@ -115,7 +132,26 @@ export default function AboutSection({ onBack }: AboutSectionProps) {
     };
   }, []);
 
-  // Mission underline scroll-in animation
+  // Mission: watermark parallax
+  useEffect(() => {
+    if (!missionWatermarkRef.current || !missionRef.current) return;
+
+    const tween = gsap.to(missionWatermarkRef.current, {
+      y: -60,
+      scrollTrigger: {
+        trigger: missionRef.current,
+        start: 'top bottom',
+        end: 'bottom top',
+        scrub: 1.5,
+      },
+    });
+
+    return () => {
+      tween.kill();
+    };
+  }, []);
+
+  // Mission: underline sweep on "real business impact"
   useEffect(() => {
     if (!underlineRef.current || !missionTextRef.current) return;
 
@@ -127,6 +163,185 @@ export default function AboutSection({ onBack }: AboutSectionProps) {
         trigger: missionTextRef.current,
         start: 'top 75%',
         once: true,
+      },
+    });
+
+    return () => {
+      tween.kill();
+    };
+  }, []);
+
+  // Mission: short center divider
+  useEffect(() => {
+    if (!missionDividerRef.current || !missionTextRef.current) return;
+
+    const tween = gsap.to(missionDividerRef.current, {
+      width: 128,
+      duration: 0.6,
+      ease: 'power2.out',
+      scrollTrigger: {
+        trigger: missionTextRef.current,
+        start: 'top 65%',
+        once: true,
+      },
+    });
+
+    return () => {
+      tween.kill();
+    };
+  }, []);
+
+  // Mission: belief paragraph fade-up
+  useEffect(() => {
+    if (!missionBeliefRef.current || !missionTextRef.current) return;
+
+    const tween = gsap.fromTo(
+      missionBeliefRef.current,
+      { opacity: 0, y: 20 },
+      {
+        opacity: 1,
+        y: 0,
+        duration: 0.7,
+        ease: 'power2.out',
+        scrollTrigger: {
+          trigger: missionTextRef.current,
+          start: 'top 60%',
+          once: true,
+        },
+      }
+    );
+
+    return () => {
+      tween.kill();
+    };
+  }, []);
+
+  // Vision: label fade-up
+  useEffect(() => {
+    if (!visionLabelRef.current || !visionRef.current) return;
+
+    const tween = gsap.fromTo(
+      visionLabelRef.current,
+      { opacity: 0, y: 20 },
+      {
+        opacity: 1,
+        y: 0,
+        duration: 0.6,
+        ease: 'power2.out',
+        scrollTrigger: {
+          trigger: visionRef.current,
+          start: 'top 80%',
+          once: true,
+        },
+      }
+    );
+
+    return () => {
+      tween.kill();
+    };
+  }, []);
+
+  // Vision: first paragraph fade-up
+  useEffect(() => {
+    if (!visionFirstParaRef.current || !visionRef.current) return;
+
+    const tween = gsap.fromTo(
+      visionFirstParaRef.current,
+      { opacity: 0, y: 40 },
+      {
+        opacity: 1,
+        y: 0,
+        duration: 0.9,
+        ease: 'power2.out',
+        scrollTrigger: {
+          trigger: visionRef.current,
+          start: 'top 75%',
+          once: true,
+        },
+      }
+    );
+
+    return () => {
+      tween.kill();
+    };
+  }, []);
+
+  // Vision: underline sweep on "lasting impressions."
+  useEffect(() => {
+    if (!visionUnderlineRef.current || !visionFirstParaRef.current) return;
+
+    const tween = gsap.to(visionUnderlineRef.current, {
+      width: '100%',
+      duration: 0.8,
+      ease: 'power2.out',
+      scrollTrigger: {
+        trigger: visionFirstParaRef.current,
+        start: 'top 65%',
+        once: true,
+      },
+    });
+
+    return () => {
+      tween.kill();
+    };
+  }, []);
+
+  // Vision: short center divider (w-32 = 128px)
+  useEffect(() => {
+    if (!visionDividerRef.current || !visionFirstParaRef.current) return;
+
+    const tween = gsap.to(visionDividerRef.current, {
+      width: 128,
+      duration: 0.5,
+      ease: 'power2.out',
+      scrollTrigger: {
+        trigger: visionFirstParaRef.current,
+        start: 'top 60%',
+        once: true,
+      },
+    });
+
+    return () => {
+      tween.kill();
+    };
+  }, []);
+
+  // Vision: belief paragraph fade-up
+  useEffect(() => {
+    if (!visionBeliefRef.current || !visionFirstParaRef.current) return;
+
+    const tween = gsap.fromTo(
+      visionBeliefRef.current,
+      { opacity: 0, y: 20 },
+      {
+        opacity: 1,
+        y: 0,
+        duration: 0.7,
+        ease: 'power2.out',
+        scrollTrigger: {
+          trigger: visionFirstParaRef.current,
+          start: 'top 55%',
+          once: true,
+        },
+      }
+    );
+
+    return () => {
+      tween.kill();
+    };
+  }, []);
+
+  // Vision: watermark parallax
+  useEffect(() => {
+    if (!visionWatermarkRef.current || !visionRef.current) return;
+
+    const tween = gsap.to(visionWatermarkRef.current, {
+      y: -60,
+      scrollTrigger: {
+        trigger: visionRef.current,
+        start: 'top bottom',
+        end: 'bottom top',
+        scrub: 1.5,
       },
     });
 
@@ -182,41 +397,157 @@ export default function AboutSection({ onBack }: AboutSectionProps) {
           </div>
         </section>
 
-        {/* 2. Mission Section - Big Statement */}
-        <section className="relative min-h-screen w-full flex items-center py-24">
-          <div className="relative z-10 w-full px-6 md:px-12 lg:px-16">
-            {/* Section label */}
+        {/* 2. Mission Section - Centered */}
+        <section
+          ref={missionRef}
+          className="relative min-h-screen w-full flex items-center justify-center py-24 overflow-hidden"
+        >
+          {/* "MISSION" watermark with parallax */}
+          <div
+            ref={missionWatermarkRef}
+            className="absolute inset-0 flex items-center justify-center pointer-events-none select-none"
+            aria-hidden="true"
+          >
+            <span
+              className="font-extrabold uppercase text-[#00e92c]"
+              style={{ fontSize: 'clamp(8rem, 28vw, 34vw)', opacity: 0.025, letterSpacing: '0.05em' }}
+            >
+              MISSION
+            </span>
+          </div>
+
+          <div className="relative z-10 w-full px-6 md:px-12 lg:px-16 text-center">
+
+            {/* Centered label: ━━ OUR MISSION */}
             <div className="flex flex-col items-center mb-12">
-              <span className="block h-[2px] w-10 bg-gradient-to-r from-[#00e92c] to-[#00ffff] mb-4 rounded-full" />
+              <span className="block h-[2px] w-8 bg-gradient-to-r from-[#00e92c] to-[#00ffff] mb-4 rounded-full" />
               <p className="text-sm tracking-[0.3em] uppercase text-white/60">
                 Our Mission
               </p>
             </div>
 
-            {/* Mission statement */}
-            <div ref={missionTextRef} className="max-w-5xl mx-auto text-center">
+            {/* Text block — centered, max-w-4xl */}
+            <div ref={missionTextRef} className="max-w-4xl mx-auto">
+
+              {/* Main statement — bold, large */}
               <p
-                className="text-white/85 font-light leading-relaxed"
-                style={{ fontSize: 'clamp(1.8rem, 4.5vw, 5rem)' }}
+                className="text-white/90 font-bold leading-[1.1]"
+                style={{ fontSize: 'clamp(1.9rem, 3.8vw, 4.2rem)' }}
               >
-                To create{' '}
+                To create purposeful creative work that delivers{' '}
                 <span className="relative inline-block">
                   <span className="bg-gradient-to-r from-[#00e92c] to-[#00ffff] bg-clip-text text-transparent font-semibold">
-                    purposeful creative work
+                    real business impact
                   </span>
                   <span
                     ref={underlineRef}
                     className="block h-[2px] bg-gradient-to-r from-[#00e92c] to-[#00ffff] rounded-full mt-1"
                     style={{ width: '0%' }}
                   />
-                </span>{' '}
-                that drives real business results through innovative storytelling and strategic execution.
+                </span>
+                {', '}blending innovative storytelling, strategic thinking, and precise execution to help brands grow, connect, and stand out in a constantly evolving world.
+              </p>
+
+              {/* Short centered divider */}
+              <div
+                ref={missionDividerRef}
+                className="h-[1px] bg-white/10 my-8 mx-auto rounded-full"
+                style={{ width: 0 }}
+              />
+
+              {/* Belief line — lighter, smaller */}
+              <p
+                ref={missionBeliefRef}
+                className="text-white/60 font-light"
+                style={{ fontSize: 'clamp(1rem, 1.8vw, 1.4rem)', opacity: 0 }}
+              >
+                {aboutContent.mission.belief}
               </p>
             </div>
           </div>
         </section>
 
-        {/* 3. CTA Section - Kinetic */}
+        {/* 3. Vision Section - Centered, Expansive */}
+        <section
+          ref={visionRef}
+          className="relative min-h-screen w-full flex items-center justify-center py-32 overflow-hidden"
+        >
+          {/* Large "VISION" watermark with parallax */}
+          <div
+            ref={visionWatermarkRef}
+            className="absolute inset-0 flex items-center justify-center pointer-events-none select-none"
+            aria-hidden="true"
+          >
+            <span
+              className="font-extrabold uppercase text-[#00ffff]"
+              style={{ fontSize: 'clamp(8rem, 28vw, 34vw)', opacity: 0.025, letterSpacing: '0.05em' }}
+            >
+              VISION
+            </span>
+          </div>
+
+          {/* Cyan glow blob — top-right */}
+          <div
+            className="absolute top-[10%] right-[5%] w-[40vw] h-[40vw] pointer-events-none"
+            style={{
+              background: 'radial-gradient(ellipse at center, rgba(0, 255, 255, 0.08) 0%, transparent 60%)',
+            }}
+            aria-hidden="true"
+          />
+
+          {/* Content — centered */}
+          <div className="relative z-10 w-full px-6 md:px-12 lg:px-16 text-center">
+
+            {/* Centered label: ━━ OUR VISION */}
+            <div
+              ref={visionLabelRef}
+              className="flex flex-col items-center mb-12"
+              style={{ opacity: 0 }}
+            >
+              <span className="block h-[2px] w-8 bg-gradient-to-r from-[#00ffff] to-[#00e92c] mb-4 rounded-full" />
+              <p className="text-sm tracking-[0.3em] uppercase text-white/60">
+                Our Vision
+              </p>
+            </div>
+
+            {/* First paragraph — large, light */}
+            <p
+              ref={visionFirstParaRef}
+              className="text-white/90 font-bold leading-[1.1] max-w-4xl mx-auto"
+              style={{ fontSize: 'clamp(1.8rem, 3.5vw, 4rem)', opacity: 0 }}
+            >
+              To become a leading creative partner for ambitious brands, shaping culture through bold ideas, meaningful design, and experiences that leave{' '}
+              <span className="relative inline-block">
+                <span className="bg-gradient-to-r from-[#00ffff] to-[#00e92c] bg-clip-text text-transparent font-semibold">
+                  lasting impressions.
+                </span>
+                <span
+                  ref={visionUnderlineRef}
+                  className="block h-[2px] bg-gradient-to-r from-[#00ffff] to-[#00e92c] rounded-full mt-1"
+                  style={{ width: '0%' }}
+                />
+              </span>
+            </p>
+
+            {/* Short centered divider */}
+            <div
+              ref={visionDividerRef}
+              className="h-[1px] bg-white/10 my-8 mx-auto rounded-full"
+              style={{ width: 0 }}
+            />
+
+            {/* Belief paragraph — smaller, dimmer */}
+            <p
+              ref={visionBeliefRef}
+              className="text-white/50 font-light max-w-2xl mx-auto"
+              style={{ fontSize: 'clamp(1rem, 1.8vw, 1.3rem)', opacity: 0 }}
+            >
+              {aboutContent.vision.belief}
+            </p>
+          </div>
+        </section>
+
+        {/* 4. CTA Section - Kinetic */}
         <section
           ref={ctaRef}
           className="relative h-screen flex items-center justify-center overflow-hidden"

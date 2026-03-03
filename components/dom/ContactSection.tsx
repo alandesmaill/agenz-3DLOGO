@@ -2,6 +2,7 @@
 
 import { useState, useCallback } from 'react';
 import { Instagram, Linkedin } from 'lucide-react';
+import { GoogleReCaptchaProvider } from 'react-google-recaptcha-v3';
 import MenuOverlay from './MenuOverlay';
 import ContactForm from './ContactForm';
 import SubmissionSuccess from './SubmissionSuccess';
@@ -130,7 +131,9 @@ export default function ContactSection({ onBack }: ContactSectionProps) {
 
             {/* Right Column — Form */}
             <div>
-              <ContactForm onSuccess={handleSuccess} />
+              <GoogleReCaptchaProvider reCaptchaKey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || ''}>
+                <ContactForm onSuccess={handleSuccess} />
+              </GoogleReCaptchaProvider>
             </div>
           </div>
         </div>

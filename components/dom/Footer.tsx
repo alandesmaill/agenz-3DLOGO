@@ -256,12 +256,13 @@ export default function Footer() {
               {/* Legal Links */}
               <div className="flex gap-6">
                 {legalLinks.map((link) => (
-                  <span
+                  <Link
                     key={link.name}
-                    className="text-gray-500 cursor-not-allowed"
+                    href={link.href}
+                    className="text-gray-500 hover:text-gray-300 transition-colors duration-200"
                   >
                     {link.name}
-                  </span>
+                  </Link>
                 ))}
               </div>
             </div>
