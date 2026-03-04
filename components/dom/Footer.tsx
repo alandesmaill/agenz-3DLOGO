@@ -212,7 +212,7 @@ export default function Footer() {
                     href="mailto:hello@agenz.com"
                     className="text-gray-400 text-sm hover:text-cyan-400 transition-colors duration-300 inline-block"
                   >
-                    hello@agenz.com
+                    agenz@agenz-iq.com
                   </a>
                 </li>
                 <li>
@@ -220,7 +220,7 @@ export default function Footer() {
                     href="tel:+1234567890"
                     className="text-gray-400 text-sm hover:text-cyan-400 transition-colors duration-300 inline-block"
                   >
-                    +1 (234) 567-890
+                    +964 771 556 8080
                   </a>
                 </li>
               </ul>
