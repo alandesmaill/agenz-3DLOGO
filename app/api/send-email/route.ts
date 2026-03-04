@@ -27,20 +27,6 @@ setInterval(() => {
   }
 }, 10 * 60 * 1000);
 
-// --- Fetch with timeout helper ---
-const FETCH_TIMEOUT_MS = 10_000;
-
-async function fetchWithTimeout(url: string, options: RequestInit): Promise<Response> {
-  const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS);
-
-  try {
-    return await fetch(url, { ...options, signal: controller.signal });
-  } finally {
-    clearTimeout(timeout);
-  }
-}
-
 // --- Validation Schema ---
 const phoneRegex = /^[+]?(?=.*\d)[\d\s\-()]{7,20}$/;
 
@@ -59,32 +45,8 @@ const contactSchema = z.object({
 });
 
 /**
- * Send email via EmailJS REST API
- */
-async function sendEmailJS(templateId: string, params: Record<string, string>) {
-  const response = await fetchWithTimeout('https://api.emailjs.com/api/v1.0/email/send', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      service_id: process.env.EMAILJS_SERVICE_ID,
-      template_id: templateId,
-      user_id: process.env.EMAILJS_PUBLIC_KEY,
-      accessToken: process.env.EMAILJS_PRIVATE_KEY,
-      template_params: params,
-    }),
-  });
-
-  if (!response.ok) {
-    const errorText = await response.text();
-    throw new Error(`EmailJS API failed: ${response.status} — ${errorText}`);
-  }
-
-  // EmailJS returns plain text "OK" on success — no JSON parsing needed
-}
-
-
-/**
- * POST handler for contact form submissions
+ * POST handler — validates input and rate-limits.
+ * Actual email sending is done client-side via @emailjs/browser.
  */
 export async function POST(request: NextRequest) {
   try {
@@ -100,62 +62,12 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Parse request body
+    // Parse and validate request body
     const body = await request.json();
+    contactSchema.parse(body);
 
-    // Validate input
-    const validated = contactSchema.parse(body);
-
-    // Prepare email parameters
-    const timestamp = new Date().toISOString();
-
-    const emailParams = {
-      from_name: validated.name,
-      from_email: validated.email,
-      phone: validated.phone || 'Not provided',
-      company: validated.company || 'Not provided',
-      message: validated.message,
-      timestamp,
-      ip_address: ip,
-    };
-
-    // Log env vars (partial) to verify they loaded
-    console.log('[API] EmailJS config:', {
-      service_id: process.env.EMAILJS_SERVICE_ID,
-      template_id: process.env.EMAILJS_TEMPLATE_ID,
-      autoreply_template_id: process.env.EMAILJS_AUTOREPLY_TEMPLATE_ID,
-      public_key: process.env.EMAILJS_PUBLIC_KEY ? '***set***' : 'MISSING',
-      private_key: process.env.EMAILJS_PRIVATE_KEY ? '***set***' : 'MISSING',
-    });
-
-    // Send main notification email to site owner
-    console.log('[API] Sending notification email...');
-    await sendEmailJS(
-      process.env.EMAILJS_TEMPLATE_ID!,
-      emailParams
-    );
-    console.log('[API] Notification email sent');
-
-    // Send auto-reply to user (non-fatal — don't block success if this fails)
-    try {
-      console.log('[API] Sending auto-reply email...');
-      await sendEmailJS(
-        process.env.EMAILJS_AUTOREPLY_TEMPLATE_ID!,
-        {
-          from_name: validated.name,
-          from_email: validated.email,
-          to_email: validated.email,
-        }
-      );
-      console.log('[API] Auto-reply sent');
-    } catch (autoReplyError) {
-      console.error('[API] Auto-reply failed (non-fatal):', autoReplyError);
-    }
-
-    return NextResponse.json({ success: true });
+    return NextResponse.json({ valid: true });
   } catch (error) {
-    console.error('[API] Request failed:', error);
-
     // Handle validation errors
     if (error instanceof z.ZodError) {
       const fieldErrors: Record<string, string> = {};
@@ -166,18 +78,14 @@ export async function POST(request: NextRequest) {
       });
 
       return NextResponse.json(
-        {
-          error: 'Validation failed',
-          details: fieldErrors,
-        },
+        { error: 'Validation failed', details: fieldErrors },
         { status: 400 }
       );
     }
 
-    // Handle other errors
     return NextResponse.json(
-      { error: 'Failed to send message. Please try again later.' },
-      { status: 500 }
+      { error: 'Invalid request.' },
+      { status: 400 }
     );
   }
 }
