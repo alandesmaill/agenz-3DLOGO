@@ -76,7 +76,7 @@ export default function ContactSection({ onBack }: ContactSectionProps) {
                   </div>
                   <div>
                     <p className="text-white/60 text-xs uppercase tracking-wider mb-0.5">Email</p>
-                    <p className="text-white font-medium">hello@agenz.com</p>
+                    <p className="text-white font-medium">agenz@agenz-iq.com</p>
                   </div>
                 </div>
 
@@ -88,7 +88,7 @@ export default function ContactSection({ onBack }: ContactSectionProps) {
                   </div>
                   <div>
                     <p className="text-white/60 text-xs uppercase tracking-wider mb-0.5">Phone</p>
-                    <p className="text-white font-medium">+1 (234) 567-890</p>
+                    <p className="text-white font-medium">+964 771 556 8080 </p>
                   </div>
                 </div>
 
