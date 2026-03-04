@@ -63,6 +63,12 @@ const contactSchema = z.object({
  * Verify reCAPTCHA token with Google's API
  */
 async function verifyCaptcha(token: string): Promise<boolean> {
+  // Skip reCAPTCHA in development to allow local testing
+  if (process.env.NODE_ENV === 'development') {
+    console.log('[API] reCAPTCHA skipped in development mode');
+    return true;
+  }
+
   try {
     const secretKey = process.env.RECAPTCHA_SECRET_KEY;
 
@@ -79,7 +85,8 @@ async function verifyCaptcha(token: string): Promise<boolean> {
     });
 
     const data = await response.json();
-    return data.success && data.score > 0.7;
+    console.log('[API] reCAPTCHA response:', JSON.stringify(data));
+    return data.success && data.score >= 0.5;
   } catch (error) {
     console.error('[API] reCAPTCHA verification error:', error);
     return false;
@@ -104,11 +111,12 @@ async function sendEmailJS(templateId: string, params: Record<string, string>) {
 
   if (!response.ok) {
     const errorText = await response.text();
-    throw new Error(`EmailJS API failed: ${response.status}`);
+    throw new Error(`EmailJS API failed: ${response.status} — ${errorText}`);
   }
 
-  return response.json();
+  // EmailJS returns plain text "OK" on success — no JSON parsing needed
 }
+
 
 /**
  * POST handler for contact form submissions
@@ -155,24 +163,42 @@ export async function POST(request: NextRequest) {
       ip_address: ip,
     };
 
+    // Log env vars (partial) to verify they loaded
+    console.log('[API] EmailJS config:', {
+      service_id: process.env.EMAILJS_SERVICE_ID,
+      template_id: process.env.EMAILJS_TEMPLATE_ID,
+      autoreply_template_id: process.env.EMAILJS_AUTOREPLY_TEMPLATE_ID,
+      public_key: process.env.EMAILJS_PUBLIC_KEY ? '***set***' : 'MISSING',
+      private_key: process.env.EMAILJS_PRIVATE_KEY ? '***set***' : 'MISSING',
+    });
+
     // Send main notification email to site owner
+    console.log('[API] Sending notification email...');
     await sendEmailJS(
       process.env.EMAILJS_TEMPLATE_ID!,
       emailParams
     );
+    console.log('[API] Notification email sent');
 
-    // Send auto-reply to user
-    await sendEmailJS(
-      process.env.EMAILJS_AUTOREPLY_TEMPLATE_ID!,
-      {
-        from_name: validated.name,
-        from_email: validated.email,
-        to_email: validated.email,
-      }
-    );
+    // Send auto-reply to user (non-fatal — don't block success if this fails)
+    try {
+      console.log('[API] Sending auto-reply email...');
+      await sendEmailJS(
+        process.env.EMAILJS_AUTOREPLY_TEMPLATE_ID!,
+        {
+          from_name: validated.name,
+          from_email: validated.email,
+          to_email: validated.email,
+        }
+      );
+      console.log('[API] Auto-reply sent');
+    } catch (autoReplyError) {
+      console.error('[API] Auto-reply failed (non-fatal):', autoReplyError);
+    }
 
     return NextResponse.json({ success: true });
   } catch (error) {
+    console.error('[API] Request failed:', error);
 
     // Handle validation errors
     if (error instanceof z.ZodError) {

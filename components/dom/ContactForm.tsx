@@ -193,12 +193,13 @@ export default function ContactForm({ onSuccess }: ContactFormProps) {
 
     try {
       // Get reCAPTCHA v3 token
-      let captchaToken: string | null = null;
-      if (executeRecaptcha) {
-        captchaToken = await executeRecaptcha('contact_form');
-        if (!captchaToken) {
-          throw new Error('Captcha verification failed');
-        }
+      if (!executeRecaptcha) {
+        setErrors({ general: 'Security check not ready. Please refresh the page and try again.' });
+        return;
+      }
+      const captchaToken = await executeRecaptcha('contact_form');
+      if (!captchaToken) {
+        throw new Error('Security check failed. Please try again.');
       }
 
       // Submit to API
@@ -213,7 +214,12 @@ export default function ContactForm({ onSuccess }: ContactFormProps) {
       if (!response.ok) {
         // Handle field-specific errors
         if (result.details) {
-          setErrors(result.details);
+          const { captchaToken: captchaErr, ...fieldErrors } = result.details;
+          if (Object.keys(fieldErrors).length > 0) {
+            setErrors(fieldErrors);
+          } else {
+            setErrors({ general: 'Security verification failed. Please refresh and try again.' });
+          }
         } else {
           setErrors({ general: result.error || 'Failed to send message' });
         }
@@ -228,7 +234,9 @@ export default function ContactForm({ onSuccess }: ContactFormProps) {
 
     } catch (error) {
       setErrors({
-        general: 'Network error. Please check your connection and try again.',
+        general: error instanceof Error
+          ? error.message
+          : 'Network error. Please check your connection and try again.',
       });
     } finally {
       setIsSubmitting(false);
