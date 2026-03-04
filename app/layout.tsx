@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Analytics } from "@vercel/analytics/next";
 import StructuredData from "@/components/StructuredData";
 import "./globals.css";
 
@@ -149,7 +150,10 @@ export default function RootLayout({
       <head>
         <StructuredData data={organizationSchema} />
       </head>
-      <body>{children}</body>
+      <body>
+        {children}
+        <Analytics />
+      </body>
     </html>
   );
 }
