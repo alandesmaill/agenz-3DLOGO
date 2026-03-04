@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
-import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
 import FormField from './FormField';
 import FormTextarea from './FormTextarea';
 import gsap from 'gsap';
@@ -41,7 +40,6 @@ export default function ContactForm({ onSuccess }: ContactFormProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitAttempted, setSubmitAttempted] = useState(false);
   const [isOnline, setIsOnline] = useState(true);
-  const { executeRecaptcha } = useGoogleReCaptcha();
   const formRef = useRef<HTMLFormElement>(null);
 
   // Offline detection
@@ -192,21 +190,11 @@ export default function ContactForm({ onSuccess }: ContactFormProps) {
     setErrors({});
 
     try {
-      // Get reCAPTCHA v3 token
-      if (!executeRecaptcha) {
-        setErrors({ general: 'Security check not ready. Please refresh the page and try again.' });
-        return;
-      }
-      const captchaToken = await executeRecaptcha('contact_form');
-      if (!captchaToken) {
-        throw new Error('Security check failed. Please try again.');
-      }
-
       // Submit to API
       const response = await fetch('/api/send-email', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...formData, captchaToken }),
+        body: JSON.stringify(formData),
       });
 
       const result = await response.json();
@@ -214,12 +202,7 @@ export default function ContactForm({ onSuccess }: ContactFormProps) {
       if (!response.ok) {
         // Handle field-specific errors
         if (result.details) {
-          const { captchaToken: captchaErr, ...fieldErrors } = result.details;
-          if (Object.keys(fieldErrors).length > 0) {
-            setErrors(fieldErrors);
-          } else {
-            setErrors({ general: 'Security verification failed. Please refresh and try again.' });
-          }
+          setErrors(result.details);
         } else {
           setErrors({ general: result.error || 'Failed to send message' });
         }

@@ -56,42 +56,7 @@ const contactSchema = z.object({
     .optional(),
   company: z.string().max(100, 'Company name is too long').optional(),
   message: z.string().min(10, 'Message must be at least 10 characters').max(1000, 'Message is too long'),
-  captchaToken: z.string().min(1, 'Captcha verification required'),
 });
-
-/**
- * Verify reCAPTCHA token with Google's API
- */
-async function verifyCaptcha(token: string): Promise<boolean> {
-  // Skip reCAPTCHA in development to allow local testing
-  if (process.env.NODE_ENV === 'development') {
-    console.log('[API] reCAPTCHA skipped in development mode');
-    return true;
-  }
-
-  try {
-    const secretKey = process.env.RECAPTCHA_SECRET_KEY;
-
-    // Check if secret key is configured
-    if (!secretKey || secretKey.includes('your_')) {
-      console.error('[API] reCAPTCHA secret key not configured');
-      return false;
-    }
-
-    const response = await fetchWithTimeout('https://www.google.com/recaptcha/api/siteverify', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      body: `secret=${secretKey}&response=${token}`,
-    });
-
-    const data = await response.json();
-    console.log('[API] reCAPTCHA response:', JSON.stringify(data));
-    return data.success && data.score >= 0.5;
-  } catch (error) {
-    console.error('[API] reCAPTCHA verification error:', error);
-    return false;
-  }
-}
 
 /**
  * Send email via EmailJS REST API
@@ -140,15 +105,6 @@ export async function POST(request: NextRequest) {
 
     // Validate input
     const validated = contactSchema.parse(body);
-
-    // Verify reCAPTCHA
-    const captchaValid = await verifyCaptcha(validated.captchaToken);
-    if (!captchaValid) {
-      return NextResponse.json(
-        { error: 'Captcha verification failed. Please try again.' },
-        { status: 400 }
-      );
-    }
 
     // Prepare email parameters
     const timestamp = new Date().toISOString();
