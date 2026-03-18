@@ -108,9 +108,41 @@ export default function AboutSection({ onBack }: AboutSectionProps) {
       ScrollTrigger.update();
     }, 800);
 
+    // Extra refresh to ensure vision section triggers are positioned correctly
+    const lateRefreshTimer = setTimeout(() => {
+      ScrollTrigger.refresh();
+    }, 1200);
+
+    // Safety fallback: if vision content refs are still at opacity 0 after 2.5s,
+    // force them visible in case ScrollTrigger positions were miscalculated
+    const fallbackTimer = setTimeout(() => {
+      const els = [
+        visionLabelRef.current,
+        visionFirstParaRef.current,
+        visionBeliefRef.current,
+        visionUnderlineRef.current,
+        visionDividerRef.current,
+      ];
+      els.forEach((el) => {
+        if (!el) return;
+        const opacity = parseFloat(window.getComputedStyle(el).opacity);
+        if (opacity < 0.5) {
+          gsap.to(el, { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' });
+          if (el === visionUnderlineRef.current) {
+            gsap.to(el, { width: '100%', duration: 0.8, ease: 'power2.out' });
+          }
+          if (el === visionDividerRef.current) {
+            gsap.to(el, { width: 128, duration: 0.6, ease: 'power2.out' });
+          }
+        }
+      });
+    }, 2500);
+
     return () => {
       clearTimeout(refreshTimer);
       clearTimeout(updateTimer);
+      clearTimeout(lateRefreshTimer);
+      clearTimeout(fallbackTimer);
     };
   }, []);
 
@@ -232,7 +264,8 @@ export default function AboutSection({ onBack }: AboutSectionProps) {
         scrollTrigger: {
           trigger: visionRef.current,
           start: 'top 80%',
-          once: true,
+          toggleActions: 'play none none none',
+          invalidateOnRefresh: true,
         },
       }
     );
@@ -257,7 +290,8 @@ export default function AboutSection({ onBack }: AboutSectionProps) {
         scrollTrigger: {
           trigger: visionRef.current,
           start: 'top 75%',
-          once: true,
+          toggleActions: 'play none none none',
+          invalidateOnRefresh: true,
         },
       }
     );
@@ -278,7 +312,8 @@ export default function AboutSection({ onBack }: AboutSectionProps) {
       scrollTrigger: {
         trigger: visionFirstParaRef.current,
         start: 'top 65%',
-        once: true,
+        toggleActions: 'play none none none',
+        invalidateOnRefresh: true,
       },
     });
 
@@ -298,7 +333,8 @@ export default function AboutSection({ onBack }: AboutSectionProps) {
       scrollTrigger: {
         trigger: visionFirstParaRef.current,
         start: 'top 60%',
-        once: true,
+        toggleActions: 'play none none none',
+        invalidateOnRefresh: true,
       },
     });
 
@@ -322,7 +358,8 @@ export default function AboutSection({ onBack }: AboutSectionProps) {
         scrollTrigger: {
           trigger: visionFirstParaRef.current,
           start: 'top 55%',
-          once: true,
+          toggleActions: 'play none none none',
+          invalidateOnRefresh: true,
         },
       }
     );
@@ -368,6 +405,14 @@ export default function AboutSection({ onBack }: AboutSectionProps) {
 
         {/* 1. Hero Section - Full-Width Cinematic */}
         <section className="relative h-screen w-full flex items-center overflow-hidden">
+          {/* Subtle cyan glow — mirrors rest of page */}
+          <div
+            className="absolute inset-0 pointer-events-none"
+            style={{
+              background: 'radial-gradient(ellipse 80% 60% at 30% 60%, rgba(0, 255, 255, 0.09) 0%, transparent 60%)',
+            }}
+            aria-hidden="true"
+          />
           {/* Grain texture overlay */}
           <div
             className="absolute inset-0 pointer-events-none"
@@ -487,9 +532,9 @@ export default function AboutSection({ onBack }: AboutSectionProps) {
             </span>
           </div>
 
-          {/* Cyan glow blob — top-right */}
+          {/* Cyan glow blob — top-right, desktop only */}
           <div
-            className="absolute top-[10%] right-[5%] w-[40vw] h-[40vw] pointer-events-none"
+            className="absolute top-[10%] right-[5%] w-[40vw] h-[40vw] pointer-events-none hidden md:block"
             style={{
               background: 'radial-gradient(ellipse at center, rgba(0, 255, 255, 0.08) 0%, transparent 60%)',
             }}
