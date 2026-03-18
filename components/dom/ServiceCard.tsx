@@ -2,6 +2,7 @@
 
 import { forwardRef } from 'react';
 import type { LucideIcon } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
 
@@ -80,9 +81,7 @@ const ServiceCard = forwardRef<HTMLDivElement, ServiceCardProps>(
             }}
           >
             <span>{ctaText}</span>
-            <span className="group-hover/btn:translate-x-1 transition-transform duration-300">
-              →
-            </span>
+            <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform duration-300" />
           </Link>
         </div>
       </div>

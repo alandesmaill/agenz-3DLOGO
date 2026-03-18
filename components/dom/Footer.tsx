@@ -134,24 +134,124 @@ export default function Footer() {
 
       {/* Glass overlay */}
       <div className="relative bg-white/8 backdrop-blur-2xl">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8 py-12 lg:py-16">
-          {/* 4-Column Footer Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8 py-10 lg:py-16">
+          {/* Mobile: Logo centered at top, then 2-col links, then contact */}
+          {/* Desktop: 4-column grid */}
+
+          {/* Logo — always centered on mobile, left-aligned on desktop */}
+          <div className="footer-column flex justify-center lg:hidden mb-8">
+            <Link href="/">
+              <Image
+                src="/agenz creative hub.svg"
+                alt="Agenz Creative Hub"
+                width={160}
+                height={54}
+                className="h-12 w-auto transition-all duration-300 hover:scale-105"
+              />
+            </Link>
+          </div>
+
+          {/* Mobile: 2-column links grid */}
+          <div className="grid grid-cols-2 gap-6 lg:hidden mb-8">
+            {/* Quick Links */}
+            <div className="footer-column text-center">
+              <h3 className="text-white font-semibold mb-3 text-xs uppercase tracking-wider">
+                Quick Links
+              </h3>
+              <ul className="space-y-2">
+                {quickLinks.map((link) => (
+                  <li key={link.name}>
+                    <Link
+                      href={link.href}
+                      className="text-gray-400 text-sm hover:text-white transition-colors duration-300 inline-block"
+                    >
+                      {link.name}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Services */}
+            <div className="footer-column text-center">
+              <h3 className="mb-3 text-xs uppercase tracking-wider">
+                <Link
+                  href="/services"
+                  className="text-white font-semibold hover:text-cyan-400 transition-colors duration-300"
+                >
+                  Services
+                </Link>
+              </h3>
+              <ul className="space-y-2">
+                {serviceLinks.map((link) => (
+                  <li key={link.name}>
+                    <Link
+                      href={link.href}
+                      className="text-gray-400 text-[13px] hover:text-white transition-colors duration-300 inline-block leading-snug"
+                    >
+                      {link.name}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+
+          {/* Mobile: Contact + Social centered */}
+          <div className="footer-column lg:hidden text-center mb-2">
+            <h3 className="text-white font-semibold mb-3 text-xs uppercase tracking-wider">
+              Get in Touch
+            </h3>
+            <div className="space-y-2 mb-4">
+              <a
+                href="mailto:agenz@agenz-iq.com"
+                className="text-gray-400 text-sm hover:text-cyan-400 transition-colors duration-300 block"
+              >
+                agenz@agenz-iq.com
+              </a>
+              <a
+                href="tel:+9647715568080"
+                className="text-gray-400 text-sm hover:text-cyan-400 transition-colors duration-300 block"
+              >
+                +964 771 556 8080
+              </a>
+            </div>
+            <div className="flex gap-3 justify-center">
+              {socialLinks.map((social) => {
+                const Icon = social.icon;
+                return (
+                  <a
+                    key={social.name}
+                    href={social.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group relative w-10 h-10 rounded-xl bg-white/8 backdrop-blur-xl border border-white/14 flex items-center justify-center transition-all duration-300 hover:bg-white/14 hover:border-cyan-400/50 hover:shadow-lg hover:shadow-cyan-500/30"
+                    aria-label={social.name}
+                  >
+                    <Icon className="w-4 h-4 text-gray-400 group-hover:text-cyan-400 transition-all duration-300" />
+                  </a>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Desktop: 4-column grid (hidden on mobile) */}
+          <div className="hidden lg:grid grid-cols-4 gap-12">
             {/* Column 1: Brand */}
-            <div className="footer-column md:col-span-2 lg:col-span-1 text-center md:text-left">
+            <div className="footer-column">
               <Link href="/">
                 <Image
                   src="/agenz creative hub.svg"
                   alt="Agenz Creative Hub"
                   width={180}
                   height={60}
-                  className="h-14 w-auto transition-all duration-300 hover:scale-105 mx-auto md:mx-0"
+                  className="h-14 w-auto transition-all duration-300 hover:scale-105"
                 />
               </Link>
             </div>
 
             {/* Column 2: Quick Links */}
-            <div className="footer-column text-center md:text-left">
+            <div className="footer-column">
               <h3 className="text-white font-semibold mb-4 text-sm uppercase tracking-wider">
                 Quick Links
               </h3>
@@ -174,7 +274,7 @@ export default function Footer() {
             </div>
 
             {/* Column 3: Services */}
-            <div className="footer-column text-center md:text-left">
+            <div className="footer-column">
               <h3 className="mb-4 text-sm uppercase tracking-wider">
                 <Link
                   href="/services"
@@ -202,14 +302,14 @@ export default function Footer() {
             </div>
 
             {/* Column 4: Get in Touch */}
-            <div className="footer-column text-center md:text-left">
+            <div className="footer-column">
               <h3 className="text-white font-semibold mb-4 text-sm uppercase tracking-wider">
                 Get in Touch
               </h3>
               <ul className="space-y-3">
                 <li>
                   <a
-                    href="mailto:hello@agenz.com"
+                    href="mailto:agenz@agenz-iq.com"
                     className="text-gray-400 text-sm hover:text-cyan-400 transition-colors duration-300 inline-block"
                   >
                     agenz@agenz-iq.com
@@ -217,7 +317,7 @@ export default function Footer() {
                 </li>
                 <li>
                   <a
-                    href="tel:+1234567890"
+                    href="tel:+9647715568080"
                     className="text-gray-400 text-sm hover:text-cyan-400 transition-colors duration-300 inline-block"
                   >
                     +964 771 556 8080
@@ -225,7 +325,7 @@ export default function Footer() {
                 </li>
               </ul>
 
-              <div className="flex gap-3 justify-center md:justify-start mt-6">
+              <div className="flex gap-3 mt-6">
                 {socialLinks.map((social) => {
                   const Icon = social.icon;
                   return (
@@ -234,7 +334,7 @@ export default function Footer() {
                       href={social.href}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="group relative w-10 h-10 rounded-xl bg-white/8 backdrop-blur-xl border border-white/14 flex items-center justify-center transition-all duration-300 hover:bg-white/14 hover:border-cyan-400/50 hover:shadow-lg hover:shadow-cyan-500/30 md:hover:scale-110 md:hover:-translate-y-1"
+                      className="group relative w-10 h-10 rounded-xl bg-white/8 backdrop-blur-xl border border-white/14 flex items-center justify-center transition-all duration-300 hover:bg-white/14 hover:border-cyan-400/50 hover:shadow-lg hover:shadow-cyan-500/30 hover:scale-110 hover:-translate-y-1"
                       aria-label={social.name}
                     >
                       <Icon className="w-4 h-4 text-gray-400 group-hover:text-cyan-400 transition-all duration-300 group-hover:scale-110" />

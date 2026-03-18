@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import { ArrowRight } from 'lucide-react';
 
 interface ServiceCTAProps {
   heading: string;
@@ -33,7 +34,7 @@ export default function ServiceCTA({
       <Link
         href={buttonLink}
         className="
-          inline-flex items-center gap-3
+          group inline-flex items-center gap-3
           px-6 sm:px-8 md:px-10 py-4 sm:py-5
           bg-white/10 text-white border border-white/20
           font-['Gibson'] font-bold text-lg
@@ -47,9 +48,7 @@ export default function ServiceCTA({
         }}
       >
         <span>{buttonText}</span>
-        <span className="text-2xl transition-transform group-hover:translate-x-1">
-          →
-        </span>
+        <ArrowRight className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
       </Link>
 
       {/* Supporting text */}

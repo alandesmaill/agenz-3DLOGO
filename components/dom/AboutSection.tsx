@@ -10,6 +10,7 @@ import SmoothScrolling from './SmoothScrolling';
 import Footer from './Footer';
 import Header from './Header';
 import { aboutContent } from '@/lib/about-content';
+import { ArrowRight } from 'lucide-react';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -584,7 +585,7 @@ export default function AboutSection({ onBack }: AboutSectionProps) {
               className="group inline-block px-12 py-5 text-xl font-bold text-black bg-gradient-to-r from-[#00e92c] to-[#00ffff] rounded-full hover:scale-105 transition-transform duration-300 animate-pulse-glow"
             >
               {aboutContent.cta.buttonText}
-              <span className="ml-2 inline-block transition-transform duration-300 group-hover:translate-x-1">→</span>
+              <ArrowRight className="ml-2 w-5 h-5 inline-block transition-transform duration-300 group-hover:translate-x-1" />
             </Link>
           </div>
         </section>
