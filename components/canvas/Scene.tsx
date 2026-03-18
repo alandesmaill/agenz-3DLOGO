@@ -4,6 +4,9 @@ import { OrbitControls, PerspectiveCamera } from '@react-three/drei';
 import { EffectComposer, Bloom } from '@react-three/postprocessing';
 import { ReactNode } from 'react';
 
+// Evaluated once at module load — skip Bloom on mobile to save a full render pass
+const isLowPerfDevice = typeof window !== 'undefined' && window.innerWidth < 768;
+
 interface SceneProps {
   children?: ReactNode;
 }
@@ -12,11 +15,11 @@ export default function Scene({ children }: SceneProps) {
   return (
     <>
       {/* Camera */}
-      <PerspectiveCamera makeDefault position={[0, 0, 5]} fov={75} />
+      <PerspectiveCamera makeDefault position={[0, 0, 6]} fov={65} />
 
       {/* Controls */}
       <OrbitControls
-        target={[0.4, 1, 0]}
+        target={[0, 0.7, 0]}
         enableDamping
         dampingFactor={0.08}
         minDistance={2}
@@ -51,16 +54,17 @@ export default function Scene({ children }: SceneProps) {
       {/* Children (your 3D objects) */}
       {children}
 
-      {/* Post-processing Effects */}
-      <EffectComposer>
-        <Bloom
-          intensity={0.35}
-          luminanceThreshold={0.80}
-          luminanceSmoothing={0.3}
-          height={200}
-          mipmapBlur
-        />
-      </EffectComposer>
+      {/* Post-processing Effects — skipped on mobile to save a full render pass */}
+      {!isLowPerfDevice && (
+        <EffectComposer>
+          <Bloom
+            intensity={0.2}
+            luminanceThreshold={0.95}
+            luminanceSmoothing={0.3}
+            height={150}
+          />
+        </EffectComposer>
+      )}
     </>
   );
 }

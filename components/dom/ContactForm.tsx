@@ -272,9 +272,6 @@ export default function ContactForm({ onSuccess }: ContactFormProps) {
           <h2 className="text-2xl md:text-3xl font-bold text-white mb-2">
             Send a Message
           </h2>
-          <p className="text-white/60 text-sm">
-            All fields marked <span className="text-red-500">*</span> are required
-          </p>
         </div>
 
         {/* Form */}

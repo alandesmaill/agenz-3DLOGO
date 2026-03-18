@@ -119,7 +119,7 @@ export default function FormTextarea({
             `}
           >
             {label}
-            {required && <span className="text-red-500 ml-1">*</span>}
+            {!required && <span className="text-white/35 ml-1 text-[0.7em]">"optional"</span>}
           </label>
 
           {/* Textarea */}

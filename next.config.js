@@ -18,7 +18,7 @@ const securityHeaders = [
     key: 'Content-Security-Policy',
     value: [
       "default-src 'self'",
-      `script-src 'self' 'unsafe-inline'${process.env.NODE_ENV === 'development' ? " 'unsafe-eval'" : ''} https://www.google.com https://www.gstatic.com`,
+      `script-src 'self' 'unsafe-inline'${process.env.NODE_ENV === 'development' ? " 'unsafe-eval'" : ''} https://www.google.com https://www.gstatic.com https://va.vercel-scripts.com`,
       "style-src 'self' 'unsafe-inline'",
       "img-src 'self' data: blob:",
       "font-src 'self' data:",
@@ -41,25 +41,22 @@ const nextConfig = {
       },
     ];
   },
-  // Enable Turbopack for dev mode (Next.js 15)
-  // Production builds still use webpack for stability
-  experimental: {
-    turbopack: {
-      rules: {
-        // Handle GLTF/GLB files in Turbopack
-        '*.glb': {
-          loaders: ['file-loader'],
-          as: '*.js',
-        },
-        '*.gltf': {
-          loaders: ['file-loader'],
-          as: '*.js',
-        },
+  // Turbopack config for dev mode (stable in Next.js 16)
+  turbopack: {
+    rules: {
+      // Handle GLTF/GLB files in Turbopack
+      '*.glb': {
+        loaders: ['file-loader'],
+        as: '*.js',
       },
-      // External packages for server-side (Turbopack equivalent of webpack externals)
-      resolveAlias: {
-        three: 'three',
+      '*.gltf': {
+        loaders: ['file-loader'],
+        as: '*.js',
       },
+    },
+    // External packages for server-side (Turbopack equivalent of webpack externals)
+    resolveAlias: {
+      three: 'three',
     },
   },
 

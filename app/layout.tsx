@@ -9,10 +9,10 @@ export const metadata: Metadata = {
   // Basic Information
   title: {
     template: "%s | AGENZ",
-    default: "AGENZ - Creative Hub",
+    default: "AGENZ — Creative Digital Agency",
   },
   description:
-    "Creative digital agency based in Sulaymaniyah, Kurdistan — specializing in advertising, video production, graphic design, and strategic media services.",
+    "AGENZ is Kurdistan's leading creative agency — delivering bold advertising campaigns, cinematic video production, premium graphic design, and data-driven brand strategy. Based in Sulaymaniyah, serving clients across Iraq and beyond.",
 
   // Application Information
   applicationName: "AGENZ",
@@ -61,10 +61,10 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_US",
-    siteName: "AGENZ - Creative Hub",
-    title: "AGENZ - Creative Digital Agency",
+    siteName: "AGENZ",
+    title: "AGENZ — Creative Digital Agency",
     description:
-      "Creative digital agency based in Sulaymaniyah, Kurdistan — specializing in advertising, video production, graphic design, and strategic media services.",
+      "AGENZ is Kurdistan's leading creative agency — delivering bold advertising campaigns, cinematic video production, premium graphic design, and data-driven brand strategy. Based in Sulaymaniyah, serving clients across Iraq and beyond.",
     url: "https://agenz-iq.com",
     images: [
       {
@@ -79,9 +79,9 @@ export const metadata: Metadata = {
   // Twitter Card
   twitter: {
     card: "summary_large_image",
-    title: "AGENZ - Creative Digital Agency",
+    title: "AGENZ — Creative Digital Agency",
     description:
-      "Creative digital agency based in Sulaymaniyah, Kurdistan — specializing in advertising, video production, graphic design, and strategic media services.",
+      "AGENZ is Kurdistan's leading creative agency — delivering bold advertising campaigns, cinematic video production, premium graphic design, and data-driven brand strategy. Based in Sulaymaniyah, serving clients across Iraq and beyond.",
     images: ["/opengraph-image"],
   },
 
@@ -94,6 +94,7 @@ export const metadata: Metadata = {
       { url: "/favicon/web/favicon-96x96.png", sizes: "96x96", type: "image/png" },
       { url: "/favicon/web/favicon-128x128.png", sizes: "128x128", type: "image/png" },
       { url: "/favicon/web/favicon-196x196.png", sizes: "196x196", type: "image/png" },
+      { url: "/favicon/android/android-chrome-512x512.png", sizes: "512x512", type: "image/png" },
     ],
     apple: [
       { url: "/favicon/apple/apple-touch-icon-180x180.png", sizes: "180x180", type: "image/png" },

@@ -1,11 +1,12 @@
 'use client';
 
-import { Canvas, Scene, FracturedLogo } from '@/components/canvas';
-import type { FracturedLogoHandle } from '@/components/canvas';
-import { NavigationLabel, TestSection, AnimatedBackground, LoadingScreen, Header, HoverHint, ContactModal, MenuOverlay } from '@/components/dom';
+import { Canvas, Scene, GlassLogoSystem } from '@/components/canvas';
+import type { NavPieceScreenPositions, GlassLogoHandle } from '@/components/canvas';
+import { NavigationLabel, TestSection, AnimatedBackground, LoadingScreen, Header, HoverHint, ContactModal, MenuOverlay, NavPieceLabel } from '@/components/dom';
 import { Suspense, useState, useRef, useEffect, useCallback } from 'react';
 import { useProgress } from '@react-three/drei';
-import { gsap } from 'gsap';
+
+const NAV_SECTIONS = ['about', 'works', 'services', 'contact'] as const;
 
 // Loading progress component inside Canvas
 function LoadingManager({ onProgress }: { onProgress: (progress: number) => void }) {
@@ -19,17 +20,11 @@ function LoadingManager({ onProgress }: { onProgress: (progress: number) => void
 }
 
 export default function View() {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const fracturedLogoRef = useRef<FracturedLogoHandle>(null);
-  const [labelData, setLabelData] = useState<{
-    label: string | null;
-    position: { x: number; y: number } | null;
-    isVisible: boolean;
-  }>({
-    label: null,
-    position: null,
-    isVisible: false,
-  });
+  const containerRef  = useRef<HTMLDivElement>(null);
+  const glassLogoRef  = useRef<GlassLogoHandle>(null);
+  const labelRefs     = useRef<(HTMLDivElement | null)[]>([null, null, null, null]);
+
+  const [phase, setPhase] = useState<'intact' | 'exploding' | 'settled'>('intact');
 
   const [testSection, setTestSection] = useState<{
     section: string | null;
@@ -42,8 +37,6 @@ export default function View() {
   const [logoScale, setLogoScale] = useState(1.2);
   const [loadingProgress, setLoadingProgress] = useState(0);
   const [isLoaded, setIsLoaded] = useState(false);
-  const [isDecomposed, setIsDecomposed] = useState(false);
-  const [isDecomposeComplete, setIsDecomposeComplete] = useState(false);
 
   // Canvas optimization - unmount when in section view
   const [canvasActive, setCanvasActive] = useState(true);
@@ -57,11 +50,11 @@ export default function View() {
     const updateScale = () => {
       const width = window.innerWidth;
       if (width < 768) {
-        setLogoScale(0.8); // Mobile - smaller
+        setLogoScale(0.8);
       } else if (width < 1024) {
-        setLogoScale(1.0); // Tablet - medium
+        setLogoScale(1.0);
       } else {
-        setLogoScale(1.2); // Desktop - larger
+        setLogoScale(1.2);
       }
     };
 
@@ -82,61 +75,59 @@ export default function View() {
   // Unmount canvas when section is visible (optimization)
   useEffect(() => {
     if (testSection.isVisible && testSection.section) {
-      // Delay unmount to allow for transition animation
       const timer = setTimeout(() => {
         setCanvasActive(false);
-      }, 800); // Wait for section animation to complete
+      }, 800);
       return () => clearTimeout(timer);
     }
   }, [testSection.isVisible, testSection.section]);
 
-  // Handle navigation hover callback from FracturedLogo
-  const handleNavigationHover = (
-    _piece: string | null,
-    label: string | null,
-    screenPosition: { x: number; y: number } | null
-  ) => {
-    if (!screenPosition || !label) {
-      setLabelData({ label: null, position: null, isVisible: false });
-      return;
-    }
-
-    setLabelData({
-      label,
-      position: screenPosition,
-      isVisible: true,
+  // Callbacks wired to GlassLogoSystem — direct DOM mutation, zero React re-renders
+  const handleNavPiecePositions = useCallback((positions: NavPieceScreenPositions) => {
+    NAV_SECTIONS.forEach((section, i) => {
+      const el = labelRefs.current[i];
+      if (!el) return;
+      const pos = positions[section];
+      if (pos) {
+        el.style.left = `${pos.x}px`;
+        el.style.top  = `${pos.y}px`;
+      } else {
+        el.style.left = '-9999px';
+        el.style.top  = '-9999px';
+      }
     });
-  };
+  }, []);
 
-  // Handle navigation click callback - show test section
+  const handleExplode  = useCallback(() => setPhase('exploding'), []);
+  const handleSettled  = useCallback(() => setPhase('settled'), []);
+
+  // Handle navigation click callback - show section
   const handleNavigationClick = useCallback((section: string) => {
-    setTestSection({
-      section,
-      isVisible: true,
-    });
+    setTestSection({ section, isVisible: true });
   }, []);
 
   // Handle back button - reload page for fresh start
   const handleBack = useCallback(() => {
-    // Reload the page to restart the 3D experience
-    // This is intentional for performance - canvas was unmounted
     window.location.reload();
   }, []);
 
-  // Handle decomposition callback from FracturedLogo
-  const handleDecompose = () => {
-    setIsDecomposed(true);
-  };
-
-  // Handle decompose animation complete
-  const handleDecomposeComplete = useCallback(() => {
-    setIsDecomposeComplete(true);
-  }, []);
-
-  // Handle nav bar click from HoverHint
+  // HoverHint nav bar click — triggers camera dive via ref, falls back to direct nav
   const handleHintNavClick = useCallback((section: string) => {
-    fracturedLogoRef.current?.navigateToSection(section);
-  }, []);
+    if (glassLogoRef.current) {
+      glassLogoRef.current.navigateToSection(section);
+    } else {
+      handleNavigationClick(section);
+    }
+  }, [handleNavigationClick]);
+
+  // NavPieceLabel click — same camera dive path
+  const handleLabelNavClick = useCallback((section: string) => {
+    if (glassLogoRef.current) {
+      glassLogoRef.current.navigateToSection(section);
+    } else {
+      handleNavigationClick(section);
+    }
+  }, [handleNavigationClick]);
 
   // Header button handlers
   const handleGetInTouch = useCallback(() => {
@@ -152,7 +143,7 @@ export default function View() {
       {/* Loading Screen */}
       <LoadingScreen progress={loadingProgress} isLoaded={isLoaded} />
 
-      {/* Header with Logo and Buttons - only show after preload, hide when section active */}
+      {/* Header — only show after preload, hide when section active */}
       {isLoaded && !testSection.isVisible && (
         <Header
           onGetInTouch={handleGetInTouch}
@@ -160,46 +151,55 @@ export default function View() {
         />
       )}
 
-      {/* Hover Hint - transforms into nav bar after decompose */}
+      {/* Hover Hint — disappears after logo explodes */}
       <HoverHint
         isVisible={isLoaded && canvasActive && !testSection.isVisible}
-        isDecomposed={isDecomposeComplete}
-        onNavigationClick={handleHintNavClick}
+        isDecomposed={phase === 'settled'}
       />
 
-      {/* Animated Background with Brand Colors - hide when canvas unmounted */}
+      {/* Animated Background — hide when canvas unmounted */}
       {canvasActive && <AnimatedBackground />}
 
-      {/* Three.js Canvas - conditionally rendered for performance */}
+      {/* Three.js Canvas */}
       {canvasActive && (
         <Canvas className="w-full h-full">
           <Suspense fallback={null}>
             <LoadingManager onProgress={setLoadingProgress} />
             <Scene>
-              {/* Interactive Fractured Logo */}
-              <FracturedLogo
-                ref={fracturedLogoRef}
-                path="/models/3d-logo.glb"
-                position={[0, 0, 0]}
+              <GlassLogoSystem
+                ref={glassLogoRef}
                 scale={logoScale}
-                onNavigationHover={handleNavigationHover}
                 onNavigationClick={handleNavigationClick}
-                onDecompose={handleDecompose}
-                onDecomposeComplete={handleDecomposeComplete}
+                onExplode={handleExplode}
+                onSettled={handleSettled}
+                onNavPiecePositions={handleNavPiecePositions}
               />
             </Scene>
           </Suspense>
         </Canvas>
       )}
 
-      {/* HTML Overlay - Navigation Labels */}
+      {/* Permanent tracking labels — appear after pieces settle */}
+      {NAV_SECTIONS.map((section, i) => (
+        <NavPieceLabel
+          key={section}
+          ref={(el) => { labelRefs.current[i] = el; }}
+          label={section.toUpperCase() as 'ABOUT' | 'WORKS' | 'SERVICES' | 'CONTACT'}
+          section={section}
+          isVisible={phase === 'settled' && canvasActive && !testSection.isVisible}
+          onNavigationClick={handleLabelNavClick}
+          delay={i * 150}
+        />
+      ))}
+
+      {/* Legacy hover label (now unused but kept for type safety) */}
       <NavigationLabel
-        label={labelData.label}
-        position={labelData.position}
-        isVisible={labelData.isVisible && canvasActive}
+        label={null}
+        position={null}
+        isVisible={false}
       />
 
-      {/* HTML Overlay - Section Display */}
+      {/* Section Display */}
       <TestSection
         section={testSection.section}
         isVisible={testSection.isVisible}
