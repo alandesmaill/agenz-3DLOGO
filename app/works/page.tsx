@@ -36,7 +36,6 @@ export default function WorksPage() {
       <Header
         variant="dark"
         onLogoClick={() => window.location.href = '/'}
-        onGetInTouch={() => window.location.href = '/contact'}
         onMenuClick={() => setMenuOpen(true)}
       />
 

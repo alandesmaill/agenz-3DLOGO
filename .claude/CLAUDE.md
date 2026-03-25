@@ -17,17 +17,20 @@ npm run test:watch       # Watch mode
 npm run test:coverage    # Coverage report
 
 # Playwright E2E/perf tests (files in tests/)
-npm run test:perf:headed # Run Playwright performance tests (accurate GPU rendering)
-npm run test:perf        # Run headless (faster but lower FPS due to software rendering)
+npm run test:perf:headed # Run 3D scene perf test headed (accurate GPU rendering)
+npm run test:perf        # Run 3D scene perf test headless (lower FPS due to software rendering)
 npm run test:perf:report # View HTML report from last run
 
 # Run specific Playwright test suites
-npx playwright test tests/performance.spec.ts             # 3D scene
+npx playwright test tests/performance.spec.ts             # 3D scene FPS
 npx playwright test tests/text-animation.spec.ts          # Text animations
 npx playwright test tests/navigation-flow.spec.ts         # Full nav flow
+npx playwright test tests/navigation-sitemap.spec.ts      # Sitemap/route coverage
 npx playwright test tests/contact-form.spec.ts            # Contact form
 npx playwright test tests/services-performance.spec.ts    # Services
 npx playwright test tests/service-detail-performance.spec.ts  # Service detail pages
+npx playwright test tests/morph-navigation.spec.ts        # Works page morph transitions
+npx playwright test tests/quick-verify.spec.ts            # Smoke tests
 ```
 
 ## Architecture Overview
@@ -71,6 +74,8 @@ Two paths exist to reach sections:
 | `/services/video` | Service detail page |
 | `/services/design` | Service detail page |
 | `/services/strategy` | Service detail page |
+| `/privacy` | Privacy policy |
+| `/terms` | Terms of service |
 
 ### Key Architectural Patterns
 
@@ -117,7 +122,7 @@ Content data lives in `/lib/about-content.ts`. Background uses 6-layer radial gr
 
 ### Contact Form
 
-Simplified liquid glass design. EmailJS for sending (dual template: notify owner + confirm to user), reCAPTCHA v3 for spam, Zod validation. See Environment Variables section for setup.
+Simplified liquid glass design. EmailJS for sending (dual template: notify owner + confirm to user), reCAPTCHA v3 for spam, Zod validation. HTML email templates are in `/emails/` (`notification.html`, `autoreply.html`). See Environment Variables section for setup.
 
 ### Service Detail Pages
 
@@ -148,10 +153,6 @@ The staggered `setTimeout` calls in `SmoothScrolling`, section components, and `
 ### CSP Headers
 
 `next.config.js` sets strict Content-Security-Policy. When integrating new external services (analytics, CDN fonts, API endpoints), update the CSP `connect-src`, `script-src`, or `img-src` directives accordingly — otherwise requests will be blocked in production.
-
-### Installed-but-Unused Dependencies
-
-`@clerk/nextjs`, `@sanity/client`, `next-sanity`, `drizzle-orm`, `@vercel/kv`, `@vercel/postgres`, and `@upstash/ratelimit` are in `package.json` but not yet wired into the app. Do not assume these are active — verify with `grep` before using.
 
 ## Environment Variables
 

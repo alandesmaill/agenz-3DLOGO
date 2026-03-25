@@ -130,10 +130,6 @@ export default function View() {
   }, [handleNavigationClick]);
 
   // Header button handlers
-  const handleGetInTouch = useCallback(() => {
-    window.location.href = '/contact';
-  }, []);
-
   const handleMenuClick = useCallback(() => {
     setMenuOverlayOpen(true);
   }, []);
@@ -146,7 +142,6 @@ export default function View() {
       {/* Header — only show after preload, hide when section active */}
       {isLoaded && !testSection.isVisible && (
         <Header
-          onGetInTouch={handleGetInTouch}
           onMenuClick={handleMenuClick}
         />
       )}

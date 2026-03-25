@@ -1,5 +1,5 @@
 import type { LucideIcon } from 'lucide-react';
-import { Megaphone, Clapperboard, Palette, Target } from 'lucide-react';
+import { Camera, Megaphone, Clapperboard, Palette, Target } from 'lucide-react';
 
 export interface Service {
   id: string;
@@ -12,6 +12,16 @@ export interface Service {
 }
 
 export const servicesData: Service[] = [
+  {
+    id: 'camera-rental',
+    title: 'Camera Rental',
+    description:
+      'Professional cinema-grade camera packages. ARRI Alexa 35 with Signature Prime lenses and full accessories — production-ready.',
+    icon: Camera,
+    accentColor: '#00ffff',
+    ctaText: 'View Package',
+    ctaLink: '/services/camera-rental',
+  },
   {
     id: 'advertising',
     title: 'Advertising & Social Media',

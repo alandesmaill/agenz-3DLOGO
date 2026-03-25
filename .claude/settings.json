@@ -1,0 +1,23 @@
+{
+  "model": "claude-sonnet-4-6",
+  "permissions": {
+    "allow": [
+      "Bash(npm run lint)",
+      "Bash(npm run build)",
+      "Bash(npm run test)",
+      "Bash(npm run dev)",
+      "Bash(git diff*)",
+      "Bash(git log*)",
+      "Bash(git status)",
+      "Bash(gh issue view*)",
+      "Bash(gh pr view*)",
+      "Bash(gh pr diff*)",
+      "Bash(npx tsc --noEmit)",
+      "Bash(npx playwright test*)"
+    ],
+    "deny": [
+      "Bash(rm -rf*)",
+      "Bash(git push --force*)"
+    ]
+  }
+}

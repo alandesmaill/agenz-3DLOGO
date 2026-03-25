@@ -399,7 +399,6 @@ export default function AboutSection({ onBack }: AboutSectionProps) {
         <Header
           variant="dark"
           onLogoClick={onBack}
-          onGetInTouch={() => (window.location.href = '/contact')}
           onMenuClick={() => setMenuOpen(true)}
         />
 

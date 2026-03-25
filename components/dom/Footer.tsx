@@ -39,6 +39,7 @@ const quickLinks = [
 ];
 
 const serviceLinks = [
+  { name: 'Camera Rental', href: '/services/camera-rental' },
   { name: 'Advertising & Social Media', href: '/services/advertising' },
   { name: 'Video Production', href: '/services/video' },
   { name: 'Print & Graphic Design', href: '/services/design' },
