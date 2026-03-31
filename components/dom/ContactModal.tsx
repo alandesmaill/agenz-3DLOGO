@@ -14,13 +14,11 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
   useEffect(() => {
     if (isOpen) {
       setIsVisible(true);
-      // Trigger animation after mount
       requestAnimationFrame(() => {
         setIsAnimating(true);
       });
     } else {
       setIsAnimating(false);
-      // Wait for animation to complete before hiding
       const timer = setTimeout(() => {
         setIsVisible(false);
       }, 300);
@@ -28,7 +26,6 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
     }
   }, [isOpen]);
 
-  // Handle escape key
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
       if (e.key === 'Escape' && isOpen) {
@@ -48,14 +45,12 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
       }`}
       onClick={onClose}
     >
-      {/* Modal Card */}
       <div
         className={`relative bg-gray-100 rounded-3xl p-8 md:p-12 max-w-lg w-full mx-4 shadow-2xl transition-all duration-300 ${
           isAnimating ? 'opacity-100 scale-100 translate-y-0' : 'opacity-0 scale-95 translate-y-4'
         }`}
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Close Button */}
         <button
           onClick={onClose}
           className="absolute top-4 right-4 w-10 h-10 flex items-center justify-center rounded-full bg-gray-100 hover:bg-gray-200 transition-colors"
@@ -66,7 +61,6 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
           </svg>
         </button>
 
-        {/* Title */}
         <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">
           Get In Touch
         </h2>
@@ -74,9 +68,7 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
           We&apos;d love to hear from you
         </p>
 
-        {/* Contact Info */}
         <div className="space-y-6">
-          {/* Email */}
           <a
             href="mailto:hello@agenz.com"
             className="flex items-center gap-4 p-4 rounded-2xl bg-gradient-to-r from-cyan-50 to-green-50 hover:from-cyan-100 hover:to-green-100 transition-all group"
@@ -95,7 +87,6 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
             </div>
           </a>
 
-          {/* Phone */}
           <a
             href="tel:+1234567890"
             className="flex items-center gap-4 p-4 rounded-2xl bg-gray-50 hover:bg-gray-100 transition-all group"
@@ -114,11 +105,9 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
           </a>
         </div>
 
-        {/* Social Links */}
         <div className="mt-8 pt-6 border-t border-gray-100">
           <p className="text-sm text-gray-500 mb-4">Follow us</p>
           <div className="flex gap-3">
-            {/* Instagram */}
             <a
               href="https://instagram.com"
               target="_blank"
@@ -132,7 +121,6 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
               </svg>
             </a>
 
-            {/* LinkedIn */}
             <a
               href="https://linkedin.com"
               target="_blank"
@@ -146,7 +134,6 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
               </svg>
             </a>
 
-            {/* Twitter/X */}
             <a
               href="https://twitter.com"
               target="_blank"
@@ -158,7 +145,6 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
               </svg>
             </a>
 
-            {/* Dribbble */}
             <a
               href="https://dribbble.com"
               target="_blank"

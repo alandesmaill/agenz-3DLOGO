@@ -1,5 +1,3 @@
-// Content data for About page sections
-
 export const aboutContent = {
   hero: {
     welcomeText: "WELCOME TO",

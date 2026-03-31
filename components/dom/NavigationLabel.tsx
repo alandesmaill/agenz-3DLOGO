@@ -30,7 +30,6 @@ export default function NavigationLabel({
 
   return (
     <>
-      {/* Keyframe animations */}
       <style jsx>{`
         @keyframes shimmer {
           0% {
@@ -99,22 +98,16 @@ export default function NavigationLabel({
           transform: `translate(-50%, -50%) scale(${scale})`,
         }}
       >
-        {/* Premium Liquid Glass Design */}
         <div className="relative">
-          {/* Pulsing dot indicator with glow */}
           <div className="absolute -left-4 top-1/2 -translate-y-1/2 w-3 h-3 bg-cyan-400 rounded-full animate-pulse">
             <div className="absolute inset-0 bg-cyan-400 rounded-full animate-ping" />
           </div>
 
-          {/* Liquid Glass Container */}
           <div className="liquid-glass rounded-xl px-6 py-3 relative overflow-hidden">
-            {/* Inner highlight (top edge) */}
             <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-white/60 to-transparent" />
 
-            {/* Shimmer animation overlay */}
             <div className="shimmer-overlay absolute inset-0 rounded-xl" />
 
-            {/* Label text */}
             <p
               className="relative text-base font-bold tracking-[0.3em] uppercase"
               style={{
@@ -133,11 +126,9 @@ export default function NavigationLabel({
               {label}
             </p>
 
-            {/* Bottom glow */}
             <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-cyan-400/80 to-transparent" />
           </div>
 
-          {/* Outer glow effect */}
           <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-cyan-400/0 via-cyan-400/20 to-cyan-400/0 blur-xl -z-10" />
         </div>
       </div>

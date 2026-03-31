@@ -27,9 +27,7 @@ export default function CompactProjectHeader({
     <section className="pt-24 md:pt-28 pb-10 md:pb-14 px-6 md:px-12">
       <div className="max-w-6xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-10 items-start">
-          {/* Text — 3 cols on desktop */}
           <div className="lg:col-span-3">
-            {/* Badge + Year */}
             <div className="flex items-center gap-3 mb-4">
               <span
                 className="text-xs font-['Gibson'] font-semibold px-3 py-1 rounded-full"
@@ -40,7 +38,6 @@ export default function CompactProjectHeader({
               <span className="text-sm font-['Gibson'] text-white/60">{year}</span>
             </div>
 
-            {/* Title */}
             <AnimatedText
               className="text-3xl md:text-4xl lg:text-5xl font-['Gibson'] font-bold text-white leading-tight"
               splitBy="words"
@@ -51,15 +48,12 @@ export default function CompactProjectHeader({
               {projectTitle}
             </AnimatedText>
 
-            {/* Client name */}
             <p className="mt-3 text-xl font-['Gibson'] text-white/60">{clientName}</p>
 
-            {/* Tagline */}
             <p className="mt-2 text-base font-['Gibson'] text-white/50 max-w-xl">{tagline}</p>
 
           </div>
 
-          {/* Optional cover image — 2 cols on desktop */}
           {coverImage && (
             <div className="lg:col-span-2 relative rounded-2xl overflow-hidden max-h-[300px]">
               <Image

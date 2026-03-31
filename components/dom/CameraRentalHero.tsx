@@ -5,18 +5,17 @@ import Image from 'next/image';
 import { gsap } from 'gsap';
 
 interface CameraRentalHeroProps {
-  name: string;
-  tagline: string;
-  heroImage: string;
-  highlights: string[];
-  accentColor: string;
+  tagline?: string;
+  heroImage?: string;
+  highlights?: string[];
+  accentColor?: string;
 }
 
 export default function CameraRentalHero({
-  tagline,
-  heroImage,
-  highlights,
-  accentColor,
+  tagline = 'Cinema-Grade Production Packages',
+  heroImage = '/images/camera-rental/arri-alexa-35-hero.webp',
+  highlights = ['ARRI Alexa 35', 'Signature Primes', '19mm Studio', 'Full Package'],
+  accentColor = '#00ffff',
 }: CameraRentalHeroProps) {
   const heroRef = useRef<HTMLDivElement>(null);
   const imgContainerRef = useRef<HTMLDivElement>(null);
@@ -104,7 +103,6 @@ export default function CameraRentalHero({
     >
       <div className="relative max-w-7xl mx-auto px-4 pt-28 pb-20 md:pt-36 md:pb-24 w-full">
         <div className="grid grid-cols-1 lg:grid-cols-[5fr_7fr] gap-12 lg:gap-8 items-center">
-          {/* Left: Text */}
           <div>
             <div className="hero-label inline-flex items-center gap-2 px-4 py-2 rounded-full border border-white/10 bg-white/5 text-white/50 text-xs font-bold uppercase tracking-[0.2em] mb-8">
               <span
@@ -128,7 +126,7 @@ export default function CameraRentalHero({
 
             <div className="hero-cta flex flex-wrap gap-4">
               <a
-                href="#equipment"
+                href="#packages"
                 className="inline-flex items-center gap-3 px-8 py-4 rounded-full bg-gradient-to-r from-[#00e92c] to-[#00ffff] text-black font-['Gibson'] font-bold text-sm hover:opacity-90 transition-opacity"
               >
                 View Full Package
@@ -137,14 +135,12 @@ export default function CameraRentalHero({
                 href="/contact"
                 className="inline-flex items-center gap-3 px-8 py-4 rounded-full border border-white/20 bg-white/5 text-white font-['Gibson'] font-bold text-sm hover:bg-white/10 transition-colors"
               >
-                Inquire Now
+                Enquire Now
               </a>
             </div>
           </div>
 
-          {/* Right: Camera image with floating glow + zoom magnifier */}
           <div className="hero-image-wrap relative flex items-center justify-center lg:scale-[1.15] lg:origin-center">
-            {/* Glow layers behind image */}
             <div
               className="absolute inset-0 rounded-3xl pointer-events-none"
               style={{
@@ -160,7 +156,6 @@ export default function CameraRentalHero({
               }}
             />
 
-            {/* Image container with zoom magnifier */}
             <div
               ref={imgContainerRef}
               className="relative w-full aspect-[4/3] cursor-crosshair select-none"
@@ -176,7 +171,6 @@ export default function CameraRentalHero({
                 sizes="(max-width: 1024px) 100vw, 50vw"
               />
 
-              {/* Magnifier lens */}
               {magnifier.visible && (
                 <div
                   className="absolute rounded-full border-2 border-white/20 pointer-events-none overflow-hidden shadow-2xl"
@@ -197,16 +191,16 @@ export default function CameraRentalHero({
           </div>
         </div>
 
-        {/* Highlight stats */}
-        <div className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
-          {highlights.map((highlight) => (
-            <div
-              key={highlight}
-              className="hero-stat backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl px-4 py-4 text-center"
-            >
-              <span className="text-sm md:text-base font-['Gibson'] font-bold text-white/75">
-                {highlight}
-              </span>
+        <div className="hero-stat mt-16 flex items-center backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl px-6 py-4 overflow-x-auto">
+          {highlights.map((highlight, i) => (
+            <div key={highlight} className="flex items-center flex-shrink-0">
+              {i > 0 && <div className="w-px h-5 bg-white/15 mx-4 flex-shrink-0" />}
+              <div className="flex items-center gap-2.5">
+                <span className="w-1.5 h-1.5 rounded-full bg-gradient-to-r from-[#00e92c] to-[#00ffff] flex-shrink-0" />
+                <span className="text-sm font-['Gibson'] font-bold text-white/70 whitespace-nowrap">
+                  {highlight}
+                </span>
+              </div>
             </div>
           ))}
         </div>

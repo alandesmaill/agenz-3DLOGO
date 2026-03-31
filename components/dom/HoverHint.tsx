@@ -13,7 +13,6 @@ export default function HoverHint({ isVisible, isDecomposed = false }: HoverHint
   const fullText = 'click the logo';
   const [isTypingComplete, setIsTypingComplete] = useState(false);
 
-  // Typing animation
   useEffect(() => {
     if (!isVisible || isDecomposed) {
       setDisplayText('');
@@ -49,7 +48,6 @@ export default function HoverHint({ isVisible, isDecomposed = false }: HoverHint
       }`}
     >
       <div className="bg-black text-white rounded-full flex items-center shadow-lg px-6 py-3 gap-3">
-        {/* Mouse icon */}
         <svg
           width="20"
           height="20"

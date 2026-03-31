@@ -20,17 +20,14 @@ export default function ServiceCTA({
 }: ServiceCTAProps) {
   return (
     <div className="text-center max-w-3xl mx-auto">
-      {/* Heading */}
       <h2 className="text-3xl sm:text-4xl md:text-5xl font-['Gibson'] font-bold text-white mb-6">
         {heading}
       </h2>
 
-      {/* Description */}
       <p className="text-lg md:text-xl font-['Gibson'] text-white/65 mb-10 leading-relaxed">
         {description}
       </p>
 
-      {/* CTA Button */}
       <Link
         href={buttonLink}
         className="
@@ -51,7 +48,6 @@ export default function ServiceCTA({
         <ArrowRight className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
       </Link>
 
-      {/* Supporting text */}
       <p className="mt-8 text-sm font-['Gibson'] text-white/60">
         No commitment required • Free consultation • Response within 24 hours
       </p>

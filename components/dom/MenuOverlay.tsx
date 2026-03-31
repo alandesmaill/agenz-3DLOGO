@@ -66,7 +66,6 @@ export default function MenuOverlay({ isOpen, onClose }: MenuOverlayProps) {
     };
   }, [isOpen]);
 
-  // Handle escape key
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
       if (e.key === 'Escape' && isOpen) {
@@ -78,7 +77,6 @@ export default function MenuOverlay({ isOpen, onClose }: MenuOverlayProps) {
   }, [isOpen, onClose]);
 
   const handleItemClick = (item: NavItem) => {
-    // Always navigate to route
     onClose();
     setTimeout(() => {
       router.push(item.path);
@@ -101,7 +99,6 @@ export default function MenuOverlay({ isOpen, onClose }: MenuOverlayProps) {
 
   return (
     <div className="fixed inset-0 z-[100]">
-      {/* Backdrop - click to close */}
       <div
         className={`absolute inset-0 bg-black/70 backdrop-blur-md transition-opacity duration-500 ${
           isAnimating ? 'opacity-100' : 'opacity-0'
@@ -109,20 +106,16 @@ export default function MenuOverlay({ isOpen, onClose }: MenuOverlayProps) {
         onClick={onClose}
       />
 
-      {/* Sidebar */}
       <div
         className={`absolute top-0 right-0 h-full w-full sm:w-[450px] bg-[#0a0a0f] transition-transform duration-500 ease-out ${
           isAnimating ? 'translate-x-0' : 'translate-x-full'
         }`}
       >
-        {/* Gradient glow effect on left edge */}
         <div className="absolute inset-y-0 left-0 w-px bg-gradient-to-b from-transparent via-cyan-500/50 to-transparent pointer-events-none" />
 
-        {/* Decorative gradient orb */}
         <div className="absolute top-20 right-10 w-48 h-48 bg-gradient-to-br from-cyan-500/20 via-emerald-500/10 to-transparent rounded-full blur-3xl pointer-events-none" />
         <div className="absolute bottom-40 left-0 w-32 h-32 bg-gradient-to-tr from-cyan-500/10 to-transparent rounded-full blur-2xl pointer-events-none" />
 
-        {/* Close Button - Circle X */}
         <button
           onClick={onClose}
           className={`absolute top-8 right-8 w-14 h-14 rounded-full border border-white/20 flex items-center justify-center hover:border-cyan-400/60 hover:bg-cyan-400/10 transition-all duration-300 z-10 group ${
@@ -136,9 +129,7 @@ export default function MenuOverlay({ isOpen, onClose }: MenuOverlayProps) {
           </svg>
         </button>
 
-        {/* Content - Top aligned with scroll */}
         <div className="relative h-full overflow-y-auto flex flex-col justify-start pt-28 sm:pt-32 px-8 sm:px-12">
-          {/* Sitemap Section */}
           <div
             className={`mb-12 sm:mb-16 transition-all duration-500 ${
               isAnimating ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-8'
@@ -151,7 +142,6 @@ export default function MenuOverlay({ isOpen, onClose }: MenuOverlayProps) {
             <nav className="flex flex-col gap-3 sm:gap-4">
               {NAV_ITEMS.map((item, index) => (
                 <div key={item.path}>
-                  {/* Main navigation item */}
                   <div
                     className={`w-full text-left transition-all duration-300 group flex items-center gap-4 ${
                       isAnimating ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-4'
@@ -160,7 +150,6 @@ export default function MenuOverlay({ isOpen, onClose }: MenuOverlayProps) {
                     onMouseEnter={() => setHoveredItem(item.path)}
                     onMouseLeave={() => setHoveredItem(null)}
                   >
-                    {/* Dash indicator */}
                     <span className={`text-2xl font-bold transition-colors duration-300 ${
                       hoveredItem === item.path || (item.submenu && isServicesExpanded)
                         ? 'text-cyan-400'
@@ -169,7 +158,6 @@ export default function MenuOverlay({ isOpen, onClose }: MenuOverlayProps) {
                       —
                     </span>
 
-                    {/* Label — always navigates */}
                     <button
                       onClick={() => handleItemClick(item)}
                       className={`text-3xl sm:text-4xl font-bold tracking-tight transition-all duration-300 ${
@@ -181,7 +169,6 @@ export default function MenuOverlay({ isOpen, onClose }: MenuOverlayProps) {
                       {item.label}
                     </button>
 
-                    {/* Chevron icon for Services — only toggles submenu */}
                     {item.submenu && (
                       <button
                         onClick={handleToggleSubmenu}
@@ -207,7 +194,6 @@ export default function MenuOverlay({ isOpen, onClose }: MenuOverlayProps) {
                     )}
                   </div>
 
-                  {/* Submenu (accordion) */}
                   {item.submenu && (
                     <div
                       className={`overflow-hidden transition-all duration-400 ${
@@ -239,7 +225,6 @@ export default function MenuOverlay({ isOpen, onClose }: MenuOverlayProps) {
             </nav>
           </div>
 
-          {/* Follow Us Section */}
           <div
             className={`transition-all duration-500 ${
               isAnimating ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-8'
@@ -267,10 +252,8 @@ export default function MenuOverlay({ isOpen, onClose }: MenuOverlayProps) {
             </div>
           </div>
 
-          {/* Spacer */}
           <div className="flex-1" />
 
-          {/* Bottom copyright */}
           <div
             className={`pb-8 sm:pb-10 transition-all duration-500 ${
               isAnimating ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'

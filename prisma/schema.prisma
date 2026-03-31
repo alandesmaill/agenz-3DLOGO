@@ -1,0 +1,253 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../lib/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ──────────────────────────────────────
+// AUTH
+// ──────────────────────────────────────
+
+model AdminUser {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  name         String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+// ──────────────────────────────────────
+// CLIENT LOGOS
+// ──────────────────────────────────────
+
+model ClientLogo {
+  id        String   @id @default(cuid())
+  name      String
+  image     String
+  sortOrder Int      @default(0)
+  published Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// ──────────────────────────────────────
+// CAMERA RENTAL
+// ──────────────────────────────────────
+
+model CameraRentalHeroConfig {
+  id          String   @id @default(cuid())
+  tagline     String   @default("Cinema-Grade Production Packages")
+  heroImage   String   @default("")
+  highlights  String[]
+  accentColor String   @default("#00ffff")
+  updatedAt   DateTime @updatedAt
+}
+
+model CameraPackage {
+  id                    String              @id @default(cuid())
+  slug                  String              @unique
+  name                  String
+  tagline               String
+  description           String              @db.Text
+  cameraBody            String
+  packageImage          String
+  accentColor           String              @default("#00ffff")
+  highlights            String[]
+  productionSetIncludes String[]
+  sortOrder             Int                 @default(0)
+  published             Boolean             @default(true)
+  createdAt             DateTime            @default(now())
+  updatedAt             DateTime            @updatedAt
+
+  equipmentCategories EquipmentCategory[]
+}
+
+model EquipmentCategory {
+  id          String  @id @default(cuid())
+  slug        String
+  name        String
+  iconName    String
+  description String?
+  sortOrder   Int     @default(0)
+
+  packageId String
+  package   CameraPackage @relation(fields: [packageId], references: [id], onDelete: Cascade)
+
+  items EquipmentItem[]
+
+  @@unique([packageId, slug])
+}
+
+model EquipmentItem {
+  id        String  @id @default(cuid())
+  name      String
+  brand     String
+  qty       Int     @default(1)
+  notes     String?
+  image     String?
+  sortOrder Int     @default(0)
+
+  categoryId String
+  category   EquipmentCategory @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+}
+
+model RentalItem {
+  id          String   @id @default(cuid())
+  name        String
+  brand       String
+  category    String
+  description String?  @db.Text
+  image       String?
+  qty         Int      @default(1)
+  available   Boolean  @default(true)
+  sortOrder   Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+// ──────────────────────────────────────
+// SERVICES
+// ──────────────────────────────────────
+
+model Service {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  number      String
+  title       String
+  accentColor String   @default("#00ffff")
+
+  // Overview page fields (card in services grid)
+  overviewDescription String  @db.Text
+  overviewIconName    String
+  ctaText             String  @default("Learn More")
+  ctaLink             String
+
+  // Hero section
+  heroTagline     String
+  heroDescription String   @db.Text
+  heroStats       Json     @default("[]")
+
+  // Overview section
+  overviewHeading    String
+  overviewParagraphs String[]
+  overviewBenefits   String[]
+
+  // CTA section
+  ctaHeading     String
+  ctaDescription String   @db.Text
+  ctaButtonText  String
+  ctaButtonLink  String
+
+  // SEO
+  metaTitle       String?
+  metaDescription String?  @db.Text
+  metaKeywords    String[]
+
+  // Admin
+  sortOrder Int      @default(0)
+  published Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  features ServiceFeature[]
+}
+
+model ServiceFeature {
+  id          String @id @default(cuid())
+  iconName    String
+  title       String
+  description String @db.Text
+  sortOrder   Int    @default(0)
+
+  serviceId String
+  service   Service @relation(fields: [serviceId], references: [id], onDelete: Cascade)
+}
+
+// ──────────────────────────────────────
+// WORKS / PORTFOLIO
+// ──────────────────────────────────────
+
+model PortfolioProject {
+  id           String   @id @default(cuid())
+  slug         String   @unique
+  category     String
+  clientName   String
+  projectTitle String
+  year         String
+  accentColor  String   @default("#00e92c")
+  sortOrder    Int      @default(0)
+  published    Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  // Thumbnail
+  thumbnailImage String
+  thumbnailAlt   String
+
+  // Hero
+  heroCoverImage  String
+  heroTagline     String
+  heroDescription String @db.Text
+
+  // Overview
+  overviewChallenge    String   @db.Text
+  overviewSolution     String   @db.Text
+  overviewApproach     String[]
+  overviewDeliverables String[]
+
+  // Before/After (optional)
+  beforeImage     String?
+  afterImage      String?
+  beforeAfterDesc String?
+
+  // Testimonial
+  testimonialQuote   String @db.Text
+  testimonialAuthor  String
+  testimonialRole    String
+  testimonialCompany String
+
+  // Related projects (stored as slug array)
+  relatedSlugs String[]
+
+  // Relations
+  heroStats    HeroStat[]
+  galleryItems GalleryItem[]
+  results      ProjectResult[]
+}
+
+model HeroStat {
+  id        String @id @default(cuid())
+  label     String
+  value     String
+  sortOrder Int    @default(0)
+
+  projectId String
+  project   PortfolioProject @relation(fields: [projectId], references: [id], onDelete: Cascade)
+}
+
+model GalleryItem {
+  id        String  @id @default(cuid())
+  type      String
+  src       String
+  alt       String?
+  thumbnail String?
+  sortOrder Int     @default(0)
+
+  projectId String
+  project   PortfolioProject @relation(fields: [projectId], references: [id], onDelete: Cascade)
+}
+
+model ProjectResult {
+  id        String @id @default(cuid())
+  metric    String
+  value     String
+  label     String
+  sortOrder Int    @default(0)
+
+  projectId String
+  project   PortfolioProject @relation(fields: [projectId], references: [id], onDelete: Cascade)
+}

@@ -11,11 +11,9 @@ export default function LoadingScreen({ progress, isLoaded }: LoadingScreenProps
   const [opacity, setOpacity] = useState(1);
   const [shouldRender, setShouldRender] = useState(true);
 
-  // Smooth progress for animation (prevents jumpy clip-path)
   const [smoothProgress, setSmoothProgress] = useState(0);
 
   useEffect(() => {
-    // Smoothly animate towards target progress
     const animateProgress = () => {
       setSmoothProgress((prev) => {
         const diff = progress - prev;
@@ -28,7 +26,6 @@ export default function LoadingScreen({ progress, isLoaded }: LoadingScreenProps
     return () => clearInterval(interval);
   }, [progress]);
 
-  // Fade out when loaded
   useEffect(() => {
     if (isLoaded) {
       const fadeTimer = setTimeout(() => {
@@ -46,7 +43,6 @@ export default function LoadingScreen({ progress, isLoaded }: LoadingScreenProps
     }
   }, [isLoaded]);
 
-  // Calculate clip-path based on progress (reveal from left to right)
   const clipPath = useMemo(() => {
     const revealPercent = Math.min(smoothProgress, 100);
     return `inset(0 ${100 - revealPercent}% 0 0)`;
@@ -67,9 +63,7 @@ export default function LoadingScreen({ progress, isLoaded }: LoadingScreenProps
       }}
     >
       <div className="relative flex flex-col items-center">
-        {/* Logo Container */}
         <div className="relative w-[280px] sm:w-[320px] md:w-[400px] h-auto">
-          {/* Background logo (gray silhouette) */}
           <svg
             viewBox="0 0 762.91 141.27"
             className="w-full h-auto"
@@ -87,7 +81,6 @@ export default function LoadingScreen({ progress, isLoaded }: LoadingScreenProps
             </g>
           </svg>
 
-          {/* Foreground logo (black, revealed by clip-path) */}
           <svg
             viewBox="0 0 762.91 141.27"
             className="absolute inset-0 w-full h-auto"
@@ -117,9 +110,7 @@ export default function LoadingScreen({ progress, isLoaded }: LoadingScreenProps
           </svg>
         </div>
 
-        {/* Minimal progress indicator */}
         <div className="mt-8 flex flex-col items-center gap-3">
-          {/* Progress bar */}
           <div className="w-[200px] h-[2px] bg-white/15 rounded-full overflow-hidden">
             <div
               className="h-full bg-white rounded-full"
@@ -130,7 +121,6 @@ export default function LoadingScreen({ progress, isLoaded }: LoadingScreenProps
             />
           </div>
 
-          {/* Progress text */}
           <span className="text-sm text-white/60 font-medium tracking-wider">
             {Math.round(smoothProgress)}%
           </span>

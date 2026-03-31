@@ -39,21 +39,17 @@ export default function AnimatedText({
   useEffect(() => {
     if (!textRef.current) return;
 
-    // Check for reduced motion preference
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     if (prefersReducedMotion) {
-      // Skip animation for users who prefer reduced motion
       return;
     }
 
     let refreshTimer: ReturnType<typeof setTimeout>;
 
-    // Small delay to ensure DOM is ready and Lenis is initialized
     const initTimer = setTimeout(() => {
       if (!textRef.current) return;
 
-      // Split the text into characters
       const splitText = new SplitType(textRef.current, {
         types: splitBy,
         tagName: 'span',
@@ -61,7 +57,6 @@ export default function AnimatedText({
 
       splitInstanceRef.current = splitText;
 
-      // Get the elements to animate
       const elements =
         splitBy === 'chars' ? splitText.chars :
         splitBy === 'words' ? splitText.words :
@@ -71,14 +66,12 @@ export default function AnimatedText({
         return;
       }
 
-      // Set initial state
       gsap.set(elements, {
         opacity: 0,
         y: y,
         willChange: 'transform, opacity',
       });
 
-      // Create scroll-triggered animation
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: textRef.current,
@@ -86,7 +79,6 @@ export default function AnimatedText({
           end: 'bottom top',
           toggleActions: once ? 'play none none none' : 'play none none reverse',
           invalidateOnRefresh: true, // Recalculate on refresh
-          // markers: true, // Uncomment for debugging
         },
       });
 
@@ -111,7 +103,6 @@ export default function AnimatedText({
       }, 100);
     }, 200); // Wait for DOM to be ready
 
-    // Cleanup
     return () => {
       clearTimeout(initTimer);
       clearTimeout(refreshTimer);

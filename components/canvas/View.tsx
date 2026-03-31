@@ -8,7 +8,6 @@ import { useProgress } from '@react-three/drei';
 
 const NAV_SECTIONS = ['about', 'works', 'services', 'contact'] as const;
 
-// Loading progress component inside Canvas
 function LoadingManager({ onProgress }: { onProgress: (progress: number) => void }) {
   const { progress } = useProgress();
 
@@ -38,14 +37,11 @@ export default function View() {
   const [loadingProgress, setLoadingProgress] = useState(0);
   const [isLoaded, setIsLoaded] = useState(false);
 
-  // Canvas optimization - unmount when in section view
   const [canvasActive, setCanvasActive] = useState(true);
 
-  // Modal and Menu state
   const [contactModalOpen, setContactModalOpen] = useState(false);
   const [menuOverlayOpen, setMenuOverlayOpen] = useState(false);
 
-  // Responsive scaling
   useEffect(() => {
     const updateScale = () => {
       const width = window.innerWidth;
@@ -63,7 +59,6 @@ export default function View() {
     return () => window.removeEventListener('resize', updateScale);
   }, []);
 
-  // Mark as loaded when progress reaches 100%
   useEffect(() => {
     if (loadingProgress >= 100) {
       setTimeout(() => {
@@ -72,7 +67,6 @@ export default function View() {
     }
   }, [loadingProgress]);
 
-  // Unmount canvas when section is visible (optimization)
   useEffect(() => {
     if (testSection.isVisible && testSection.section) {
       const timer = setTimeout(() => {
@@ -82,7 +76,6 @@ export default function View() {
     }
   }, [testSection.isVisible, testSection.section]);
 
-  // Callbacks wired to GlassLogoSystem — direct DOM mutation, zero React re-renders
   const handleNavPiecePositions = useCallback((positions: NavPieceScreenPositions) => {
     NAV_SECTIONS.forEach((section, i) => {
       const el = labelRefs.current[i];
@@ -101,17 +94,14 @@ export default function View() {
   const handleExplode  = useCallback(() => setPhase('exploding'), []);
   const handleSettled  = useCallback(() => setPhase('settled'), []);
 
-  // Handle navigation click callback - show section
   const handleNavigationClick = useCallback((section: string) => {
     setTestSection({ section, isVisible: true });
   }, []);
 
-  // Handle back button - reload page for fresh start
   const handleBack = useCallback(() => {
     window.location.reload();
   }, []);
 
-  // HoverHint nav bar click — triggers camera dive via ref, falls back to direct nav
   const handleHintNavClick = useCallback((section: string) => {
     if (glassLogoRef.current) {
       glassLogoRef.current.navigateToSection(section);
@@ -120,7 +110,6 @@ export default function View() {
     }
   }, [handleNavigationClick]);
 
-  // NavPieceLabel click — same camera dive path
   const handleLabelNavClick = useCallback((section: string) => {
     if (glassLogoRef.current) {
       glassLogoRef.current.navigateToSection(section);
@@ -129,24 +118,20 @@ export default function View() {
     }
   }, [handleNavigationClick]);
 
-  // Header button handlers
   const handleMenuClick = useCallback(() => {
     setMenuOverlayOpen(true);
   }, []);
 
   return (
     <div ref={containerRef} className="relative w-full h-full">
-      {/* Loading Screen */}
       <LoadingScreen progress={loadingProgress} isLoaded={isLoaded} />
 
-      {/* Header — only show after preload, hide when section active */}
       {isLoaded && !testSection.isVisible && (
         <Header
           onMenuClick={handleMenuClick}
         />
       )}
 
-      {/* Hover Hint — disappears after logo explodes */}
       <HoverHint
         isVisible={isLoaded && canvasActive && !testSection.isVisible}
         isDecomposed={phase === 'settled'}
@@ -155,7 +140,6 @@ export default function View() {
       {/* Animated Background — hide when canvas unmounted */}
       {canvasActive && <AnimatedBackground />}
 
-      {/* Three.js Canvas */}
       {canvasActive && (
         <Canvas className="w-full h-full">
           <Suspense fallback={null}>
@@ -174,7 +158,6 @@ export default function View() {
         </Canvas>
       )}
 
-      {/* Permanent tracking labels — appear after pieces settle */}
       {NAV_SECTIONS.map((section, i) => (
         <NavPieceLabel
           key={section}
@@ -187,27 +170,23 @@ export default function View() {
         />
       ))}
 
-      {/* Legacy hover label (now unused but kept for type safety) */}
       <NavigationLabel
         label={null}
         position={null}
         isVisible={false}
       />
 
-      {/* Section Display */}
       <TestSection
         section={testSection.section}
         isVisible={testSection.isVisible}
         onBack={handleBack}
       />
 
-      {/* Contact Modal */}
       <ContactModal
         isOpen={contactModalOpen}
         onClose={() => setContactModalOpen(false)}
       />
 
-      {/* Menu Overlay */}
       <MenuOverlay
         isOpen={menuOverlayOpen}
         onClose={() => setMenuOverlayOpen(false)}

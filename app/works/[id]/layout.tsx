@@ -1,5 +1,5 @@
 import { Metadata } from "next";
-import { getPortfolioById } from "@/lib/works-data";
+import { prisma } from "@/lib/db/prisma";
 
 interface Props {
   params: Promise<{ id: string }>;
@@ -7,7 +7,15 @@ interface Props {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { id } = await params;
-  const portfolio = getPortfolioById(id);
+
+  const portfolio = await prisma.portfolioProject.findUnique({
+    where: { slug: id, published: true },
+    select: {
+      slug: true,
+      projectTitle: true,
+      heroDescription: true,
+    },
+  });
 
   if (!portfolio) {
     return {
@@ -17,20 +25,20 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   return {
     title: `${portfolio.projectTitle} | AGENZ Works`,
-    description: portfolio.hero.description,
+    description: portfolio.heroDescription,
     alternates: {
-      canonical: `/works/${portfolio.id}`,
+      canonical: `/works/${portfolio.slug}`,
     },
     openGraph: {
       title: portfolio.projectTitle,
-      description: portfolio.hero.description,
-      url: `https://agenz-iq.com/works/${portfolio.id}`,
+      description: portfolio.heroDescription,
+      url: `https://agenz-iq.com/works/${portfolio.slug}`,
       type: "article",
     },
     twitter: {
       card: "summary_large_image",
       title: portfolio.projectTitle,
-      description: portfolio.hero.description,
+      description: portfolio.heroDescription,
     },
   };
 }

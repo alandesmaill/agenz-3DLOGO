@@ -2,7 +2,6 @@
 
 import dynamic from 'next/dynamic';
 
-// Dynamically import the View component with SSR disabled
 const View = dynamic(() => import('@/components/canvas/View'), {
   ssr: false,
 });
@@ -10,7 +9,6 @@ const View = dynamic(() => import('@/components/canvas/View'), {
 export default function Home() {
   return (
     <main className="w-full h-screen relative">
-      {/* SEO content — visually hidden, readable by search crawlers */}
       <div
         aria-hidden="true"
         style={{
@@ -39,7 +37,6 @@ export default function Home() {
           <li>Brand Strategy</li>
         </ul>
       </div>
-      {/* Three.js Canvas - Loaded client-side only */}
       <View />
     </main>
   );

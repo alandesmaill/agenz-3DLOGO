@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 
-// Debounce utility function
 function debounce<T extends (...args: any[]) => any>(
   func: T,
   wait: number
@@ -39,7 +38,6 @@ export const useResponsive = (): ResponsiveState => {
   });
 
   useEffect(() => {
-    // Check if we're on the client side
     if (typeof window === 'undefined') return;
 
     const checkBreakpoints = () => {
@@ -56,14 +54,11 @@ export const useResponsive = (): ResponsiveState => {
       });
     };
 
-    // Initial check
     checkBreakpoints();
 
-    // Debounced resize handler (250ms delay)
     const debouncedCheck = debounce(checkBreakpoints, 250);
     window.addEventListener('resize', debouncedCheck);
 
-    // Cleanup
     return () => {
       window.removeEventListener('resize', debouncedCheck);
     };

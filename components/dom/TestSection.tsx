@@ -20,7 +20,6 @@ export default function TestSection({
 
   useEffect(() => {
     if (isVisible) {
-      // Delay opacity change slightly for smooth transition
       const timer = setTimeout(() => setOpacity(1), 100);
       return () => clearTimeout(timer);
     } else {
@@ -30,7 +29,6 @@ export default function TestSection({
 
   if (!section || !isVisible) return null;
 
-  // Render AboutSection for the "about" section
   if (section === 'about') {
     return (
       <div id="section-scroll-container" className="fixed inset-0 overflow-y-auto z-50">
@@ -39,7 +37,6 @@ export default function TestSection({
     );
   }
 
-  // Render ContactSection for the "contact" section
   if (section === 'contact') {
     return (
       <div id="section-scroll-container" className="fixed inset-0 overflow-y-auto z-50">
@@ -48,7 +45,6 @@ export default function TestSection({
     );
   }
 
-  // Render ServicesSection for the "services" section
   if (section === 'services') {
     return (
       <div id="section-scroll-container" className="fixed inset-0 overflow-y-auto z-50">
@@ -57,9 +53,7 @@ export default function TestSection({
     );
   }
 
-  // Redirect to /works page for the "works" section
   if (section === 'works') {
-    // Navigate to standalone works page
     window.location.href = '/works';
     return null;
   }
@@ -70,12 +64,10 @@ export default function TestSection({
       style={{ opacity }}
     >
       <div className="bg-gray-100 rounded-2xl shadow-2xl p-12 max-w-2xl w-full mx-4 transform transition-all duration-500">
-        {/* Section Title */}
         <h1 className="text-6xl font-bold text-gray-900 mb-6 uppercase tracking-tight">
           {section}
         </h1>
 
-        {/* Section Description */}
         <div className="text-gray-600 mb-8 space-y-4">
           <p className="text-xl">
             This is a test view for the <span className="font-semibold text-gray-900">{section}</span> section.
@@ -85,7 +77,6 @@ export default function TestSection({
           </p>
         </div>
 
-        {/* Section-specific content placeholder */}
         <div className="bg-gradient-to-br from-blue-50 to-purple-50 rounded-lg p-8 mb-8">
           <h2 className="text-2xl font-semibold text-gray-800 mb-4">
             {section === 'about' && '👋 About Us'}
@@ -98,7 +89,6 @@ export default function TestSection({
           </p>
         </div>
 
-        {/* Back Button */}
         <button
           onClick={onBack}
           className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-bold text-xl py-4 px-8 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"

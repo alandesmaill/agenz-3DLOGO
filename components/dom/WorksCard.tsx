@@ -80,9 +80,7 @@ export default function WorksCard({ item }: WorksCardProps) {
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
       >
-        {/* Main card content */}
         <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6 px-5 sm:px-6 py-5">
-          {/* Thumbnail */}
           <div ref={thumbRef} className="flex-shrink-0 rounded-xl overflow-hidden w-full sm:w-[160px] h-[180px] sm:h-[120px] relative">
             <Image
               src={item.thumbnail.image}
@@ -93,7 +91,6 @@ export default function WorksCard({ item }: WorksCardProps) {
             />
           </div>
 
-          {/* Info */}
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2 mb-1.5">
               <span
@@ -111,7 +108,6 @@ export default function WorksCard({ item }: WorksCardProps) {
             <p className="text-sm font-['Gibson'] text-white/50 mt-1 line-clamp-1">{item.hero.tagline}</p>
           </div>
 
-          {/* Arrow */}
           <div className="hidden sm:flex items-center flex-shrink-0">
             <svg
               ref={arrowRef}
@@ -126,7 +122,6 @@ export default function WorksCard({ item }: WorksCardProps) {
           </div>
         </div>
 
-        {/* Hover-reveal panel (desktop: collapsed, mobile: always shown) */}
         <div
           ref={panelRef}
           className="overflow-hidden"
@@ -137,7 +132,6 @@ export default function WorksCard({ item }: WorksCardProps) {
             className="bg-white/5 py-4 px-5 sm:px-6 border-t border-white/10"
             style={{ opacity: isMobile ? 1 : 0 }}
           >
-            {/* Stats row */}
             <div className="flex flex-wrap gap-6 mb-3">
               {stats.map((stat, i) => (
                 <div key={i}>
@@ -149,12 +143,10 @@ export default function WorksCard({ item }: WorksCardProps) {
               ))}
             </div>
 
-            {/* Quote snippet */}
             <p className="text-sm font-['Gibson'] text-white/60 italic mb-3">
               &ldquo;{quoteSnippet}&rdquo;
             </p>
 
-            {/* Deliverables pills */}
             <div className="flex flex-wrap gap-2">
               {topDeliverables.map((d, i) => (
                 <span

@@ -47,13 +47,10 @@ export default function ProjectStorySection({
   return (
     <div ref={sectionRef} className="py-12 md:py-16">
       <div className="max-w-3xl mx-auto px-6 md:px-0">
-        {/* Accent bar */}
         <div className="w-12 h-1 rounded-full mb-4" style={{ backgroundColor: accentColor }} />
-        {/* Heading */}
         <h2 className="text-2xl md:text-3xl font-['Gibson'] font-bold text-white mb-6">
           {title}
         </h2>
-        {/* Content */}
         {children}
       </div>
     </div>

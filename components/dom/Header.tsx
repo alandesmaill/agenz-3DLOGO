@@ -25,7 +25,6 @@ export default function Header({ onGetInTouch, onMenuClick, onLogoClick, variant
 
   return (
     <header className={`fixed top-0 left-0 right-0 z-50 px-5 py-3 md:px-10 md:py-6 flex items-center justify-between pointer-events-none ${headerBg}`}>
-      {/* Logo - Top Left */}
       <div className="flex items-center pointer-events-auto">
         {onLogoClick ? (
           <button
@@ -54,9 +53,7 @@ export default function Header({ onGetInTouch, onMenuClick, onLogoClick, variant
         )}
       </div>
 
-      {/* Buttons - Top Right */}
       <div className="flex items-center gap-2 md:gap-3 pointer-events-auto">
-        {/* CAMERA RENTAL Button */}
         {onGetInTouch ? (
           <button className={getInTouchClasses} onClick={onGetInTouch}>
             CAMERA RENTAL
@@ -67,7 +64,6 @@ export default function Header({ onGetInTouch, onMenuClick, onLogoClick, variant
           </Link>
         )}
 
-        {/* MENU Button */}
         <button
           className={menuClasses}
           onClick={onMenuClick}

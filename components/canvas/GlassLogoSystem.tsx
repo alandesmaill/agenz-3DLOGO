@@ -6,8 +6,6 @@ import { useFrame, useThree } from '@react-three/fiber';
 import * as THREE from 'three';
 import { gsap } from 'gsap';
 
-// ─── Types ───────────────────────────────────────────────────────────────────
-
 type LogoPhase = 'intact' | 'exploding' | 'settled';
 
 export interface GlassLogoHandle {
@@ -56,12 +54,9 @@ interface DebrisOrbit {
   rotSpeedY: number;
 }
 
-// ─── Reusable objects (avoid per-frame / per-event allocations) ─────────────
 const _wp   = new THREE.Vector3();
 const _sp   = new THREE.Vector3();
 const _cyan = new THREE.Color(0x00ffff);
-
-// ─── Constants ───────────────────────────────────────────────────────────────
 
 const NAV_SECTIONS_DESKTOP = [
   { section: 'about',    label: 'ABOUT',    position: new THREE.Vector3(-0.6, 1.1, 1.5) },
@@ -79,8 +74,6 @@ const NAV_SECTIONS_MOBILE = [
 
 const NAV_SCALE_MULTIPLIER_DESKTOP = 1.0;
 const NAV_SCALE_MULTIPLIER_MOBILE  = 0.55;
-
-// ─── Component ───────────────────────────────────────────────────────────────
 
 const GlassLogoSystem = forwardRef<GlassLogoHandle, GlassLogoSystemProps>(function GlassLogoSystem({
   position = [0, 0, 0],
@@ -104,7 +97,6 @@ const GlassLogoSystem = forwardRef<GlassLogoHandle, GlassLogoSystemProps>(functi
   const domRectRef          = useRef<DOMRect | null>(null);
 
   const [phase, setPhase] = useState<LogoPhase>('intact');
-  // Trigger re-render once fractured pieces are ready so collision meshes mount
   const [fracturedReady, setFracturedReady] = useState(false);
 
   const { camera, gl } = useThree();
@@ -123,12 +115,8 @@ const GlassLogoSystem = forwardRef<GlassLogoHandle, GlassLogoSystemProps>(functi
   const navSections         = isMobile ? NAV_SECTIONS_MOBILE : NAV_SECTIONS_DESKTOP;
   const navScaleMultiplier  = isMobile ? NAV_SCALE_MULTIPLIER_MOBILE : NAV_SCALE_MULTIPLIER_DESKTOP;
 
-  // ─── Load models ───────────────────────────────────────────────────────────
-
   const { scene: intactScene }    = useGLTF('/models/model 2/Z.glb');
   const { scene: fracturedScene } = useGLTF('/models/model 2/Z1.glb');
-
-  // ─── Z.glb (intact) — cinematic intro ──────────────────────────────────────
 
   useEffect(() => {
     if (!intactGroupRef.current) return;
@@ -150,7 +138,6 @@ const GlassLogoSystem = forwardRef<GlassLogoHandle, GlassLogoSystemProps>(functi
       }
     });
 
-    // Cinematic camera intro
     const originalCameraPos = camera.position.clone();
     camera.position.set(0, 2, 15);
     const cameraTween = gsap.to(camera.position, {
@@ -162,7 +149,6 @@ const GlassLogoSystem = forwardRef<GlassLogoHandle, GlassLogoSystemProps>(functi
     });
     tweensRef.current.push(cameraTween);
 
-    // Start small, scale up after camera starts moving
     intactGroup.scale.set(0.8, 0.8, 0.8);
 
     const t1 = setTimeout(() => {
@@ -201,8 +187,6 @@ const GlassLogoSystem = forwardRef<GlassLogoHandle, GlassLogoSystemProps>(functi
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [intactScene]);
 
-  // ─── Z1.glb (fractured) — initialize pieces, keep hidden ──────────────────
-
   useEffect(() => {
     if (!fracturedGroupRef.current) return;
 
@@ -222,14 +206,9 @@ const GlassLogoSystem = forwardRef<GlassLogoHandle, GlassLogoSystemProps>(functi
       }
     });
 
-    // Reparent every mesh directly to fracturedGroupRef so that mesh.position
-    // is in world space (fracturedGroupRef sits at origin, scale=1).
-    // This eliminates glTF intermediate-node offsets that would otherwise shift
-    // pieces away from their intended target positions.
     allMeshes.forEach(mesh => fracturedGroupRef.current!.attach(mesh));
     fracturedGroupRef.current.remove(cloned);
 
-    // Volume-sort to identify 4 nav pieces
     const meshesWithVolume = allMeshes.map((mesh, index) => {
       const geometry = mesh.geometry;
       if (!geometry.boundingBox) geometry.computeBoundingBox();
@@ -284,14 +263,11 @@ const GlassLogoSystem = forwardRef<GlassLogoHandle, GlassLogoSystemProps>(functi
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [fracturedScene]);
 
-  // ─── Decompose animation ───────────────────────────────────────────────────
-
   const startDecomposeAnimation = () => {
     const dur     = prefersReducedMotion ? 0.5 : 4.0;
     const navPieces = navigationPiecesRef.current;
     const debris    = debrisPiecesRef.current;
 
-    // Nav pieces → target positions
     navPieces.forEach((piece) => {
       tweensRef.current.push(
         gsap.to(piece.mesh.position, {
@@ -315,7 +291,6 @@ const GlassLogoSystem = forwardRef<GlassLogoHandle, GlassLogoSystemProps>(functi
       );
     });
 
-    // Emissive ramp on nav pieces
     navPieces.forEach((piece) => {
       if (piece.mesh.material instanceof THREE.MeshStandardMaterial) {
         piece.mesh.material.emissive.set(0x00ffff);
@@ -329,7 +304,6 @@ const GlassLogoSystem = forwardRef<GlassLogoHandle, GlassLogoSystemProps>(functi
       }
     });
 
-    // Debris → orbital start positions
     debrisOrbitsRef.current = [];
 
     debris.forEach((piece, i) => {
@@ -404,8 +378,6 @@ const GlassLogoSystem = forwardRef<GlassLogoHandle, GlassLogoSystemProps>(functi
     timerIdsRef.current.push(t2);
   };
 
-  // ─── Click handler ─────────────────────────────────────────────────────────
-
   const handleLogoClick = () => {
     if (phaseRef.current !== 'intact') return;
     phaseRef.current = 'exploding';
@@ -413,20 +385,16 @@ const GlassLogoSystem = forwardRef<GlassLogoHandle, GlassLogoSystemProps>(functi
     isAnimatingRef.current = true;
     onExplode?.();
 
-    // Copy intact group's current scale so fractured group appears same size
     if (intactGroupRef.current && fracturedGroupRef.current) {
       const s = intactGroupRef.current.scale;
       fracturedGroupRef.current.scale.set(s.x, s.y, s.z);
     }
 
-    // Instant model swap
     if (intactGroupRef.current)    intactGroupRef.current.visible    = false;
     if (fracturedGroupRef.current) fracturedGroupRef.current.visible = true;
 
     startDecomposeAnimation();
   };
-
-  // ─── Nav piece hover / click ───────────────────────────────────────────────
 
   const handleNavPieceHover = (piece: NavigationPiece, isHovering: boolean) => {
     if (phaseRef.current !== 'settled' || isAnimatingRef.current) return;
@@ -521,8 +489,6 @@ const GlassLogoSystem = forwardRef<GlassLogoHandle, GlassLogoSystemProps>(functi
       }, '-=0.5');
   };
 
-  // ─── Imperative handle ────────────────────────────────────────────────────
-
   useImperativeHandle(ref, () => ({
     navigateToSection: (section: string) => {
       if (isAnimatingRef.current) return;
@@ -531,12 +497,9 @@ const GlassLogoSystem = forwardRef<GlassLogoHandle, GlassLogoSystemProps>(functi
     },
   }));
 
-  // ─── useFrame ─────────────────────────────────────────────────────────────
-
   useFrame((state, delta) => {
     const p = phaseRef.current;
 
-    // Intact: mouse-tracking tilt
     if (p === 'intact' && intactGroupRef.current && !prefersReducedMotion) {
       const targetRotX = -state.mouse.y * 0.3;
       const targetRotY =  state.mouse.x * 0.5;
@@ -544,7 +507,6 @@ const GlassLogoSystem = forwardRef<GlassLogoHandle, GlassLogoSystemProps>(functi
       intactGroupRef.current.rotation.y += (targetRotY - intactGroupRef.current.rotation.y) * Math.min(delta * 3, 1);
     }
 
-    // Settled: float nav pieces + orbit debris + project to screen
     if (p === 'settled' && !prefersReducedMotion) {
       const time = state.clock.getElapsedTime();
 
@@ -568,7 +530,6 @@ const GlassLogoSystem = forwardRef<GlassLogoHandle, GlassLogoSystemProps>(functi
         piece.mesh.rotation.y += delta * orbit.rotSpeedY;
       });
 
-      // Project world positions to screen for label tracking
       if (onNavPiecePositions) {
         const out: NavPieceScreenPositions = { about: null, works: null, services: null, contact: null };
         const rect = domRectRef.current ?? gl.domElement.getBoundingClientRect();
@@ -585,8 +546,6 @@ const GlassLogoSystem = forwardRef<GlassLogoHandle, GlassLogoSystemProps>(functi
     }
   });
 
-  // ─── Cleanup ──────────────────────────────────────────────────────────────
-
   useEffect(() => {
     const updateRect = () => { domRectRef.current = gl.domElement.getBoundingClientRect(); };
     updateRect();
@@ -602,11 +561,8 @@ const GlassLogoSystem = forwardRef<GlassLogoHandle, GlassLogoSystemProps>(functi
     };
   }, [gl]);
 
-  // ─── Render ───────────────────────────────────────────────────────────────
-
   return (
     <group position={position}>
-      {/* Intact Z.glb */}
       <group ref={intactGroupRef}>
         {phase === 'intact' && (
           <mesh onClick={handleLogoClick} visible={false}>
@@ -616,7 +572,6 @@ const GlassLogoSystem = forwardRef<GlassLogoHandle, GlassLogoSystemProps>(functi
         )}
       </group>
 
-      {/* Fractured Z1.glb */}
       <group ref={fracturedGroupRef}>
         {phase === 'settled' && fracturedReady &&
           navigationPiecesRef.current.map((piece) => (
@@ -639,6 +594,5 @@ const GlassLogoSystem = forwardRef<GlassLogoHandle, GlassLogoSystemProps>(functi
 
 export default GlassLogoSystem;
 
-// Preload both models on module load
 useGLTF.preload('/models/model 2/Z.glb');
 useGLTF.preload('/models/model 2/Z1.glb');

@@ -18,7 +18,6 @@ interface AboutSectionProps {
   onBack?: () => void;
 }
 
-// Dark gradient background style applied to scroll-container — green atmospheric on #0d0d0d
 const darkGradientStyle: React.CSSProperties = {
   background: `
     radial-gradient(ellipse 70% 60% at 20% 50%, rgba(0, 255, 255, 0.14) 0%, transparent 55%),
@@ -27,7 +26,6 @@ const darkGradientStyle: React.CSSProperties = {
   `,
 };
 
-// Inline SVG grain texture as data URI
 const grainStyle: React.CSSProperties = {
   backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23noise)'/%3E%3C/svg%3E")`,
   opacity: 0.03,
@@ -53,11 +51,9 @@ function HoverWords({
           className="group/word inline-block overflow-hidden relative mr-[0.22em] mb-[0.05em] cursor-default"
           style={{ verticalAlign: 'bottom' }}
         >
-          {/* Visible word — exits upward on hover */}
           <span className="block transition-transform duration-300 ease-out group-hover/word:-translate-y-full">
             {word}
           </span>
-          {/* Clone — enters from below on hover, uses brand gradient */}
           <span
             className="absolute inset-0 block translate-y-full transition-transform duration-300 ease-out group-hover/word:translate-y-0 bg-gradient-to-r from-[#00e92c] to-[#00ffff] bg-clip-text text-transparent"
           >
@@ -72,11 +68,9 @@ function HoverWords({
 export default function AboutSection({ onBack }: AboutSectionProps) {
   const rootRef = useRef<HTMLDivElement>(null);
 
-  // CTA refs
   const watermarkRef = useRef<HTMLDivElement>(null);
   const ctaRef = useRef<HTMLElement>(null);
 
-  // Mission refs
   const missionRef = useRef<HTMLElement>(null);
   const missionWatermarkRef = useRef<HTMLDivElement>(null);
   const missionTextRef = useRef<HTMLDivElement>(null);
@@ -84,7 +78,6 @@ export default function AboutSection({ onBack }: AboutSectionProps) {
   const missionDividerRef = useRef<HTMLDivElement>(null);
   const missionBeliefRef = useRef<HTMLParagraphElement>(null);
 
-  // Vision refs
   const visionRef = useRef<HTMLElement>(null);
   const visionLabelRef = useRef<HTMLDivElement>(null);
   const visionFirstParaRef = useRef<HTMLParagraphElement>(null);
@@ -93,7 +86,6 @@ export default function AboutSection({ onBack }: AboutSectionProps) {
   const visionBeliefRef = useRef<HTMLParagraphElement>(null);
   const visionWatermarkRef = useRef<HTMLDivElement>(null);
 
-  // Menu state
   const [menuOpen, setMenuOpen] = useState(false);
 
   // Critical: Refresh ScrollTrigger when AboutSection mounts
@@ -146,7 +138,6 @@ export default function AboutSection({ onBack }: AboutSectionProps) {
     };
   }, []);
 
-  // CTA watermark parallax
   useEffect(() => {
     if (!watermarkRef.current || !ctaRef.current) return;
 
@@ -165,7 +156,6 @@ export default function AboutSection({ onBack }: AboutSectionProps) {
     };
   }, []);
 
-  // Mission: watermark parallax
   useEffect(() => {
     if (!missionWatermarkRef.current || !missionRef.current) return;
 
@@ -184,7 +174,6 @@ export default function AboutSection({ onBack }: AboutSectionProps) {
     };
   }, []);
 
-  // Mission: underline sweep on "real business impact"
   useEffect(() => {
     if (!underlineRef.current || !missionTextRef.current) return;
 
@@ -204,7 +193,6 @@ export default function AboutSection({ onBack }: AboutSectionProps) {
     };
   }, []);
 
-  // Mission: short center divider
   useEffect(() => {
     if (!missionDividerRef.current || !missionTextRef.current) return;
 
@@ -224,7 +212,6 @@ export default function AboutSection({ onBack }: AboutSectionProps) {
     };
   }, []);
 
-  // Mission: belief paragraph fade-up
   useEffect(() => {
     if (!missionBeliefRef.current || !missionTextRef.current) return;
 
@@ -249,7 +236,6 @@ export default function AboutSection({ onBack }: AboutSectionProps) {
     };
   }, []);
 
-  // Vision: label fade-up
   useEffect(() => {
     if (!visionLabelRef.current || !visionRef.current) return;
 
@@ -275,7 +261,6 @@ export default function AboutSection({ onBack }: AboutSectionProps) {
     };
   }, []);
 
-  // Vision: first paragraph fade-up
   useEffect(() => {
     if (!visionFirstParaRef.current || !visionRef.current) return;
 
@@ -301,7 +286,6 @@ export default function AboutSection({ onBack }: AboutSectionProps) {
     };
   }, []);
 
-  // Vision: underline sweep on "lasting impressions."
   useEffect(() => {
     if (!visionUnderlineRef.current || !visionFirstParaRef.current) return;
 
@@ -322,7 +306,6 @@ export default function AboutSection({ onBack }: AboutSectionProps) {
     };
   }, []);
 
-  // Vision: short center divider (w-32 = 128px)
   useEffect(() => {
     if (!visionDividerRef.current || !visionFirstParaRef.current) return;
 
@@ -343,7 +326,6 @@ export default function AboutSection({ onBack }: AboutSectionProps) {
     };
   }, []);
 
-  // Vision: belief paragraph fade-up
   useEffect(() => {
     if (!visionBeliefRef.current || !visionFirstParaRef.current) return;
 
@@ -369,7 +351,6 @@ export default function AboutSection({ onBack }: AboutSectionProps) {
     };
   }, []);
 
-  // Vision: watermark parallax
   useEffect(() => {
     if (!visionWatermarkRef.current || !visionRef.current) return;
 
@@ -395,16 +376,13 @@ export default function AboutSection({ onBack }: AboutSectionProps) {
         className="scroll-container"
         style={darkGradientStyle}
       >
-        {/* Header - Fixed, Dark Variant */}
         <Header
           variant="dark"
           onLogoClick={onBack}
           onMenuClick={() => setMenuOpen(true)}
         />
 
-        {/* 1. Hero Section - Full-Width Cinematic */}
         <section className="relative h-screen w-full flex items-center overflow-hidden">
-          {/* Subtle cyan glow — mirrors rest of page */}
           <div
             className="absolute inset-0 pointer-events-none"
             style={{
@@ -412,16 +390,13 @@ export default function AboutSection({ onBack }: AboutSectionProps) {
             }}
             aria-hidden="true"
           />
-          {/* Grain texture overlay */}
           <div
             className="absolute inset-0 pointer-events-none"
             style={grainStyle}
             aria-hidden="true"
           />
 
-          {/* Full-width text block */}
           <div className="relative z-10 w-full px-6 md:px-12 lg:px-16 mt-16 md:mt-0">
-            {/* SVG Logo */}
             <div className="mb-8 md:mb-10">
               <Image
                 src="/agenz creative hub.svg"
@@ -433,7 +408,6 @@ export default function AboutSection({ onBack }: AboutSectionProps) {
               />
             </div>
 
-            {/* Hover-animated tagline */}
             <HoverWords
               text={aboutContent.hero.headline}
               className="text-white/90 font-extrabold uppercase leading-[0.92] tracking-[-0.01em]"
@@ -442,12 +416,10 @@ export default function AboutSection({ onBack }: AboutSectionProps) {
           </div>
         </section>
 
-        {/* 2. Mission Section - Centered */}
         <section
           ref={missionRef}
           className="relative min-h-screen w-full flex items-center justify-center py-24 overflow-hidden"
         >
-          {/* "MISSION" watermark with parallax */}
           <div
             ref={missionWatermarkRef}
             className="absolute inset-0 flex items-center justify-center pointer-events-none select-none"
@@ -463,7 +435,6 @@ export default function AboutSection({ onBack }: AboutSectionProps) {
 
           <div className="relative z-10 w-full px-6 md:px-12 lg:px-16 text-center">
 
-            {/* Centered label: ━━ OUR MISSION */}
             <div className="flex flex-col items-center mb-12">
               <span className="block h-[2px] w-8 bg-gradient-to-r from-[#00e92c] to-[#00ffff] mb-4 rounded-full" />
               <p className="text-sm tracking-[0.3em] uppercase text-white/60">
@@ -471,10 +442,8 @@ export default function AboutSection({ onBack }: AboutSectionProps) {
               </p>
             </div>
 
-            {/* Text block — centered, max-w-4xl */}
             <div ref={missionTextRef} className="max-w-4xl mx-auto">
 
-              {/* Main statement — bold, large */}
               <p
                 className="text-white/90 font-bold leading-[1.1]"
                 style={{ fontSize: 'clamp(1.9rem, 3.8vw, 4.2rem)' }}
@@ -493,14 +462,12 @@ export default function AboutSection({ onBack }: AboutSectionProps) {
                 {', '}blending innovative storytelling, strategic thinking, and precise execution to help brands grow, connect, and stand out in a constantly evolving world.
               </p>
 
-              {/* Short centered divider */}
               <div
                 ref={missionDividerRef}
                 className="h-[1px] bg-white/10 my-8 mx-auto rounded-full"
                 style={{ width: 0 }}
               />
 
-              {/* Belief line — lighter, smaller */}
               <p
                 ref={missionBeliefRef}
                 className="text-white/60 font-light"
@@ -512,12 +479,10 @@ export default function AboutSection({ onBack }: AboutSectionProps) {
           </div>
         </section>
 
-        {/* 3. Vision Section - Centered, Expansive */}
         <section
           ref={visionRef}
           className="relative min-h-screen w-full flex items-center justify-center py-32 overflow-hidden"
         >
-          {/* Large "VISION" watermark with parallax */}
           <div
             ref={visionWatermarkRef}
             className="absolute inset-0 flex items-center justify-center pointer-events-none select-none"
@@ -531,7 +496,6 @@ export default function AboutSection({ onBack }: AboutSectionProps) {
             </span>
           </div>
 
-          {/* Cyan glow blob — top-right, desktop only */}
           <div
             className="absolute top-[10%] right-[5%] w-[40vw] h-[40vw] pointer-events-none hidden md:block"
             style={{
@@ -540,10 +504,8 @@ export default function AboutSection({ onBack }: AboutSectionProps) {
             aria-hidden="true"
           />
 
-          {/* Content — centered */}
           <div className="relative z-10 w-full px-6 md:px-12 lg:px-16 text-center">
 
-            {/* Centered label: ━━ OUR VISION */}
             <div
               ref={visionLabelRef}
               className="flex flex-col items-center mb-12"
@@ -555,7 +517,6 @@ export default function AboutSection({ onBack }: AboutSectionProps) {
               </p>
             </div>
 
-            {/* First paragraph — large, light */}
             <p
               ref={visionFirstParaRef}
               className="text-white/90 font-bold leading-[1.1] max-w-4xl mx-auto"
@@ -574,14 +535,12 @@ export default function AboutSection({ onBack }: AboutSectionProps) {
               </span>
             </p>
 
-            {/* Short centered divider */}
             <div
               ref={visionDividerRef}
               className="h-[1px] bg-white/10 my-8 mx-auto rounded-full"
               style={{ width: 0 }}
             />
 
-            {/* Belief paragraph — smaller, dimmer */}
             <p
               ref={visionBeliefRef}
               className="text-white/50 font-light max-w-2xl mx-auto"
@@ -592,14 +551,11 @@ export default function AboutSection({ onBack }: AboutSectionProps) {
           </div>
         </section>
 
-        {/* 4. CTA Section - Kinetic */}
         <section
           ref={ctaRef}
           className="relative h-screen flex items-center justify-center overflow-hidden"
         >
-          {/* Content */}
           <div className="relative z-10 text-center px-6">
-            {/* Parallax watermark */}
             <div
               ref={watermarkRef}
               className="absolute inset-0 flex items-center justify-center pointer-events-none select-none"
@@ -613,7 +569,6 @@ export default function AboutSection({ onBack }: AboutSectionProps) {
               </span>
             </div>
 
-            {/* Headline with "Amazing" highlighted */}
             <h2
               className="text-white text-5xl md:text-6xl lg:text-7xl font-bold mb-8 leading-tight"
             >
@@ -623,7 +578,6 @@ export default function AboutSection({ onBack }: AboutSectionProps) {
               </span>
             </h2>
 
-            {/* Kinetic button */}
             <Link
               href="/contact"
               className="group inline-block px-12 py-5 text-xl font-bold text-black bg-gradient-to-r from-[#00e92c] to-[#00ffff] rounded-full hover:scale-105 transition-transform duration-300 animate-pulse-glow"
@@ -634,13 +588,11 @@ export default function AboutSection({ onBack }: AboutSectionProps) {
           </div>
         </section>
 
-        {/* Menu Overlay */}
         <MenuOverlay
           isOpen={menuOpen}
           onClose={() => setMenuOpen(false)}
         />
 
-        {/* Footer */}
         <Footer />
       </div>
     </SmoothScrolling>

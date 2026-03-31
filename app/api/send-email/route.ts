@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 
-// --- In-memory rate limiter (5 requests per hour per IP) ---
 const RATE_LIMIT_MAX = 5;
 const RATE_LIMIT_WINDOW_MS = 60 * 60 * 1000; // 1 hour
 const rateLimitMap = new Map<string, { count: number; resetAt: number }>();
@@ -19,7 +18,6 @@ function isRateLimited(ip: string): boolean {
   return entry.count > RATE_LIMIT_MAX;
 }
 
-// Clean up stale entries every 10 minutes to prevent memory leaks
 setInterval(() => {
   const now = Date.now();
   for (const [ip, entry] of rateLimitMap) {
@@ -27,7 +25,6 @@ setInterval(() => {
   }
 }, 10 * 60 * 1000);
 
-// --- Validation Schema ---
 const phoneRegex = /^[+]?(?=.*\d)[\d\s\-()]{7,20}$/;
 
 const contactSchema = z.object({
@@ -44,13 +41,8 @@ const contactSchema = z.object({
   message: z.string().min(10, 'Message must be at least 10 characters').max(1000, 'Message is too long'),
 });
 
-/**
- * POST handler — validates input and rate-limits.
- * Actual email sending is done client-side via @emailjs/browser.
- */
 export async function POST(request: NextRequest) {
   try {
-    // Rate limit check
     const ip = request.headers.get('x-forwarded-for')?.split(',')[0]?.trim()
       || request.headers.get('x-real-ip')
       || 'unknown';
@@ -62,13 +54,11 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Parse and validate request body
     const body = await request.json();
     contactSchema.parse(body);
 
     return NextResponse.json({ valid: true });
   } catch (error) {
-    // Handle validation errors
     if (error instanceof z.ZodError) {
       const fieldErrors: Record<string, string> = {};
       error.issues.forEach((err: z.ZodIssue) => {

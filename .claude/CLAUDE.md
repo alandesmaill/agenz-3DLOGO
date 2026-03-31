@@ -10,27 +10,6 @@ npm run dev              # Start dev server (http://localhost:3000)
 npm run build            # Production build
 npm run lint             # Run ESLint
 npm run analyze          # Bundle analysis (sets ANALYZE=true)
-
-# Jest unit tests (files in __tests__/)
-npm run test             # Run all Jest tests
-npm run test:watch       # Watch mode
-npm run test:coverage    # Coverage report
-
-# Playwright E2E/perf tests (files in tests/)
-npm run test:perf:headed # Run 3D scene perf test headed (accurate GPU rendering)
-npm run test:perf        # Run 3D scene perf test headless (lower FPS due to software rendering)
-npm run test:perf:report # View HTML report from last run
-
-# Run specific Playwright test suites
-npx playwright test tests/performance.spec.ts             # 3D scene FPS
-npx playwright test tests/text-animation.spec.ts          # Text animations
-npx playwright test tests/navigation-flow.spec.ts         # Full nav flow
-npx playwright test tests/navigation-sitemap.spec.ts      # Sitemap/route coverage
-npx playwright test tests/contact-form.spec.ts            # Contact form
-npx playwright test tests/services-performance.spec.ts    # Services
-npx playwright test tests/service-detail-performance.spec.ts  # Service detail pages
-npx playwright test tests/morph-navigation.spec.ts        # Works page morph transitions
-npx playwright test tests/quick-verify.spec.ts            # Smoke tests
 ```
 
 ## Architecture Overview
@@ -70,12 +49,12 @@ Two paths exist to reach sections:
 | `/works/[id]` | Individual project detail pages |
 | `/contact` | Contact form (EmailJS + reCAPTCHA) |
 | `/services` | Services overview (bento grid) |
-| `/services/advertising` | Service detail page |
-| `/services/video` | Service detail page |
-| `/services/design` | Service detail page |
-| `/services/strategy` | Service detail page |
+| `/services/[slug]` | Dynamic service detail page (DB-driven) |
+| `/services/camera-rental` | Camera rental service page |
 | `/privacy` | Privacy policy |
 | `/terms` | Terms of service |
+| `/admin` | Admin dashboard (protected) |
+| `/admin/*` | Admin CRUD pages for content management |
 
 ### Key Architectural Patterns
 
@@ -126,7 +105,7 @@ Simplified liquid glass design. EmailJS for sending (dual template: notify owner
 
 ### Service Detail Pages
 
-All follow the same pattern: Hero → Overview → Feature Grid → Case Study Carousel → FAQ Accordion → CTA. Content in `/lib/service-details-data.ts`.
+All follow the same pattern: Hero → Overview → Feature Grid → Case Study Carousel → FAQ Accordion → CTA. Content is DB-driven via Prisma, managed through the admin dashboard.
 
 ## Critical Rules
 
@@ -170,10 +149,6 @@ RECAPTCHA_SECRET_KEY=...
 ```
 
 Form works without these (client-side validation still runs, API calls fail gracefully).
-
-## Performance Testing
-
-Tests target 60fps (55fps minimum, 50fps critical). Thresholds in `tests/helpers/constants.ts`. Use `--headed` for accurate WebGL measurements — headless mode uses software rendering and reports lower FPS.
 
 ## Debugging Quick Reference
 

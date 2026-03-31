@@ -7,7 +7,6 @@ import { Instagram, Linkedin, ArrowRight } from 'lucide-react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
-// Register ScrollTrigger plugin
 if (typeof window !== 'undefined') {
   gsap.registerPlugin(ScrollTrigger);
 }
@@ -61,7 +60,6 @@ export default function Footer() {
     const scrollerOverride = scrollContainer ? { scroller: scrollContainer } : {};
 
     const ctx = gsap.context(() => {
-      // Main footer entrance animation
       gsap.fromTo(
         footerRef.current,
         { opacity: 0, y: 50 },
@@ -79,7 +77,6 @@ export default function Footer() {
         }
       );
 
-      // Staggered columns animation (left to right wave effect)
       const columns = footerRef.current?.querySelectorAll('.footer-column');
       if (columns && columns.length > 0) {
         gsap.fromTo(
@@ -101,7 +98,6 @@ export default function Footer() {
         );
       }
 
-      // Parallax effect on background
       const background = footerRef.current?.querySelector('.footer-background');
       if (background && footerRef.current) {
         gsap.to(background, {
@@ -126,20 +122,14 @@ export default function Footer() {
       ref={footerRef}
       className="relative bg-black border-t border-white/10 overflow-hidden"
     >
-      {/* Animated gradient mesh background */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="footer-background absolute inset-0 bg-gradient-to-br from-cyan-500/10 via-transparent to-green-500/10 blur-3xl animate-gradient" />
         <div className="absolute top-0 right-0 w-96 h-96 bg-green-500/10 rounded-full blur-3xl animate-float-slow" />
         <div className="absolute bottom-0 left-0 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl animate-float-slower" />
       </div>
 
-      {/* Glass overlay */}
       <div className="relative bg-white/8 backdrop-blur-2xl">
         <div className="max-w-7xl mx-auto px-6 lg:px-8 py-10 lg:py-16">
-          {/* Mobile: Logo centered at top, then 2-col links, then contact */}
-          {/* Desktop: 4-column grid */}
-
-          {/* Logo — always centered on mobile, left-aligned on desktop */}
           <div className="footer-column flex justify-center lg:hidden mb-8">
             <Link href="/">
               <Image
@@ -152,9 +142,7 @@ export default function Footer() {
             </Link>
           </div>
 
-          {/* Mobile: 2-column links grid */}
           <div className="grid grid-cols-2 gap-6 lg:hidden mb-8">
-            {/* Quick Links */}
             <div className="footer-column text-center">
               <h3 className="text-white font-semibold mb-3 text-xs uppercase tracking-wider">
                 Quick Links
@@ -173,7 +161,6 @@ export default function Footer() {
               </ul>
             </div>
 
-            {/* Services */}
             <div className="footer-column text-center">
               <h3 className="mb-3 text-xs uppercase tracking-wider">
                 <Link
@@ -198,7 +185,6 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Mobile: Contact + Social centered */}
           <div className="footer-column lg:hidden text-center mb-2">
             <h3 className="text-white font-semibold mb-3 text-xs uppercase tracking-wider">
               Get in Touch
@@ -236,9 +222,7 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Desktop: 4-column grid (hidden on mobile) */}
           <div className="hidden lg:grid grid-cols-4 gap-12">
-            {/* Column 1: Brand */}
             <div className="footer-column">
               <Link href="/">
                 <Image
@@ -251,7 +235,6 @@ export default function Footer() {
               </Link>
             </div>
 
-            {/* Column 2: Quick Links */}
             <div className="footer-column">
               <h3 className="text-white font-semibold mb-4 text-sm uppercase tracking-wider">
                 Quick Links
@@ -274,7 +257,6 @@ export default function Footer() {
               </ul>
             </div>
 
-            {/* Column 3: Services */}
             <div className="footer-column">
               <h3 className="mb-4 text-sm uppercase tracking-wider">
                 <Link
@@ -302,7 +284,6 @@ export default function Footer() {
               </ul>
             </div>
 
-            {/* Column 4: Get in Touch */}
             <div className="footer-column">
               <h3 className="text-white font-semibold mb-4 text-sm uppercase tracking-wider">
                 Get in Touch
@@ -347,14 +328,12 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Bottom Bar */}
           <div className="border-t border-white/10 pt-8 mt-12">
             <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-gray-500 text-xs">
               <p className="text-center md:text-left">
                 © {new Date().getFullYear()} Agenz. All rights reserved.
               </p>
 
-              {/* Legal Links */}
               <div className="flex gap-6">
                 {legalLinks.map((link) => (
                   <Link
