@@ -14,7 +14,7 @@ export default function AdminShell({ children }: { children: React.ReactNode }) 
 
   useEffect(() => {
     if (status === 'unauthenticated') {
-      router.push('/admin/login');
+      router.push('/zx9-hub/login');
     }
   }, [status, router]);
 
