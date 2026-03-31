@@ -3,7 +3,7 @@ import type { NextAuthConfig } from 'next-auth';
 // Edge-safe auth config — no Node.js / DB imports here.
 export const authConfig = {
   pages: {
-    signIn: '/admin/login',
+    signIn: '/zx9-hub/login',
   },
   session: {
     strategy: 'jwt' as const,
