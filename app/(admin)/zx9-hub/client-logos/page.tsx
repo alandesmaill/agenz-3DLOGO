@@ -156,7 +156,7 @@ export default function ClientLogosListPage() {
                 <p className="text-white/40 text-xs mb-3">Order: {logo.sortOrder}</p>
                 <div className="flex items-center gap-2">
                   <Link
-                    href={`/admin/client-logos/${logo.id}`}
+                    href={`/zx9-hub/client-logos/${logo.id}`}
                     className="flex-1 flex items-center justify-center gap-1.5 py-2 bg-white/5 border border-white/10 rounded-lg text-white/60 hover:text-[#00ffff] hover:border-[#00ffff]/30 transition-colors text-xs"
                   >
                     <Pencil size={12} />

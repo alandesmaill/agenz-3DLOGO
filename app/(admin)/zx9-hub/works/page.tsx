@@ -225,7 +225,7 @@ export default function WorksListPage() {
                   </button>
 
                   <Link
-                    href={`/admin/works/${project.id}`}
+                    href={`/zx9-hub/works/${project.id}`}
                     className="flex items-center gap-1.5 px-3 py-1.5 bg-[#00e92c]/10 border border-[#00e92c]/20 rounded-lg text-xs text-[#00e92c] hover:bg-[#00e92c]/20 transition-colors"
                   >
                     <Pencil size={12} />
