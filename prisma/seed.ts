@@ -6,8 +6,8 @@ import { PrismaPg } from '@prisma/adapter-pg';
 import { Pool } from 'pg';
 import bcrypt from 'bcryptjs';
 
-// Strip sslmode from connection string so Pool's ssl config takes full effect
-const connectionString = (process.env.DATABASE_URL || '').replace(/[?&]sslmode=[^&]*/g, '').replace(/[?&]pgbouncer=[^&]*/g, '');
+// Strip all query params — ssl is configured directly on the Pool below
+const connectionString = (process.env.DATABASE_URL || '').split('?')[0];
 const pool = new Pool({
   connectionString,
   ssl: { rejectUnauthorized: false },

@@ -5,8 +5,8 @@ import { Pool } from 'pg';
 function createPrismaClient() {
   const raw = process.env.DATABASE_URL;
   if (!raw) throw new Error('DATABASE_URL is not set');
-  // Strip sslmode/pgbouncer params so the Pool's ssl config takes full effect
-  const connectionString = raw.replace(/[?&]sslmode=[^&]*/g, '').replace(/[?&]pgbouncer=[^&]*/g, '');
+  // Strip all query params — ssl is configured directly on the Pool below
+  const connectionString = raw.split('?')[0];
   const pool = new Pool({ connectionString, ssl: { rejectUnauthorized: false } });
   const adapter = new PrismaPg(pool as any);
   return new PrismaClient({ adapter });
