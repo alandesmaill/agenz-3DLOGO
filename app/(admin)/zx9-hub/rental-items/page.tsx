@@ -178,7 +178,7 @@ export default function RentalItemsListPage() {
 
                     <div className="flex items-center gap-2 shrink-0">
                       <Link
-                        href={`/admin/rental-items/${item.id}`}
+                        href={`/zx9-hub/rental-items/${item.id}`}
                         className="p-2 bg-white/5 border border-white/10 rounded-lg text-white/60 hover:text-[#00ffff] hover:border-[#00ffff]/30 transition-colors"
                       >
                         <Pencil size={13} />

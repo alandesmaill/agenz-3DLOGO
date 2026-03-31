@@ -90,7 +90,7 @@ export default function NewServicePage() {
         throw new Error(typeof data.error === 'string' ? data.error : 'Failed to create service');
       }
       const service = await res.json();
-      router.push(`/admin/services/${service.id}`);
+      router.push(`/zx9-hub/services/${service.id}`);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Something went wrong');
     } finally {

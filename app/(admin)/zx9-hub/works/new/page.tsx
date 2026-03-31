@@ -146,7 +146,7 @@ export default function WorksNewPage() {
       }
 
       const project = await res.json();
-      router.push(`/admin/works/${project.id}`);
+      router.push(`/zx9-hub/works/${project.id}`);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Something went wrong');
     } finally {

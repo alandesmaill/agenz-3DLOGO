@@ -155,7 +155,7 @@ export default function CameraRentalListPage() {
 
               <div className="flex items-center gap-2 shrink-0">
                 <Link
-                  href={`/admin/camera-rental/${pkg.id}`}
+                  href={`/zx9-hub/camera-rental/${pkg.id}`}
                   className="p-2.5 bg-white/5 border border-white/10 rounded-xl text-white/60 hover:text-[#00ffff] hover:border-[#00ffff]/30 transition-colors"
                 >
                   <Pencil size={14} />
