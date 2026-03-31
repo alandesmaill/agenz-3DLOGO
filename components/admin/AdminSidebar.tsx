@@ -17,14 +17,14 @@ import {
 } from 'lucide-react';
 
 const navItems = [
-  { href: '/admin', label: 'Dashboard', icon: LayoutDashboard },
-  { href: '/admin/services', label: 'Services', icon: Layers },
-  { href: '/admin/camera-rental', label: 'Camera Rental', icon: Camera },
-  { href: '/admin/camera-rental-hero', label: 'Camera Hero', icon: PanelTop },
-  { href: '/admin/rental-items', label: 'Rental Items', icon: Package },
-  { href: '/admin/client-logos', label: 'Client Logos', icon: ImageIcon },
-  { href: '/admin/works', label: 'Works', icon: FolderOpen },
-  { href: '/admin/settings', label: 'Settings', icon: Settings },
+  { href: '/zx9-hub', label: 'Dashboard', icon: LayoutDashboard },
+  { href: '/zx9-hub/services', label: 'Services', icon: Layers },
+  { href: '/zx9-hub/camera-rental', label: 'Camera Rental', icon: Camera },
+  { href: '/zx9-hub/camera-rental-hero', label: 'Camera Hero', icon: PanelTop },
+  { href: '/zx9-hub/rental-items', label: 'Rental Items', icon: Package },
+  { href: '/zx9-hub/client-logos', label: 'Client Logos', icon: ImageIcon },
+  { href: '/zx9-hub/works', label: 'Works', icon: FolderOpen },
+  { href: '/zx9-hub/settings', label: 'Settings', icon: Settings },
 ];
 
 interface AdminSidebarProps {
@@ -36,7 +36,7 @@ export default function AdminSidebar({ open, onClose }: AdminSidebarProps) {
   const pathname = usePathname();
 
   function isActive(href: string) {
-    if (href === '/admin') return pathname === '/admin';
+    if (href === '/zx9-hub') return pathname === '/zx9-hub';
     return pathname.startsWith(href);
   }
 
@@ -55,7 +55,7 @@ export default function AdminSidebar({ open, onClose }: AdminSidebarProps) {
         } md:translate-x-0`}
       >
         <div className="p-5 border-b border-white/10 flex items-center justify-between">
-          <Link href="/admin" className="block" onClick={onClose}>
+          <Link href="/zx9-hub" className="block" onClick={onClose}>
             <img
               src="/agenz creative hub.svg"
               alt="Agenz Creative Hub"
@@ -95,7 +95,7 @@ export default function AdminSidebar({ open, onClose }: AdminSidebarProps) {
 
         <div className="p-4 border-t border-white/10">
           <button
-            onClick={() => signOut({ callbackUrl: '/admin/login' })}
+            onClick={() => signOut({ callbackUrl: '/zx9-hub/login' })}
             className="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-white/60 hover:text-red-400 hover:bg-red-400/10 transition-all w-full"
           >
             <LogOut size={18} />

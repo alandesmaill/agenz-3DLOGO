@@ -7,9 +7,9 @@ const { auth } = NextAuth(authConfig);
 export default auth((req) => {
   const { pathname } = req.nextUrl;
 
-  if (pathname === '/admin/login') {
+  if (pathname === '/zx9-hub/login') {
     if (req.auth) {
-      return NextResponse.redirect(new URL('/admin', req.url));
+      return NextResponse.redirect(new URL('/zx9-hub', req.url));
     }
     return NextResponse.next();
   }
@@ -18,12 +18,12 @@ export default auth((req) => {
     if (pathname.startsWith('/api/admin')) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
-    return NextResponse.redirect(new URL('/admin/login', req.url));
+    return NextResponse.redirect(new URL('/zx9-hub/login', req.url));
   }
 
   return NextResponse.next();
 });
 
 export const config = {
-  matcher: ['/admin/:path*', '/api/admin/:path*'],
+  matcher: ['/zx9-hub/:path*', '/api/admin/:path*'],
 };
