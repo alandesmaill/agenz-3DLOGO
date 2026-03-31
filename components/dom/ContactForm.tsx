@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
-import emailjs from '@emailjs/browser';
+
 import FormField from './FormField';
 import FormTextarea from './FormTextarea';
 import gsap from 'gsap';
@@ -339,36 +339,6 @@ export default function ContactForm({ onSuccess }: ContactFormProps) {
           setErrors({ general: result.error || 'Failed to send message' });
         }
         return;
-      }
-
-      const serviceId = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID!;
-      const publicKey = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY!;
-
-      const emailParams = {
-        from_name: formData.name,
-        from_email: formData.email,
-        phone: formData.phone || 'Not provided',
-        company: formData.company || 'Not provided',
-        services: formData.services.length > 0 ? formData.services.join(', ') : 'Not specified',
-        message: formData.message,
-      };
-
-      await emailjs.send(
-        serviceId,
-        process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID!,
-        emailParams,
-        publicKey
-      );
-
-      try {
-        await emailjs.send(
-          serviceId,
-          process.env.NEXT_PUBLIC_EMAILJS_AUTOREPLY_TEMPLATE_ID!,
-          { from_name: formData.name, from_email: formData.email, to_email: formData.email },
-          publicKey
-        );
-      } catch {
-        // Auto-reply failure doesn't block success
       }
 
       setTimeout(() => {
