@@ -31,6 +31,6 @@ Thumbs.db
 .vscode/
 .idea/
 
-# Playwright
-playwright-report/
-test-results/
+/lib/generated/prisma
+.vercel
+.env*.local

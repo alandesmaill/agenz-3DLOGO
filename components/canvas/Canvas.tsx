@@ -10,7 +10,6 @@ interface CanvasProps {
 
 export default function Canvas({ children, className = '' }: CanvasProps) {
   // NOTE: Camera settings below are overridden by Scene.tsx PerspectiveCamera with makeDefault prop
-  // This configuration serves as fallback only. Scene.tsx controls the active camera.
   const [cameraSettings, setCameraSettings] = useState({
     position: [0, 0, 5] as [number, number, number],
     fov: 75,
@@ -21,13 +20,10 @@ export default function Canvas({ children, className = '' }: CanvasProps) {
       const width = typeof window !== 'undefined' ? window.innerWidth : 1920;
 
       if (width < 768) {
-        // Mobile - pull back and wider FOV
         setCameraSettings({ position: [0, 0, 6], fov: 85 });
       } else if (width < 1024) {
-        // Tablet
         setCameraSettings({ position: [0, 0, 5.5], fov: 80 });
       } else {
-        // Desktop
         setCameraSettings({ position: [0, 0, 5], fov: 75 });
       }
     };

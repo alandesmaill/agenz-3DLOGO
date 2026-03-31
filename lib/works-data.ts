@@ -1,7 +1,3 @@
-/**
- * Portfolio/Works Data
- */
-
 export type WorkCategory = 'brand-identity' | 'digital-campaigns' | 'video-production' | 'event-branding';
 
 export interface PortfolioItem {
@@ -63,14 +59,7 @@ export interface PortfolioItem {
   relatedProjects: string[];
 }
 
-// ============================================
-// PORTFOLIO DATA
-// ============================================
-
 export const portfolioData: Record<string, PortfolioItem> = {
-  // ========================================
-  // Sulaymaniyah City Anniversary 2025
-  // ========================================
   'sulaymaniyah-anniversary-2025': {
     id: 'sulaymaniyah-anniversary-2025',
     category: 'event-branding',
@@ -153,9 +142,6 @@ export const portfolioData: Record<string, PortfolioItem> = {
     relatedProjects: ['galawezh-festival', 'bla-awards'],
   },
 
-  // ========================================
-  // Galawezh Festival
-  // ========================================
   'galawezh-festival': {
     id: 'galawezh-festival',
     category: 'event-branding',
@@ -222,9 +208,6 @@ export const portfolioData: Record<string, PortfolioItem> = {
     relatedProjects: ['sulaymaniyah-anniversary-2025', 'bla-awards'],
   },
 
-  // ========================================
-  // BLA Awards
-  // ========================================
   'bla-awards': {
     id: 'bla-awards',
     category: 'event-branding',
@@ -289,10 +272,6 @@ export const portfolioData: Record<string, PortfolioItem> = {
     relatedProjects: [],
   },
 };
-
-// ============================================
-// HELPER FUNCTIONS
-// ============================================
 
 export function getAllPortfolio(): PortfolioItem[] {
   return Object.values(portfolioData);

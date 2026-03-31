@@ -26,22 +26,18 @@ const ServiceCard = forwardRef<HTMLDivElement, ServiceCardProps>(
       <div
         ref={ref}
         className={cn(
-          // Base styling
           'relative overflow-hidden rounded-3xl',
           'backdrop-blur-xl bg-white/8 border border-white/14',
           'p-8 md:p-10 lg:p-12',
           'group cursor-pointer',
-          // Fixed aspect ratio - perfect squares
           'aspect-square',
           'flex flex-col',
-          // Subtle hover effects only
           'hover:shadow-2xl hover:scale-[1.02]',
           'transition-all duration-500',
           // GPU acceleration
           'will-change-transform transform-gpu'
         )}
       >
-        {/* Icon - Top Section */}
         <div className="mb-6">
           <div
             className="w-16 h-16 md:w-20 md:h-20 lg:w-24 lg:h-24 rounded-2xl
@@ -56,7 +52,6 @@ const ServiceCard = forwardRef<HTMLDivElement, ServiceCardProps>(
           </div>
         </div>
 
-        {/* Content - Middle Section (grows to fill space) */}
         <div className="flex-grow mb-6">
           <h3 className="text-2xl md:text-3xl lg:text-4xl font-['Gibson'] font-bold
                          mb-4 text-white tracking-tight">
@@ -68,7 +63,6 @@ const ServiceCard = forwardRef<HTMLDivElement, ServiceCardProps>(
           </p>
         </div>
 
-        {/* CTA - Bottom Section */}
         <div className="mt-auto">
           <Link
             href={ctaLink}

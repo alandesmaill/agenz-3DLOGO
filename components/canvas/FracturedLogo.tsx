@@ -21,8 +21,6 @@ interface FracturedLogoProps {
   onDecomposeComplete?: () => void;
 }
 
-// Removed custom GLTFResult type - using GLTF from three-stdlib directly
-
 interface PieceData {
   mesh: THREE.Mesh;
   originalPosition: THREE.Vector3;
@@ -49,8 +47,6 @@ interface DebrisOrbit {
   rotSpeedY: number;        // self-tumble speed around Y axis
 }
 
-// Navigation sections and their target positions
-// Compact U-shaped arrangement - tight horizontal, clear vertical spacing
 const NAV_SECTIONS = [
   { section: 'about', label: 'ABOUT', position: new THREE.Vector3(-0.6, 1.5, 1.0) },      // Top-left
   { section: 'works', label: 'WORKS', position: new THREE.Vector3(0.6, 1.5, 1.0) },       // Top-right
@@ -75,24 +71,19 @@ const FracturedLogo = forwardRef<FracturedLogoHandle, FracturedLogoProps>(functi
   const [isDecomposed, setIsDecomposed] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
 
-  // Access camera and renderer for zoom animation
   const { camera, gl } = useThree();
 
-  // OPTIMIZATION: Track GSAP timelines for cleanup
   const timelinesRef = useRef<gsap.core.Timeline[]>([]);
   const tweensRef = useRef<gsap.core.Tween[]>([]);
-  // Track hover tweens per piece to prevent animation conflicts
   const hoverTweensRef = useRef<Map<string, gsap.core.Tween[]>>(new Map());
   const debrisOrbitsRef = useRef<DebrisOrbit[]>([]);
   const hoveredNavPiecesRef = useRef<Set<string>>(new Set());
 
-  // OPTIMIZATION: Detect reduced motion preference for accessibility
   const prefersReducedMotion = useMemo(() => {
     if (typeof window === 'undefined') return false;
     return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   }, []);
 
-  // OPTIMIZATION: Larger collision areas for mobile devices
   const isMobile = useMemo(() => {
     if (typeof window === 'undefined') return false;
     return window.innerWidth < 768;
@@ -100,18 +91,14 @@ const FracturedLogo = forwardRef<FracturedLogoHandle, FracturedLogoProps>(functi
 
   const collisionScale = isMobile ? 1.5 : 1.0;
 
-  // Load the GLTF/GLB model
   const { scene } = useGLTF(path);
 
-  // Initialize pieces on mount
   useEffect(() => {
     if (!groupRef.current) return;
 
-    // Clone the scene to avoid mutating the original
     const clonedScene = scene.clone();
     groupRef.current.add(clonedScene);
 
-    // Find all meshes and categorize them
     const allMeshes: THREE.Mesh[] = [];
     clonedScene.traverse((child) => {
       if (child instanceof THREE.Mesh) {
@@ -119,7 +106,6 @@ const FracturedLogo = forwardRef<FracturedLogoHandle, FracturedLogoProps>(functi
       }
     });
 
-    // OPTIMIZATION: Calculate bounding box volume efficiently
     interface MeshWithVolume {
       mesh: THREE.Mesh;
       volume: number;
@@ -128,7 +114,6 @@ const FracturedLogo = forwardRef<FracturedLogoHandle, FracturedLogoProps>(functi
     }
 
     const meshesWithVolume: MeshWithVolume[] = allMeshes.map((mesh, index) => {
-      // Use geometry bounding box if available (faster than setFromObject)
       const geometry = mesh.geometry;
       if (!geometry.boundingBox) {
         geometry.computeBoundingBox();
@@ -138,7 +123,6 @@ const FracturedLogo = forwardRef<FracturedLogoHandle, FracturedLogoProps>(functi
       const size = new THREE.Vector3();
       box.getSize(size);
 
-      // Account for mesh scale
       const scaleVolume = mesh.scale.x * mesh.scale.y * mesh.scale.z;
       const volume = size.x * size.y * size.z * scaleVolume;
 
@@ -150,18 +134,15 @@ const FracturedLogo = forwardRef<FracturedLogoHandle, FracturedLogoProps>(functi
       };
     });
 
-    // Sort by volume (largest first) and take top 4
     meshesWithVolume.sort((a, b) => b.volume - a.volume);
     const largestFour = meshesWithVolume.slice(0, 4);
 
-    // Separate navigation pieces from debris
     const navPieces: NavigationPiece[] = [];
     const debris: PieceData[] = [];
 
     allMeshes.forEach((mesh, index) => {
       const meshName = mesh.name;
 
-      // Store original transforms
       const pieceData: PieceData = {
         mesh,
         originalPosition: mesh.position.clone(),
@@ -171,24 +152,18 @@ const FracturedLogo = forwardRef<FracturedLogoHandle, FracturedLogoProps>(functi
         index,
       };
 
-      // Check if this is one of the 4 largest pieces
       const largestIndex = largestFour.findIndex(item => item.mesh === mesh);
 
-      // Enhance materials for better appearance on white background
       if (mesh.material instanceof THREE.MeshStandardMaterial) {
-        // Clone material to avoid affecting other instances
         const material = mesh.material.clone();
         mesh.material = material;
 
-        // ALL PIECES — same material so logo reads as one solid object before fracture
-        // No color or emissive overrides; GLB albedo renders as-is
         material.metalness = 0.35;
         material.roughness = 0.3;
         material.transparent = true;
       }
 
       if (largestIndex !== -1) {
-        // This is a navigation piece - assign section based on largest order
         const config = NAV_SECTIONS[largestIndex];
         navPieces.push({
           ...pieceData,
@@ -197,7 +172,6 @@ const FracturedLogo = forwardRef<FracturedLogoHandle, FracturedLogoProps>(functi
           section: config.section,
         });
       } else {
-        // This is a debris piece
         debris.push(pieceData);
       }
     });
@@ -205,7 +179,6 @@ const FracturedLogo = forwardRef<FracturedLogoHandle, FracturedLogoProps>(functi
     setNavigationPieces(navPieces);
     setDebrisPieces(debris);
 
-    // Cinematic camera introduction - zoom from far away
     const originalCameraPos = camera.position.clone();
     camera.position.set(0, 2, 15); // Start further back and slightly above
 
@@ -217,12 +190,9 @@ const FracturedLogo = forwardRef<FracturedLogoHandle, FracturedLogoProps>(functi
       ease: 'power2.inOut',
     });
 
-    // Classic landing animation - fade in and scale up
     if (groupRef.current) {
-      // Start with logo at smaller scale
       groupRef.current.scale.set(0.8, 0.8, 0.8);
 
-      // Make all pieces invisible initially
       [...navPieces, ...debris].forEach((piece) => {
         if (piece.mesh.material instanceof THREE.MeshStandardMaterial) {
           piece.mesh.material.opacity = 0;
@@ -230,9 +200,7 @@ const FracturedLogo = forwardRef<FracturedLogoHandle, FracturedLogoProps>(functi
         }
       });
 
-      // Wait a moment for camera to start moving, then fade in the logo
       setTimeout(() => {
-        // Fade in the logo meshes with subtle stagger
         [...navPieces, ...debris].forEach((piece, index) => {
           if (piece.mesh.material instanceof THREE.MeshStandardMaterial) {
             const fadeTween = gsap.to(piece.mesh.material, {
@@ -245,7 +213,6 @@ const FracturedLogo = forwardRef<FracturedLogoHandle, FracturedLogoProps>(functi
           }
         });
 
-        // Smooth scale up to final size
         const scaleTween = gsap.to(groupRef.current!.scale, {
           x: 1.5,
           y: 1.5,
@@ -259,40 +226,32 @@ const FracturedLogo = forwardRef<FracturedLogoHandle, FracturedLogoProps>(functi
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [scene]);
 
-  // OPTIMIZATION: Frame-rate independent animation with delta
   useFrame((state, delta) => {
     if (groupRef.current && !isDecomposed && !isAnimating) {
       if (!prefersReducedMotion) {
         const targetRotX = -state.mouse.y * 0.3;  // tilt up/down (inverted Y)
         const targetRotY =  state.mouse.x * 0.5;  // rotate left/right
-        // Smooth lerp toward target (frame-rate independent)
         groupRef.current.rotation.x += (targetRotX - groupRef.current.rotation.x) * Math.min(delta * 3, 1);
         groupRef.current.rotation.y += (targetRotY - groupRef.current.rotation.y) * Math.min(delta * 3, 1);
       }
     }
 
-    // Floating animation for navigation pieces (only when decomposed)
-    // Skip floating animation if reduced motion is preferred
     if (isDecomposed && !isAnimating && !prefersReducedMotion) {
       const time = state.clock.getElapsedTime();
 
       navigationPieces.forEach((piece, index) => {
-        // Gentle float
         const floatOffset = index * 0.5;
         const floatY = Math.sin(time * 0.8 + floatOffset) * 0.1;
         piece.mesh.position.y = piece.targetPosition.y + floatY;
         piece.mesh.rotation.y += delta * 0.5;
       });
 
-      // Orbital motion for debris pieces
       debrisPieces.forEach((piece, i) => {
         const orbit = debrisOrbitsRef.current[i];
         if (!orbit) return;
 
-        // Advance orbit angle
         orbit.orbitAngle += delta * orbit.orbitSpeed;
 
-        // Compute absolute orbital position (2 trig calls per piece)
         const cosA = Math.cos(orbit.orbitAngle);
         const sinA = Math.sin(orbit.orbitAngle);
         piece.mesh.position.set(
@@ -301,30 +260,24 @@ const FracturedLogo = forwardRef<FracturedLogoHandle, FracturedLogoProps>(functi
           orbit.orbitCenter.z + orbit.orbitU.z * cosA * orbit.orbitRadius + orbit.orbitV.z * sinA * orbit.orbitRadius,
         );
 
-        // Self-tumble rotation
         piece.mesh.rotation.x += delta * orbit.rotSpeedX;
         piece.mesh.rotation.y += delta * orbit.rotSpeedY;
       });
     }
   });
 
-  // Handle decomposition animation - ALL AT ONCE
   const handleDecompose = () => {
     if (isAnimating || isDecomposed) return;
 
     setIsAnimating(true);
     setIsDecomposed(true);
 
-    // Notify parent that decomposition has started
     if (onDecompose) {
       onDecompose();
     }
 
-    // OPTIMIZATION: Respect reduced motion preference
     const animDuration = prefersReducedMotion ? 0.5 : 4.0;
 
-    // Animate navigation pieces to FRONT (positive z)
-    // NO DELAY - all execute at once
     navigationPieces.forEach((piece) => {
       const posTween = gsap.to(piece.mesh.position, {
         x: piece.targetPosition.x,
@@ -336,7 +289,6 @@ const FracturedLogo = forwardRef<FracturedLogoHandle, FracturedLogoProps>(functi
       });
       tweensRef.current.push(posTween);
 
-      // Keep original scale (no scaling up)
       const scaleTween = gsap.to(piece.mesh.scale, {
         x: piece.originalScale.x * 1.0,
         y: piece.originalScale.y * 1.0,
@@ -348,18 +300,15 @@ const FracturedLogo = forwardRef<FracturedLogoHandle, FracturedLogoProps>(functi
       tweensRef.current.push(scaleTween);
     });
 
-    // Animate debris pieces to orbital start positions
     debrisOrbitsRef.current = []; // reset
 
     debrisPieces.forEach((piece, i) => {
-      // --- Compute orbital parameters ---
       const radius = 2.0 + Math.random() * 2.5;          // 2.0–4.5 units
       const speed = (0.015 + Math.random() * 0.04) * (Math.random() < 0.5 ? 1 : -1); // ~5x slower: ±0.015–0.055 rad/s
       const startAngle = Math.random() * Math.PI * 2;
       const inclination = Math.random() * Math.PI;         // 0–180°
       const lan = Math.random() * Math.PI * 2;             // longitude of ascending node
 
-      // Orbital plane basis vectors (perpendicular pair)
       const orbitU = new THREE.Vector3(
         Math.cos(lan),
         0,
@@ -371,14 +320,12 @@ const FracturedLogo = forwardRef<FracturedLogoHandle, FracturedLogoProps>(functi
         Math.cos(lan) * Math.cos(inclination)
       );
 
-      // Orbit center is always behind nav pieces (nav pieces at Z=+1.0)
       const orbitCenter = new THREE.Vector3(
         (Math.random() - 0.5) * 1.5,
         (Math.random() - 0.5) * 1.0,
         -2.5 + (Math.random() - 0.5) * 1.0   // Z range: -2.0 to -3.0
       );
 
-      // Store orbit params (indexed to match debrisPieces array)
       debrisOrbitsRef.current[i] = {
         orbitAngle: startAngle,
         orbitSpeed: speed,
@@ -390,14 +337,12 @@ const FracturedLogo = forwardRef<FracturedLogoHandle, FracturedLogoProps>(functi
         rotSpeedY: (Math.random() - 0.5) * 0.10,
       };
 
-      // Compute target position = orbital starting position
       const cosA = Math.cos(startAngle);
       const sinA = Math.sin(startAngle);
       const targetX = orbitCenter.x + orbitU.x * cosA * radius + orbitV.x * sinA * radius;
       const targetY = orbitCenter.y + orbitU.y * cosA * radius + orbitV.y * sinA * radius;
       const targetZ = orbitCenter.z + orbitU.z * cosA * radius + orbitV.z * sinA * radius;
 
-      // GSAP animate to orbital start position
       const posTween = gsap.to(piece.mesh.position, {
         x: targetX,
         y: targetY,
@@ -408,7 +353,6 @@ const FracturedLogo = forwardRef<FracturedLogoHandle, FracturedLogoProps>(functi
       });
       tweensRef.current.push(posTween);
 
-      // Random rotation during explosion
       const rotTween = gsap.to(piece.mesh.rotation, {
         x: piece.originalRotation.x + (Math.random() - 0.5) * Math.PI * 2,
         y: piece.originalRotation.y + (Math.random() - 0.5) * Math.PI * 2,
@@ -419,7 +363,6 @@ const FracturedLogo = forwardRef<FracturedLogoHandle, FracturedLogoProps>(functi
       });
       tweensRef.current.push(rotTween);
 
-      // Fade debris to semi-transparent
       if (piece.mesh.material instanceof THREE.MeshStandardMaterial) {
         const opacityTween = gsap.to(piece.mesh.material, {
           opacity: 0.25 + Math.random() * 0.2,  // 0.25–0.45
@@ -430,7 +373,6 @@ const FracturedLogo = forwardRef<FracturedLogoHandle, FracturedLogoProps>(functi
       }
     });
 
-    // Ramp up emissive glow on all 4 nav pieces once explosion starts
     navigationPieces.forEach((piece) => {
       if (piece.mesh.material instanceof THREE.MeshStandardMaterial) {
         piece.mesh.material.emissive.set(0x00ffff);  // subtle cyan identity, not piece color
@@ -444,7 +386,6 @@ const FracturedLogo = forwardRef<FracturedLogoHandle, FracturedLogoProps>(functi
       }
     });
 
-    // Animation complete after duration (no stagger needed)
     const totalDelay = prefersReducedMotion ? 500 : 4000;
     setTimeout(() => {
       setIsAnimating(false);
@@ -454,21 +395,15 @@ const FracturedLogo = forwardRef<FracturedLogoHandle, FracturedLogoProps>(functi
     }, totalDelay);
   };
 
-  // Global hover handlers
   const handlePointerEnter = () => {
     if (!isAnimating) {
       handleDecompose();
     }
   };
 
-  // Removed: handlePointerLeave to prevent auto-reassembly
-  // The logo now decomposes once and stays decomposed
-
-  // Navigation piece hover handlers
   const handleNavPieceHover = (piece: NavigationPiece, isHovering: boolean) => {
     if (!isDecomposed || isAnimating) return;
 
-    // Kill previous hover tweens for this piece to prevent conflicts
     const prevTweens = hoverTweensRef.current.get(piece.name) || [];
     prevTweens.forEach(t => t.kill());
     const newTweens: gsap.core.Tween[] = [];
@@ -476,7 +411,6 @@ const FracturedLogo = forwardRef<FracturedLogoHandle, FracturedLogoProps>(functi
     if (isHovering) {
       hoveredNavPiecesRef.current.add(piece.name);
 
-      // Scale up on hover (from 1.0 to 1.2)
       const scaleTween = gsap.to(piece.mesh.scale, {
         x: piece.originalScale.x * 1.2,
         y: piece.originalScale.y * 1.2,
@@ -487,7 +421,6 @@ const FracturedLogo = forwardRef<FracturedLogoHandle, FracturedLogoProps>(functi
       newTweens.push(scaleTween);
       tweensRef.current.push(scaleTween);
 
-      // Add glow effect with bloom
       if (piece.mesh.material instanceof THREE.MeshStandardMaterial) {
         const glowColor = new THREE.Color(0x00ffff); // Cyan glow
 
@@ -510,14 +443,11 @@ const FracturedLogo = forwardRef<FracturedLogoHandle, FracturedLogoProps>(functi
         tweensRef.current.push(intensityTween);
       }
 
-      // Get world position and convert to screen coordinates
       const worldPos = new THREE.Vector3();
       piece.mesh.getWorldPosition(worldPos);
 
-      // Project 3D world position to 2D screen position using proper camera projection
       const screenPos = worldPos.clone().project(camera);
 
-      // Convert normalized device coordinates (-1 to 1) to screen pixels
       const canvas = gl.domElement;
       const rect = canvas.getBoundingClientRect();
       const screenX = rect.left + (screenPos.x + 1) * rect.width / 2;
@@ -529,7 +459,6 @@ const FracturedLogo = forwardRef<FracturedLogoHandle, FracturedLogoProps>(functi
     } else {
       hoveredNavPiecesRef.current.delete(piece.name);
 
-      // Scale back to decomposed size (1.0)
       const scaleTween = gsap.to(piece.mesh.scale, {
         x: piece.originalScale.x * 1.0,
         y: piece.originalScale.y * 1.0,
@@ -540,7 +469,6 @@ const FracturedLogo = forwardRef<FracturedLogoHandle, FracturedLogoProps>(functi
       newTweens.push(scaleTween);
       tweensRef.current.push(scaleTween);
 
-      // Return emissive to subtle cyan base (not piece color, not blown-out)
       if (piece.mesh.material instanceof THREE.MeshStandardMaterial) {
         const mat = piece.mesh.material;
         const cyanColor = new THREE.Color(0x00ffff);
@@ -568,19 +496,15 @@ const FracturedLogo = forwardRef<FracturedLogoHandle, FracturedLogoProps>(functi
       }
     }
 
-    // Store new tweens for this piece
     hoverTweensRef.current.set(piece.name, newTweens);
   };
 
-  // Navigation piece click handler with camera zoom animation
   const handleNavPieceClick = (piece: NavigationPiece) => {
-    // Create camera dive animation timeline (track for cleanup)
     const timeline = gsap.timeline({
       onStart: () => {
         setIsAnimating(true);
       },
       onComplete: () => {
-        // Notify parent component that zoom is complete
         if (onNavigationClick) {
           onNavigationClick(piece.section);
         }
@@ -588,12 +512,10 @@ const FracturedLogo = forwardRef<FracturedLogoHandle, FracturedLogoProps>(functi
     });
     timelinesRef.current.push(timeline);
 
-    // Get world position of the piece
     const worldPos = new THREE.Vector3();
     piece.mesh.getWorldPosition(worldPos);
 
     timeline
-      // 1. Zoom camera INTO the piece
       .to(camera.position, {
         x: worldPos.x,
         y: worldPos.y,
@@ -601,7 +523,6 @@ const FracturedLogo = forwardRef<FracturedLogoHandle, FracturedLogoProps>(functi
         duration: 1.5,
         ease: 'power2.inOut',
       })
-      // 2. Scale piece up to fill view (simultaneously with camera zoom)
       .to(
         piece.mesh.scale,
         {
@@ -613,7 +534,6 @@ const FracturedLogo = forwardRef<FracturedLogoHandle, FracturedLogoProps>(functi
         },
         '-=1.5'
       )
-      // 3. Fade to white (using DOM element opacity)
       .to(
         gl.domElement,
         {
@@ -624,7 +544,6 @@ const FracturedLogo = forwardRef<FracturedLogoHandle, FracturedLogoProps>(functi
       );
   };
 
-  // Expose imperative handle for DOM-driven navigation
   useImperativeHandle(ref, () => ({
     navigateToSection: (section: string) => {
       if (isAnimating) return;
@@ -635,14 +554,11 @@ const FracturedLogo = forwardRef<FracturedLogoHandle, FracturedLogoProps>(functi
     },
   }));
 
-  // OPTIMIZATION: Cleanup GSAP animations on unmount to prevent memory leaks
   useEffect(() => {
     return () => {
-      // Kill all tracked timelines
       timelinesRef.current.forEach((tl) => tl.kill());
       timelinesRef.current = [];
 
-      // Kill all tracked tweens
       tweensRef.current.forEach((tween) => tween.kill());
       tweensRef.current = [];
     };
@@ -650,7 +566,6 @@ const FracturedLogo = forwardRef<FracturedLogoHandle, FracturedLogoProps>(functi
 
   return (
     <group ref={groupRef} position={position} scale={scale}>
-      {/* Global collision mesh for hover detection (only visible when assembled) */}
       {!isDecomposed && (
         <mesh
           ref={collisionRef}
@@ -663,8 +578,6 @@ const FracturedLogo = forwardRef<FracturedLogoHandle, FracturedLogoProps>(functi
         </mesh>
       )}
 
-      {/* Collision meshes for navigation pieces (only when decomposed) */}
-      {/* OPTIMIZATION: Larger hit areas for mobile devices */}
       {isDecomposed &&
         navigationPieces.map((piece) => (
           <mesh
@@ -685,5 +598,4 @@ const FracturedLogo = forwardRef<FracturedLogoHandle, FracturedLogoProps>(functi
 
 export default FracturedLogo;
 
-// Preload the model
 useGLTF.preload('/models/3d-logo.glb');

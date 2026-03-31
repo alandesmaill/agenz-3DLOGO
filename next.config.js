@@ -20,9 +20,9 @@ const securityHeaders = [
       "default-src 'self'",
       `script-src 'self' 'unsafe-inline'${process.env.NODE_ENV === 'development' ? " 'unsafe-eval'" : ''} https://www.google.com https://www.gstatic.com https://va.vercel-scripts.com`,
       "style-src 'self' 'unsafe-inline'",
-      "img-src 'self' data: blob:",
+      "img-src 'self' data: blob: https://*.public.blob.vercel-storage.com https://*.supabase.co",
       "font-src 'self' data:",
-      "connect-src 'self' blob: https://api.emailjs.com https://www.google.com https://vitals.vercel-insights.com https://va.vercel-scripts.com",
+      "connect-src 'self' blob: https://api.emailjs.com https://www.google.com https://vitals.vercel-insights.com https://va.vercel-scripts.com https://*.supabase.co",
       "frame-src https://www.google.com",
       "worker-src 'self' blob:",
       "object-src 'none'",
@@ -74,6 +74,18 @@ const nextConfig = {
     }
 
     return config;
+  },
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: '**.supabase.co',
+      },
+      {
+        protocol: 'https',
+        hostname: '**.public.blob.vercel-storage.com',
+      },
+    ],
   },
   reactStrictMode: true,
 };

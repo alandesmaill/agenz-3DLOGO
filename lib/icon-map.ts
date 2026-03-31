@@ -1,0 +1,107 @@
+import {
+  Camera,
+  Aperture,
+  HardDrive,
+  Monitor,
+  Wifi,
+  SlidersHorizontal,
+  Layers,
+  Crosshair,
+  Battery,
+  Square,
+  PersonStanding,
+  Box,
+  Clapperboard,
+  Lightbulb,
+  Mic,
+  Film,
+  Megaphone,
+  Palette,
+  Target,
+  TrendingUp,
+  PenLine,
+  Users,
+  BarChart2,
+  Star,
+  SplitSquareHorizontal,
+  ShieldAlert,
+  BookOpen,
+  Volume2,
+  Sparkles,
+  Navigation,
+  Radio,
+  Share2,
+  Fingerprint,
+  Printer,
+  Package,
+  PieChart,
+  BookMarked,
+  Building2,
+  Calendar,
+  Search,
+  Activity,
+  Network,
+  Cpu,
+  type LucideIcon,
+} from 'lucide-react';
+
+const iconMap: Record<string, LucideIcon> = {
+  Camera,
+  Aperture,
+  HardDrive,
+  Monitor,
+  Wifi,
+  SlidersHorizontal,
+  Layers,
+  Crosshair,
+  Battery,
+  Square,
+  PersonStanding,
+  Box,
+  Clapperboard,
+  Lightbulb,
+  Mic,
+  Film,
+  Megaphone,
+  Palette,
+  Target,
+  TrendingUp,
+  PenLine,
+  Users,
+  BarChart2,
+  Star,
+  SplitSquareHorizontal,
+  ShieldAlert,
+  BookOpen,
+  Volume2,
+  Sparkles,
+  Navigation,
+  Radio,
+  Share2,
+  Fingerprint,
+  Printer,
+  Package,
+  PieChart,
+  BookMarked,
+  Building2,
+  Calendar,
+  Search,
+  Activity,
+  Network,
+  Cpu,
+};
+
+export function getIconComponent(name: string): LucideIcon {
+  return iconMap[name] || Camera;
+}
+
+export function getIconName(icon: LucideIcon): string {
+  for (const [name, component] of Object.entries(iconMap)) {
+    if (component === icon) return name;
+  }
+  return 'Camera';
+}
+
+export function getAllIconNames(): string[] {
+  return Object.keys(iconMap);
+}

@@ -33,7 +33,6 @@ export default function FormTextarea({
   const [celebrateCounter, setCelebrateCounter] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
-  // Auto-expand textarea height
   useEffect(() => {
     if (textareaRef.current) {
       textareaRef.current.style.height = 'auto';
@@ -42,7 +41,6 @@ export default function FormTextarea({
     }
   }, [value]);
 
-  // Trigger shake animation when error appears
   useEffect(() => {
     if (error) {
       setIsShaking(true);
@@ -51,7 +49,6 @@ export default function FormTextarea({
     }
   }, [error]);
 
-  // Show counter when typing starts
   useEffect(() => {
     if (value.length > 0 && !showCounter) {
       setShowCounter(true);
@@ -60,7 +57,6 @@ export default function FormTextarea({
     }
   }, [value, showCounter]);
 
-  // Celebrate at 100 characters
   useEffect(() => {
     if (value.length === 100) {
       setCelebrateCounter(true);
@@ -83,7 +79,6 @@ export default function FormTextarea({
   const charCount = value.length;
   const charPercentage = (charCount / maxLength) * 100;
 
-  // Character counter color based on length
   const getCounterColor = () => {
     if (charCount < 50) return 'text-white/60';
     if (charCount < 100) return 'text-[#00a820]';
@@ -92,7 +87,6 @@ export default function FormTextarea({
 
   return (
     <div className="relative">
-      {/* Gradient border wrapper (visible on focus) */}
       <div
         className={`
           relative rounded-2xl transition-all duration-300
@@ -100,7 +94,6 @@ export default function FormTextarea({
           ${isShaking ? 'animate-shake' : ''}
         `}
       >
-        {/* Inner container with liquid glass effect */}
         <div
           className={`
             relative rounded-2xl transition-all duration-300
@@ -108,7 +101,6 @@ export default function FormTextarea({
             ${error ? 'border-2 border-red-400/60 shadow-sm shadow-red-500/10' : 'border border-white/14'}
           `}
         >
-          {/* Floating Label */}
           <label
             htmlFor={name}
             className={`
@@ -122,7 +114,6 @@ export default function FormTextarea({
             {!required && <span className="text-white/35 ml-1 text-[0.7em]">"optional"</span>}
           </label>
 
-          {/* Textarea */}
           <textarea
             ref={textareaRef}
             id={name}
@@ -145,7 +136,6 @@ export default function FormTextarea({
             rows={4}
           />
 
-          {/* Validation Icon (top-right) */}
           <div className="absolute right-4 top-4">
             {error && (
               <svg
@@ -179,7 +169,6 @@ export default function FormTextarea({
             )}
           </div>
 
-          {/* Character Counter */}
           {showCounter && (
             <div
               className={`
@@ -205,7 +194,6 @@ export default function FormTextarea({
             </div>
           )}
 
-          {/* Progress Bar (bottom of container) */}
           {isFocused && charPercentage > 0 && (
             <div className="absolute bottom-0 left-0 right-0 h-1 bg-white/10 rounded-b-2xl overflow-hidden">
               <div
@@ -217,7 +205,6 @@ export default function FormTextarea({
         </div>
       </div>
 
-      {/* Error Message */}
       {error && (
         <div
           id={`${name}-error`}
@@ -240,7 +227,6 @@ export default function FormTextarea({
         </div>
       )}
 
-      {/* CSS Animations */}
       <style jsx>{`
         @keyframes shake {
           0%, 100% { transform: translateX(0); }

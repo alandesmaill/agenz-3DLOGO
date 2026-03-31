@@ -36,16 +36,13 @@ const NavPieceLabel = forwardRef<HTMLDivElement, NavPieceLabelProps>(function Na
       return;
     }
 
-    // Only animate once per visible appearance
     if (hasAnimatedRef.current) return;
     hasAnimatedRef.current = true;
 
     const startTimer = setTimeout(() => {
-      // Fade in as glitch begins
       setOpacity(1);
 
       let frame = 0;
-      // 16 frames × 50ms = 800ms total
       const interval = setInterval(() => {
         frame++;
 
@@ -58,7 +55,6 @@ const NavPieceLabel = forwardRef<HTMLDivElement, NavPieceLabelProps>(function Na
         }
 
         if (frame < 8) {
-          // Phase 1: all chars scramble
           setDisplayText(
             label.split('').map(() =>
               CHAR_SET[Math.floor(Math.random() * CHAR_SET.length)]
@@ -66,7 +62,6 @@ const NavPieceLabel = forwardRef<HTMLDivElement, NavPieceLabelProps>(function Na
           );
           setLockedCount(0);
         } else {
-          // Phase 2: lock in left-to-right
           const locked = Math.floor((frame - 8) * label.length / 8) + 1;
           setLockedCount(locked);
           setDisplayText(
@@ -94,7 +89,6 @@ const NavPieceLabel = forwardRef<HTMLDivElement, NavPieceLabelProps>(function Na
         top: '-9999px',
         transform: `translate(-50%, -130%) scale(${hovered ? 1.05 : 1.0})`,
         opacity,
-        // No transition on left/top — real-time tracking via imperative DOM updates
         transition: 'opacity 800ms ease-out, transform 200ms ease',
         pointerEvents: isVisible ? 'auto' : 'none',
       }}
@@ -102,7 +96,6 @@ const NavPieceLabel = forwardRef<HTMLDivElement, NavPieceLabelProps>(function Na
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
-      {/* Glass pill */}
       <div
         style={{
           position: 'relative',
@@ -122,7 +115,6 @@ const NavPieceLabel = forwardRef<HTMLDivElement, NavPieceLabelProps>(function Na
           overflow: 'hidden',
         }}
       >
-        {/* Top highlight line */}
         <div
           style={{
             position: 'absolute',
@@ -134,7 +126,6 @@ const NavPieceLabel = forwardRef<HTMLDivElement, NavPieceLabelProps>(function Na
           }}
         />
 
-        {/* Label text */}
         <span
           style={{
             display: 'inline-block',
@@ -162,7 +153,6 @@ const NavPieceLabel = forwardRef<HTMLDivElement, NavPieceLabelProps>(function Na
           ))}
         </span>
 
-        {/* Green underline slides in on hover */}
         <div
           style={{
             position: 'absolute',

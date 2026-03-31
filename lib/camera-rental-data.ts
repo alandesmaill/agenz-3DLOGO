@@ -35,7 +35,6 @@ export interface CameraPackage {
   tagline: string;
   description: string;
   cameraBody: string;
-  heroImage: string;
   packageImage: string;
   accentColor: string;
   highlights: string[];
@@ -51,7 +50,6 @@ export const cameraPackages: CameraPackage[] = [
     description:
       'The complete ARRI Alexa 35 production package with Signature Prime lenses. Everything you need for professional cinema production — from camera body to EasyRig, lenses to monitoring — in a single comprehensive rental.',
     cameraBody: 'ARRI Alexa 35',
-    heroImage: '/images/camera-rental/arri-alexa-35-hero.webp',
     packageImage: '/images/camera-rental/arri-alexa-35-package.webp',
     accentColor: '#00ffff',
     highlights: ['ARRI Alexa 35', 'Signature Primes', '19mm Studio', 'Full Package'],

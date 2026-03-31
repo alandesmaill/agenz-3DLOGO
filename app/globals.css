@@ -2,7 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Gibson Font Family */
 @font-face {
   font-family: 'Gibson';
   src: url('/font/gibson-regular.otf') format('opentype');
@@ -54,12 +53,10 @@
   --text-muted: rgba(255, 255, 255, 0.60);
   --white: #ffffff;
 
-  /* Brand Colors */
   --brand-green: #00e92c;
   --brand-cyan: #00ffff;
   --brand-gradient: linear-gradient(135deg, #00e92c 0%, #00ffff 100%);
 
-  /* Layout */
   --layout-margin: 2rem;
   --layout-columns-gap: 1rem;
 }
@@ -76,7 +73,6 @@ body {
   height: 100%;
 }
 
-/* Default: overflow hidden for landing page */
 body {
   color: var(--foreground);
   background: var(--background);
@@ -87,23 +83,33 @@ body {
   overflow: hidden;
 }
 
-/* Enable scrolling for scroll sections */
 body:has(.scroll-container) {
   overflow: auto;
   height: auto;
   background: #050505;
   color: #ffffff;
 }
+html:has(.scroll-container) {
+  height: auto;
+}
 
-/* Enable scroll for service routes and other scrollable pages */
 body:has(main.scrollable-page) {
   overflow: auto;
   height: auto;
   background: #050505;
   color: #ffffff;
 }
+html:has(main.scrollable-page) {
+  height: auto;
+}
 
-/* Force enable scroll on mobile for all non-landing pages */
+body:has(main.admin-page) {
+  overflow: auto;
+  height: auto;
+  background: #050505;
+  color: #ffffff;
+}
+
 @media (max-width: 768px) {
   body:not(:has(.canvas-container)) {
     overflow: auto !important;
@@ -116,7 +122,6 @@ canvas {
   touch-action: none;
 }
 
-/* Typography */
 h1,
 h2,
 h3,
@@ -147,7 +152,6 @@ h6 {
   font-size: clamp(0.875rem, 1.5vw, 1rem);
 }
 
-/* Text stroke utility for outline typography */
 .text-stroke {
   color: transparent;
   -webkit-text-stroke: 1px rgba(255, 255, 255, 0.5);
@@ -172,7 +176,6 @@ h6 {
 }
 
 
-/* Smooth scrolling - disabled for Lenis */
 html {
   scroll-behavior: auto;
 }
@@ -182,7 +185,6 @@ html {
     scroll-behavior: auto;
   }
 
-  /* Disable GSAP animations for reduced motion */
   * {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
@@ -190,13 +192,11 @@ html {
   }
 }
 
-/* Scroll container styles */
 .scroll-container {
   width: 100%;
   min-height: 100vh;
 }
 
-/* Performance optimizations for scroll animations */
 .will-change-transform {
   will-change: transform;
 }
@@ -205,37 +205,32 @@ html {
   will-change: opacity;
 }
 
-/* GPU acceleration for smooth animations */
 .gpu-accelerate {
   transform: translateZ(0);
   backface-visibility: hidden;
   perspective: 1000px;
 }
 
-/* Text split animation utilities */
 .split-heading .char,
 .split-heading .word {
   display: inline-block;
 }
 
-/* SplitType generated words - required for GSAP transforms */
 .word {
   display: inline-block;
   white-space: nowrap;
 }
 
 .word:not(:last-child)::after {
-  content: '\00a0'; /* Non-breaking space */
+  content: '\00a0';
   display: inline;
 }
 
-/* Prevent text selection during animations */
 .animating {
   user-select: none;
   -webkit-user-select: none;
 }
 
-/* Custom scrollbar - auto-hide with white/gray colors for dark bg */
 ::-webkit-scrollbar {
   width: 8px;
 }
@@ -245,12 +240,11 @@ html {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0); /* Hidden by default */
+  background: rgba(255, 255, 255, 0);
   border-radius: 4px;
   transition: background 0.3s ease;
 }
 
-/* Show scrollbar on page hover or scroll */
 body:hover ::-webkit-scrollbar-thumb {
   background: rgba(255, 255, 255, 0.2);
 }
@@ -259,7 +253,6 @@ body:hover ::-webkit-scrollbar-thumb:hover {
   background: rgba(255, 255, 255, 0.4);
 }
 
-/* Firefox scrollbar support */
 * {
   scrollbar-width: thin;
   scrollbar-color: transparent transparent;
@@ -269,11 +262,6 @@ body:hover * {
   scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
 }
 
-/* =============================================
-   Morph Animation System for Works Section
-   ============================================= */
-
-/* Performance optimization for morph elements */
 .morph-element {
   will-change: transform, opacity, border-radius;
   backface-visibility: hidden;
@@ -284,20 +272,17 @@ body:hover * {
   -webkit-transform: translateZ(0);
 }
 
-/* Smooth hover interaction for morphing elements */
 .morph-element:hover {
   transform: scale(1.02) translateZ(0);
   transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-/* Remove hover effect on mobile for performance */
 @media (max-width: 768px) {
   .morph-element:hover {
     transform: none;
   }
 }
 
-/* Respect reduced motion preferences */
 @media (prefers-reduced-motion: reduce) {
   .morph-element {
     will-change: auto !important;
@@ -309,11 +294,6 @@ body:hover * {
   }
 }
 
-/* =============================================
-   Footer Animation System
-   ============================================= */
-
-/* Animated gradient movement */
 @keyframes gradient {
   0%, 100% {
     transform: translateX(0) translateY(0);
@@ -323,7 +303,6 @@ body:hover * {
   }
 }
 
-/* Slow floating animation for background orbs */
 @keyframes float-slow {
   0%, 100% {
     transform: translateY(0) translateX(0);
@@ -333,7 +312,6 @@ body:hover * {
   }
 }
 
-/* Slower floating animation for background orbs */
 @keyframes float-slower {
   0%, 100% {
     transform: translateY(0) translateX(0);
@@ -343,7 +321,6 @@ body:hover * {
   }
 }
 
-/* Apply animations with timing */
 .animate-gradient {
   animation: gradient 15s ease-in-out infinite;
 }
@@ -356,7 +333,6 @@ body:hover * {
   animation: float-slower 25s ease-in-out infinite;
 }
 
-/* Performance optimization for footer animations */
 .footer-background {
   will-change: transform;
   backface-visibility: hidden;
@@ -366,7 +342,6 @@ body:hover * {
   will-change: opacity, transform;
 }
 
-/* Respect reduced motion for footer animations */
 @media (prefers-reduced-motion: reduce) {
   .animate-gradient,
   .animate-float-slow,
@@ -374,10 +349,6 @@ body:hover * {
     animation: none !important;
   }
 }
-
-/* =============================================
-   CTA Button Glow Animation
-   ============================================= */
 
 @keyframes pulse-glow {
   0%, 100% { box-shadow: 0 0 20px rgba(0,233,44,0.3); }

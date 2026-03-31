@@ -37,8 +37,9 @@ paths:
   - Image sources → `img-src`
 - Requests to unlisted origins will be blocked in production
 
-## Data Files
+## Data Sources
 
-- Static content lives in `/lib/` as TypeScript exports — there is no database
-- Do not add API routes that fetch from a database or external CMS
-- Keep data as close to the component that uses it as possible
+- Dynamic content (services, works, camera rental, client logos) is stored in Vercel Postgres and managed via Prisma ORM
+- Static content (about page copy) lives in `/lib/` as TypeScript exports
+- Admin API routes at `/api/admin/` handle CRUD operations
+- Public read-only API routes at `/api/content/` serve data to the frontend

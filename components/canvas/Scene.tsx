@@ -4,7 +4,6 @@ import { OrbitControls, PerspectiveCamera } from '@react-three/drei';
 import { EffectComposer, Bloom } from '@react-three/postprocessing';
 import { ReactNode } from 'react';
 
-// Evaluated once at module load — skip Bloom on mobile to save a full render pass
 const isLowPerfDevice = typeof window !== 'undefined' && window.innerWidth < 768;
 
 interface SceneProps {
@@ -14,10 +13,8 @@ interface SceneProps {
 export default function Scene({ children }: SceneProps) {
   return (
     <>
-      {/* Camera */}
       <PerspectiveCamera makeDefault position={[0, 0, 6]} fov={65} />
 
-      {/* Controls */}
       <OrbitControls
         target={[0, 0.7, 0]}
         enableDamping
@@ -31,18 +28,12 @@ export default function Scene({ children }: SceneProps) {
         zoomSpeed={0.8}
       />
 
-      {/* Lighting */}
-
-      {/* Ambient floor - high enough that dark pieces stay readable */}
       <ambientLight intensity={0.9} />
 
-      {/* Key light from top-right - main illumination */}
       <directionalLight position={[8, 10, 6]} intensity={1.6} />
 
-      {/* Front fill - straight-on, ensures all forward-facing surfaces are lit */}
       <directionalLight position={[0, 0, 10]} intensity={1.2} />
 
-      {/* Cyan fill light - front-left, mirrors rim for full brand envelope */}
       <pointLight position={[-3, 2, 4]} intensity={1.5} color="#00ffff" distance={14} />
 
       {/* Cyan rim light - back-right, creates a glowing edge separation */}
@@ -51,10 +42,8 @@ export default function Scene({ children }: SceneProps) {
       {/* Bottom fill so lower pieces don't go black */}
       <directionalLight position={[0, -6, 4]} intensity={0.6} />
 
-      {/* Children (your 3D objects) */}
       {children}
 
-      {/* Post-processing Effects — skipped on mobile to save a full render pass */}
       {!isLowPerfDevice && (
         <EffectComposer>
           <Bloom

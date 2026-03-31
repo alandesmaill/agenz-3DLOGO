@@ -96,14 +96,12 @@ Address: City Center, Office 26, Floor 7, Sulaymaniyah, Kurdistan Region, Iraq`,
 export default function TermsPage() {
   return (
     <main className="scrollable-page min-h-screen bg-[#050505] text-white">
-      {/* Background gradients */}
       <div className="fixed inset-0 pointer-events-none">
         <div className="absolute top-0 left-0 w-[600px] h-[600px] bg-[#00ffff]/5 rounded-full blur-3xl" />
         <div className="absolute bottom-0 right-0 w-[600px] h-[600px] bg-[#00e92c]/5 rounded-full blur-3xl" />
       </div>
 
       <div className="relative max-w-3xl mx-auto px-6 py-16 lg:py-24">
-        {/* Back link */}
         <Link
           href="/"
           className="inline-flex items-center gap-2 text-gray-400 hover:text-white text-sm transition-colors duration-200 mb-12 group"
@@ -112,7 +110,6 @@ export default function TermsPage() {
           Back to Home
         </Link>
 
-        {/* Logo */}
         <div className="mb-10">
           <Image
             src="/agenz creative hub.svg"
@@ -123,7 +120,6 @@ export default function TermsPage() {
           />
         </div>
 
-        {/* Header */}
         <div className="mb-12 pb-8 border-b border-white/10">
           <h1 className="text-4xl lg:text-5xl font-bold mb-4">
             Terms of{' '}
@@ -140,7 +136,6 @@ export default function TermsPage() {
           </p>
         </div>
 
-        {/* Sections */}
         <div className="space-y-10">
           {sections.map((section) => (
             <section key={section.title}>
@@ -152,7 +147,6 @@ export default function TermsPage() {
           ))}
         </div>
 
-        {/* Footer strip */}
         <div className="mt-16 pt-8 border-t border-white/10 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 text-xs text-gray-500">
           <p>© {new Date().getFullYear()} AGENZ. All rights reserved.</p>
           <Link

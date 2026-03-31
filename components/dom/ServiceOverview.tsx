@@ -17,7 +17,6 @@ export default function ServiceOverview({
 }: ServiceOverviewProps) {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-start">
-      {/* Left column: Heading */}
       <div className="md:sticky md:top-32">
         <AnimatedText
           className="text-3xl md:text-4xl lg:text-5xl font-['Gibson'] font-bold text-white leading-tight"
@@ -30,9 +29,7 @@ export default function ServiceOverview({
         </AnimatedText>
       </div>
 
-      {/* Right column: Content */}
       <div className="space-y-8">
-        {/* Paragraphs */}
         <div className="space-y-6">
           {paragraphs.map((paragraph, index) => (
             <p
@@ -44,7 +41,6 @@ export default function ServiceOverview({
           ))}
         </div>
 
-        {/* Benefits list */}
         <div className="pt-4">
           <h4
             className="text-xl font-['Gibson'] font-bold text-white mb-6"

@@ -1,12 +1,11 @@
 import type { Metadata } from "next";
 import { Analytics } from "@vercel/analytics/next";
-import StructuredData from "@/components/StructuredData";
+import StructuredData from "@/components/dom/StructuredData";
 import "./globals.css";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://agenz-iq.com"),
 
-  // Basic Information
   title: {
     template: "%s | AGENZ",
     default: "AGENZ — Creative Digital Agency",
@@ -14,13 +13,11 @@ export const metadata: Metadata = {
   description:
     "AGENZ is Kurdistan's leading creative agency — delivering bold advertising campaigns, cinematic video production, premium graphic design, and data-driven brand strategy. Based in Sulaymaniyah, serving clients across Iraq and beyond.",
 
-  // Application Information
   applicationName: "AGENZ",
   authors: [{ name: "Aland Esmail" }],
   creator: "Aland Esmail",
   publisher: "AGENZ",
 
-  // SEO Keywords
   keywords: [
     "creative agency",
     "creative agency Sulaymaniyah",
@@ -36,15 +33,12 @@ export const metadata: Metadata = {
     "AGENZ creative",
   ],
 
-  // Canonical
   alternates: {
     canonical: "/",
   },
 
-  // Category
   category: "Business",
 
-  // Robots Directive
   robots: {
     index: true,
     follow: true,
@@ -57,7 +51,6 @@ export const metadata: Metadata = {
     },
   },
 
-  // Open Graph (Facebook, LinkedIn, etc.)
   openGraph: {
     type: "website",
     locale: "en_US",
@@ -76,7 +69,6 @@ export const metadata: Metadata = {
     ],
   },
 
-  // Twitter Card
   twitter: {
     card: "summary_large_image",
     title: "AGENZ — Creative Digital Agency",
@@ -85,7 +77,6 @@ export const metadata: Metadata = {
     images: ["/opengraph-image"],
   },
 
-  // Favicon Configuration
   icons: {
     shortcut: "/favicon.ico",
     icon: [
@@ -110,10 +101,8 @@ export const metadata: Metadata = {
     ],
   },
 
-  // Web App Manifest
   manifest: "/manifest.json",
 
-  // Windows tile config
   other: {
     "msapplication-config": "/browserconfig.xml",
   },

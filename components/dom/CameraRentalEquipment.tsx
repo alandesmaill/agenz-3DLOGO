@@ -53,7 +53,6 @@ function ItemModal({ item, accentColor, onClose }: ItemModalProps) {
       className="fixed inset-0 z-[200] flex items-center justify-center p-4"
       onClick={onClose}
     >
-      {/* Backdrop — pointer-events-none so it never blocks children */}
       <div className="absolute inset-0 backdrop-blur-md pointer-events-none" style={{ background: 'rgba(0,0,0,0.80)' }} />
 
       <style>{`
@@ -63,7 +62,6 @@ function ItemModal({ item, accentColor, onClose }: ItemModalProps) {
         }
       `}</style>
 
-      {/* Card */}
       <div
         className="relative w-full max-w-md md:max-w-5xl rounded-3xl overflow-hidden"
         style={{
@@ -74,7 +72,6 @@ function ItemModal({ item, accentColor, onClose }: ItemModalProps) {
         }}
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Close button */}
         <button
           onClick={onClose}
           className="absolute top-4 right-4 z-20 w-9 h-9 rounded-full flex items-center justify-center transition-colors duration-200 hover:bg-white/15"
@@ -84,7 +81,6 @@ function ItemModal({ item, accentColor, onClose }: ItemModalProps) {
           <X size={15} className="text-white/70" />
         </button>
 
-        {/* Image — full width, tall */}
         {item.image ? (
           <div
             ref={imgContainerRef}
@@ -92,7 +88,6 @@ function ItemModal({ item, accentColor, onClose }: ItemModalProps) {
             onMouseMove={handleMouseMove}
             onMouseLeave={handleMouseLeave}
           >
-            {/* Glow */}
             <div
               className="absolute inset-0 pointer-events-none z-0"
               style={{
@@ -107,7 +102,6 @@ function ItemModal({ item, accentColor, onClose }: ItemModalProps) {
               className="object-contain relative z-10"
               sizes="(max-width: 768px) 100vw, 1024px"
             />
-            {/* Magnifier lens — desktop only */}
             {magnifier.visible && (
               <div
                 className="absolute rounded-full pointer-events-none overflow-hidden z-20 hidden md:block"
@@ -142,12 +136,10 @@ function ItemModal({ item, accentColor, onClose }: ItemModalProps) {
           </div>
         )}
 
-        {/* Details bar — full width strip at bottom */}
         <div
           className="flex items-center justify-between gap-4 px-6 py-5 md:px-8 md:py-6"
           style={{ borderTop: '1px solid rgba(255,255,255,0.07)' }}
         >
-          {/* Left: name + notes */}
           <div className="min-w-0">
             <h3 className="font-['Gibson'] font-bold text-white text-base md:text-xl leading-snug truncate">
               {item.name}
@@ -157,7 +149,6 @@ function ItemModal({ item, accentColor, onClose }: ItemModalProps) {
             )}
           </div>
 
-          {/* Right: brand + qty */}
           <div className="flex items-center gap-2 flex-shrink-0">
             <span
               className="text-xs font-bold px-3 py-1.5 rounded-full whitespace-nowrap"
@@ -188,7 +179,6 @@ export default function CameraRentalEquipment({
   const handleTabChange = useCallback(
     (id: string) => {
       if (id === activeCategory) return;
-      // Fade out → switch → fade in
       setContentVisible(false);
       setTimeout(() => {
         setActiveCategory(id);
@@ -201,7 +191,6 @@ export default function CameraRentalEquipment({
   return (
     <section id="equipment" className="py-20 md:py-32">
       <div className="max-w-7xl mx-auto px-4">
-        {/* Heading */}
         <div className="mb-10 md:mb-12">
           <p className="text-xs font-bold uppercase tracking-[0.25em] text-white/40 mb-3">
             Full Inventory
@@ -211,7 +200,6 @@ export default function CameraRentalEquipment({
           </h2>
         </div>
 
-        {/* Tab bar — horizontal scroll on all screen sizes */}
         <div className="-mx-4 px-4 mb-6">
           <div className="overflow-x-auto pb-3 scrollbar-hide">
             <div className="flex gap-2 min-w-max">
@@ -239,14 +227,12 @@ export default function CameraRentalEquipment({
           </div>
         </div>
 
-        {/* Category content panel */}
         <div
           className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-3xl overflow-hidden transition-opacity duration-150"
           style={{ opacity: contentVisible ? 1 : 0 }}
         >
           {currentCategory && (
             <>
-              {/* Category header */}
               <div
                 className="flex items-center gap-4 px-6 md:px-8 py-5 border-b border-white/[0.06]"
                 style={{
@@ -285,7 +271,6 @@ export default function CameraRentalEquipment({
                 </span>
               </div>
 
-              {/* Column headers */}
               <div className="grid grid-cols-[56px_1fr_auto_auto_auto] gap-4 px-6 md:px-8 py-2.5 border-b border-white/[0.04]">
                 <span />
                 <span className="text-[11px] font-bold uppercase tracking-[0.15em] text-white/25">
@@ -300,7 +285,6 @@ export default function CameraRentalEquipment({
                 <span className="w-14" />
               </div>
 
-              {/* Items */}
               <div>
                 {currentCategory.items.map((item, itemIndex) => (
                   <div
@@ -311,7 +295,6 @@ export default function CameraRentalEquipment({
                         itemIndex % 2 === 1 ? 'rgba(255,255,255,0.018)' : 'transparent',
                     }}
                   >
-                    {/* Thumbnail */}
                     <div
                       className="relative w-14 h-10 rounded-lg overflow-hidden flex-shrink-0"
                       style={{
@@ -352,7 +335,6 @@ export default function CameraRentalEquipment({
                     >
                       ×{item.qty}
                     </span>
-                    {/* VIEW button */}
                     <button
                       onClick={() => setSelectedItem(item)}
                       className="flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold transition-all duration-200 w-14 justify-center"
@@ -383,7 +365,6 @@ export default function CameraRentalEquipment({
         </div>
       </div>
 
-      {/* Item modal */}
       {selectedItem && (
         <ItemModal
           item={selectedItem}

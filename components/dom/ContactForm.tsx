@@ -15,7 +15,143 @@ interface FormData {
   email: string;
   phone: string;
   company: string;
+  services: string[];
   message: string;
+}
+
+const SERVICE_OPTIONS = [
+  'Camera Rental',
+  'Advertising & Social Media',
+  'Video Production',
+  'Print & Graphic Design',
+  'Strategic Media Services',
+];
+
+function ServiceMultiSelect({
+  value,
+  onChange,
+}: {
+  value: string[];
+  onChange: (services: string[]) => void;
+}) {
+  const [open, setOpen] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    function handleOutsideClick(e: MouseEvent) {
+      if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
+        setOpen(false);
+      }
+    }
+    document.addEventListener('mousedown', handleOutsideClick);
+    return () => document.removeEventListener('mousedown', handleOutsideClick);
+  }, []);
+
+  const toggleService = (service: string) => {
+    onChange(
+      value.includes(service)
+        ? value.filter(s => s !== service)
+        : [...value, service]
+    );
+  };
+
+  const triggerLabel =
+    value.length === 0
+      ? 'Select services...'
+      : value.length === 1
+      ? value[0]
+      : `${value.length} services selected`;
+
+  return (
+    <div ref={containerRef} className="relative">
+      <label className="block text-sm font-medium text-white/70 mb-2">
+        Services{' '}
+        <span className="text-white/40 font-normal text-xs italic">optional</span>
+      </label>
+
+      <button
+        type="button"
+        onClick={() => setOpen(prev => !prev)}
+        className={`
+          w-full flex items-center justify-between gap-3 px-4 py-3.5 rounded-xl
+          bg-white/6 border text-sm text-left transition-all duration-200
+          ${open
+            ? 'border-[#00ffff]/50 shadow-[0_0_20px_rgba(0,255,255,0.1)]'
+            : 'border-white/12 hover:border-white/25'}
+        `}
+      >
+        <span className={value.length === 0 ? 'text-white/40' : 'text-white'}>
+          {triggerLabel}
+        </span>
+        <svg
+          className={`w-4 h-4 text-white/40 flex-shrink-0 transition-transform duration-200 ${open ? 'rotate-180' : ''}`}
+          fill="none" viewBox="0 0 24 24" stroke="currentColor"
+        >
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+        </svg>
+      </button>
+
+      {value.length > 0 && (
+        <div className="flex flex-wrap gap-2 mt-2.5">
+          {value.map(service => (
+            <span
+              key={service}
+              className="flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-gradient-to-r from-[#00e92c]/15 to-[#00ffff]/15 border border-[#00ffff]/30 text-white/90"
+            >
+              {service}
+              <button
+                type="button"
+                onClick={() => toggleService(service)}
+                aria-label={`Remove ${service}`}
+                className="text-white/40 hover:text-white transition-colors"
+              >
+                <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
+                </svg>
+              </button>
+            </span>
+          ))}
+        </div>
+      )}
+
+      {open && (
+        <div className="absolute z-50 mt-2 w-full rounded-2xl backdrop-blur-2xl bg-[#0d0d0d]/95 border border-white/12 shadow-2xl shadow-black/60 overflow-hidden">
+          {SERVICE_OPTIONS.map((service, i) => {
+            const isSelected = value.includes(service);
+            return (
+              <button
+                key={service}
+                type="button"
+                onClick={() => toggleService(service)}
+                className={`
+                  w-full flex items-center gap-3 px-4 py-3.5 text-sm text-left
+                  transition-all duration-150
+                  ${i !== SERVICE_OPTIONS.length - 1 ? 'border-b border-white/6' : ''}
+                  ${isSelected
+                    ? 'bg-gradient-to-r from-[#00e92c]/10 to-[#00ffff]/10 text-white'
+                    : 'text-white/65 hover:bg-white/5 hover:text-white'}
+                `}
+              >
+                <span className={`
+                  w-5 h-5 rounded-md border flex items-center justify-center flex-shrink-0 transition-all duration-150
+                  ${isSelected
+                    ? 'bg-gradient-to-br from-[#00e92c] to-[#00ffff] border-transparent'
+                    : 'border-white/20 bg-transparent'}
+                `}>
+                  {isSelected && (
+                    <svg className="w-3 h-3 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                    </svg>
+                  )}
+                </span>
+                {service}
+              </button>
+            );
+          })}
+        </div>
+      )}
+    </div>
+  );
 }
 
 interface FormErrors {
@@ -23,6 +159,7 @@ interface FormErrors {
   email?: string;
   phone?: string;
   company?: string;
+  services?: string;
   message?: string;
   general?: string;
 }
@@ -33,6 +170,7 @@ export default function ContactForm({ onSuccess }: ContactFormProps) {
     email: '',
     phone: '',
     company: '',
+    services: [],
     message: '',
   });
 
@@ -43,12 +181,10 @@ export default function ContactForm({ onSuccess }: ContactFormProps) {
   const [isOnline, setIsOnline] = useState(true);
   const formRef = useRef<HTMLFormElement>(null);
 
-  // Offline detection
   useEffect(() => {
     const handleOnline = () => setIsOnline(true);
     const handleOffline = () => setIsOnline(false);
 
-    // Set initial online status
     setIsOnline(navigator.onLine);
 
     window.addEventListener('online', handleOnline);
@@ -60,7 +196,6 @@ export default function ContactForm({ onSuccess }: ContactFormProps) {
     };
   }, []);
 
-  // Validation functions
   const validateEmail = (email: string): string | undefined => {
     if (!email) return 'Email is required';
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -96,7 +231,6 @@ export default function ContactForm({ onSuccess }: ContactFormProps) {
     return undefined;
   };
 
-  // Validate single field
   const validateField = (name: keyof FormData, value: string): string | undefined => {
     switch (name) {
       case 'name':
@@ -114,7 +248,6 @@ export default function ContactForm({ onSuccess }: ContactFormProps) {
     }
   };
 
-  // Validate all fields
   const validateForm = (): FormErrors => {
     const newErrors: FormErrors = {};
 
@@ -136,11 +269,13 @@ export default function ContactForm({ onSuccess }: ContactFormProps) {
     return newErrors;
   };
 
-  // Handle field change
+  const handleServicesChange = (services: string[]) => {
+    setFormData(prev => ({ ...prev, services }));
+  };
+
   const handleChange = (name: keyof FormData, value: string) => {
     setFormData(prev => ({ ...prev, [name]: value }));
 
-    // Clear error when user starts typing
     if (errors[name]) {
       setErrors(prev => {
         const newErrors = { ...prev };
@@ -150,22 +285,22 @@ export default function ContactForm({ onSuccess }: ContactFormProps) {
     }
   };
 
-  // Handle field blur (validate on blur)
   const handleBlur = (name: keyof FormData) => {
     setTouched(prev => ({ ...prev, [name]: true }));
 
-    const error = validateField(name, formData[name]);
-    if (error) {
-      setErrors(prev => ({ ...prev, [name]: error }));
+    const fieldValue = formData[name];
+    if (typeof fieldValue === 'string') {
+      const error = validateField(name, fieldValue);
+      if (error) {
+        setErrors(prev => ({ ...prev, [name]: error }));
+      }
     }
   };
 
-  // Handle form submission
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSubmitAttempted(true);
 
-    // Check if user is online
     if (!isOnline) {
       setErrors({
         general: 'You are offline. Please check your internet connection and try again.',
@@ -173,12 +308,10 @@ export default function ContactForm({ onSuccess }: ContactFormProps) {
       return;
     }
 
-    // Validate all fields
     const validationErrors = validateForm();
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
 
-      // Scroll to first error
       const firstErrorField = Object.keys(validationErrors)[0];
       const element = document.getElementById(firstErrorField);
       element?.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -191,7 +324,6 @@ export default function ContactForm({ onSuccess }: ContactFormProps) {
     setErrors({});
 
     try {
-      // Step 1: Server-side validation + rate limiting
       const response = await fetch('/api/send-email', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -209,7 +341,6 @@ export default function ContactForm({ onSuccess }: ContactFormProps) {
         return;
       }
 
-      // Step 2: Send emails directly from browser via @emailjs/browser
       const serviceId = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID!;
       const publicKey = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY!;
 
@@ -218,6 +349,7 @@ export default function ContactForm({ onSuccess }: ContactFormProps) {
         from_email: formData.email,
         phone: formData.phone || 'Not provided',
         company: formData.company || 'Not provided',
+        services: formData.services.length > 0 ? formData.services.join(', ') : 'Not specified',
         message: formData.message,
       };
 
@@ -228,7 +360,6 @@ export default function ContactForm({ onSuccess }: ContactFormProps) {
         publicKey
       );
 
-      // Auto-reply (non-fatal)
       try {
         await emailjs.send(
           serviceId,
@@ -240,7 +371,6 @@ export default function ContactForm({ onSuccess }: ContactFormProps) {
         // Auto-reply failure doesn't block success
       }
 
-      // Success
       setTimeout(() => {
         onSuccess();
       }, 500);
@@ -258,23 +388,18 @@ export default function ContactForm({ onSuccess }: ContactFormProps) {
 
   return (
     <div className="relative">
-      {/* Outer soft shadow glow */}
       <div className="absolute -inset-2 bg-gradient-to-br from-[#00e92c]/10 via-transparent to-[#00b8a0]/10 rounded-3xl blur-2xl" />
 
-      {/* Form Container — Dark Glass */}
       <div className="relative p-8 md:p-10 rounded-3xl bg-white/8 backdrop-blur-2xl border border-white/14 shadow-2xl shadow-black/20">
 
-        {/* Subtle inner shimmer */}
         <div className="absolute inset-0 bg-gradient-to-br from-white/5 via-transparent to-white/3 rounded-3xl pointer-events-none" />
 
-        {/* Form Header */}
         <div className="mb-8">
           <h2 className="text-2xl md:text-3xl font-bold text-white mb-2">
             Send a Message
           </h2>
         </div>
 
-        {/* Form */}
         <form
           ref={formRef}
           onSubmit={handleSubmit}
@@ -282,7 +407,6 @@ export default function ContactForm({ onSuccess }: ContactFormProps) {
           role="form"
           className="space-y-6"
         >
-          {/* Name & Email Row */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <FormField
               name="name"
@@ -311,7 +435,6 @@ export default function ContactForm({ onSuccess }: ContactFormProps) {
             />
           </div>
 
-          {/* Phone & Company Row */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <FormField
               name="phone"
@@ -338,7 +461,11 @@ export default function ContactForm({ onSuccess }: ContactFormProps) {
             />
           </div>
 
-          {/* Message */}
+          <ServiceMultiSelect
+            value={formData.services}
+            onChange={handleServicesChange}
+          />
+
           <FormTextarea
             name="message"
             label="Message"
@@ -351,7 +478,6 @@ export default function ContactForm({ onSuccess }: ContactFormProps) {
             onBlur={() => handleBlur('message')}
           />
 
-          {/* General Error Message */}
           {errors.general && (
             <div className="p-4 rounded-xl bg-red-900/20 border border-red-500/30 text-red-400 flex items-start gap-3">
               <svg className="w-5 h-5 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
@@ -361,7 +487,6 @@ export default function ContactForm({ onSuccess }: ContactFormProps) {
             </div>
           )}
 
-          {/* Submit Button */}
           <button
             type="submit"
             disabled={isSubmitting}
@@ -373,7 +498,6 @@ export default function ContactForm({ onSuccess }: ContactFormProps) {
             `}
             style={{ minHeight: '56px' }} // Touch-friendly
           >
-            {/* Hover Gradient Animation */}
             {!isSubmitting && (
               <div className="absolute inset-0 bg-gradient-to-r from-cyan-400 to-green-400 opacity-0 hover:opacity-100 transition-opacity duration-300" />
             )}
@@ -398,13 +522,11 @@ export default function ContactForm({ onSuccess }: ContactFormProps) {
             </span>
           </button>
 
-          {/* Privacy Note */}
           <p className="text-xs text-white/60 text-center">
             Your information is secure and will never be shared.
           </p>
         </form>
 
-        {/* Screen Reader Announcements */}
         <div className="sr-only" aria-live="polite" aria-atomic="true">
           {isSubmitting && 'Sending your message...'}
         </div>

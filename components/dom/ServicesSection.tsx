@@ -10,10 +10,31 @@ import SmoothScrolling from './SmoothScrolling';
 import AnimatedText from './AnimatedText';
 import Header from './Header';
 import Footer from './Footer';
-import { servicesData, type Service } from '@/lib/services-data';
+import { getIconComponent } from '@/lib/icon-map';
 import { useResponsive } from '@/hooks/useResponsive';
 import Link from 'next/link';
-import { Camera, ArrowRight } from 'lucide-react';
+import { Camera, ArrowRight, Loader2 } from 'lucide-react';
+import type { LucideIcon } from 'lucide-react';
+
+interface Service {
+  id: string;
+  title: string;
+  description: string;
+  icon: LucideIcon;
+  accentColor: string;
+  ctaText: string;
+  ctaLink: string;
+}
+
+const CAMERA_RENTAL_SERVICE: Service = {
+  id: 'camera-rental',
+  title: 'Camera Rental',
+  description: 'Professional production equipment and creative resources available for rent.',
+  icon: Camera,
+  accentColor: '#00ffff',
+  ctaText: 'View Packages',
+  ctaLink: '/services/camera-rental',
+};
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -35,11 +56,9 @@ function FeaturedCameraCard({
           className="relative overflow-hidden rounded-3xl backdrop-blur-xl bg-white/8 border border-cyan-400/25 p-8 md:p-10 lg:p-12 hover:scale-[1.01] transition-all duration-500 will-change-transform transform-gpu"
           style={{ boxShadow: '0 0 50px rgba(0,255,255,0.08)' }}
         >
-          {/* Subtle glow behind */}
           <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/5 via-transparent to-transparent pointer-events-none" />
 
           <div className="relative flex flex-col md:flex-row items-start md:items-center gap-8">
-            {/* Icon + Title */}
             <div className="flex items-center gap-5 flex-shrink-0">
               <div
                 className="w-16 h-16 md:w-20 md:h-20 rounded-2xl flex items-center justify-center transition-transform duration-500 group-hover:scale-110"
@@ -60,7 +79,6 @@ function FeaturedCameraCard({
               </div>
             </div>
 
-            {/* Description + CTA */}
             <div className="flex-1 md:text-right">
               <p className="font-['Gibson'] text-white/60 text-base md:text-lg leading-relaxed mb-6 md:max-w-sm md:ml-auto">
                 {service.description}
@@ -75,7 +93,6 @@ function FeaturedCameraCard({
             </div>
           </div>
 
-          {/* Tag row */}
           <div className="relative flex flex-wrap gap-2.5 mt-8">
             {['Arri Alexa 35', 'Signature Primes', 'Full Kit', '19mm Studio'].map((tag) => (
               <span
@@ -97,19 +114,45 @@ export default function ServicesSection({ onBack }: ServicesSectionProps) {
   const heroRef = useRef<HTMLDivElement>(null);
   const cardsRef = useRef<(HTMLDivElement | null)[]>([]);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [cmsServices, setCmsServices] = useState<Service[]>([]);
+  const [servicesLoaded, setServicesLoaded] = useState(false);
   const { isMobile } = useResponsive();
+
+  useEffect(() => {
+    async function load() {
+      try {
+        const res = await fetch('/api/content/services');
+        if (!res.ok) throw new Error('Failed');
+        const data = await res.json();
+        if (Array.isArray(data)) {
+          setCmsServices(
+            data.map((s: { slug: string; title: string; overviewDescription: string; overviewIconName: string; accentColor: string; ctaText: string; ctaLink: string }) => ({
+              id: s.slug,
+              title: s.title,
+              description: s.overviewDescription,
+              icon: getIconComponent(s.overviewIconName),
+              accentColor: s.accentColor,
+              ctaText: s.ctaText,
+              ctaLink: s.ctaLink,
+            }))
+          );
+        }
+      } catch {
+      } finally {
+        setServicesLoaded(true);
+      }
+    }
+    load();
+  }, []);
 
   // Critical: Refresh ScrollTrigger when ServicesSection mounts
   useEffect(() => {
-    // Scroll to top when section loads
     window.scrollTo(0, 0);
 
-    // Refresh ScrollTrigger after component and children have rendered
     const refreshTimer = setTimeout(() => {
       ScrollTrigger.refresh();
     }, 600);
 
-    // Force update all triggers
     const updateTimer = setTimeout(() => {
       ScrollTrigger.update();
     }, 800);
@@ -120,13 +163,10 @@ export default function ServicesSection({ onBack }: ServicesSectionProps) {
     };
   }, []);
 
-
-  // Hero and cards animation
   useEffect(() => {
     if (!sectionRef.current || !heroRef.current) return;
 
     const ctx = gsap.context(() => {
-      // Immediate animation on mount (not scroll-triggered)
       const timeline = gsap.timeline({ delay: 0.2 });
 
       timeline
@@ -165,21 +205,17 @@ export default function ServicesSection({ onBack }: ServicesSectionProps) {
           `,
         }}
       >
-        {/* Header - Fixed */}
         <Header
           variant="dark"
           onLogoClick={onBack}
           onMenuClick={() => setMenuOpen(true)}
         />
 
-        {/* Main Content */}
         <section
           ref={sectionRef}
           className="min-h-screen pt-24 md:pt-32 pb-16 md:pb-24 px-4 md:px-6 lg:px-12"
         >
-          {/* Hero Section */}
           <div ref={heroRef} className="relative overflow-visible max-w-7xl mx-auto mb-16">
-            {/* Rose flower — top-right, partially bleeding off edge */}
             <AnimatedText
               className="text-5xl md:text-7xl font-['Gibson'] font-bold text-white tracking-tight mb-6"
               splitBy="chars"
@@ -195,24 +231,19 @@ export default function ServicesSection({ onBack }: ServicesSectionProps) {
             </p>
           </div>
 
-          {/* Featured Camera Rental + 2x2 Grid */}
           <div className="max-w-5xl mx-auto space-y-6 md:space-y-8">
-            {/* Featured card: Camera Rental */}
-            {(() => {
-              const featured = servicesData.find((s) => s.id === 'camera-rental');
-              return featured ? (
-                <FeaturedCameraCard
-                  service={featured}
-                  divRef={(el) => { cardsRef.current[0] = el; }}
-                />
-              ) : null;
-            })()}
+            <FeaturedCameraCard
+              service={CAMERA_RENTAL_SERVICE}
+              divRef={(el) => { cardsRef.current[0] = el; }}
+            />
 
-            {/* 2x2 grid: remaining services */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
-              {servicesData
-                .filter((s) => s.id !== 'camera-rental')
-                .map((service, index) => (
+            {!servicesLoaded ? (
+              <div className="flex items-center justify-center py-12">
+                <Loader2 size={28} className="text-[#00e92c] animate-spin" />
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+                {cmsServices.map((service, index) => (
                   <ServiceCard
                     key={service.id}
                     ref={(el) => {
@@ -222,10 +253,10 @@ export default function ServicesSection({ onBack }: ServicesSectionProps) {
                     index={index + 1}
                   />
                 ))}
-            </div>
+              </div>
+            )}
           </div>
 
-          {/* Infinite Scroll Text */}
           <div className="mt-16 overflow-hidden">
             <InfiniteText
               text="Explore Our Services"
@@ -235,10 +266,8 @@ export default function ServicesSection({ onBack }: ServicesSectionProps) {
           </div>
         </section>
 
-        {/* Footer */}
         <Footer />
 
-        {/* Menu Overlay */}
         <MenuOverlay isOpen={menuOpen} onClose={() => setMenuOpen(false)} />
       </div>
     </SmoothScrolling>

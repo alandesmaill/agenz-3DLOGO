@@ -29,10 +29,8 @@ export default function SubmissionSuccess({ onClose, onSendAnother }: Submission
   const containerRef = useRef<HTMLDivElement>(null);
   const checkmarkRef = useRef<SVGSVGElement>(null);
 
-  // Entry animation
   useEffect(() => {
     if (containerRef.current) {
-      // Fade in container
       gsap.fromTo(
         containerRef.current,
         { opacity: 0, scale: 0.8 },
@@ -46,14 +44,12 @@ export default function SubmissionSuccess({ onClose, onSendAnother }: Submission
     }
   }, []);
 
-  // Checkmark animation
   useEffect(() => {
     if (checkmarkRef.current) {
       const circle = checkmarkRef.current.querySelector('.checkmark-circle');
       const check = checkmarkRef.current.querySelector('.checkmark-check');
 
       if (circle && check) {
-        // Animate circle
         gsap.fromTo(
           circle,
           { strokeDashoffset: 283 },
@@ -65,7 +61,6 @@ export default function SubmissionSuccess({ onClose, onSendAnother }: Submission
           }
         );
 
-        // Animate checkmark
         gsap.fromTo(
           check,
           { strokeDashoffset: 100 },
@@ -80,12 +75,10 @@ export default function SubmissionSuccess({ onClose, onSendAnother }: Submission
     }
   }, []);
 
-  // Generate confetti particles
   useEffect(() => {
     const centerX = typeof window !== 'undefined' ? window.innerWidth / 2 : 500;
     const centerY = typeof window !== 'undefined' ? window.innerHeight / 2 : 400;
 
-    // Generate 40 particles
     const newParticles: Particle[] = Array.from({ length: 40 }, (_, i) => ({
       id: i,
       x: centerX,
@@ -101,7 +94,6 @@ export default function SubmissionSuccess({ onClose, onSendAnother }: Submission
 
     setParticles(newParticles);
 
-    // Physics loop
     let animationFrame: number;
     const animate = () => {
       setParticles(prev =>
@@ -121,12 +113,10 @@ export default function SubmissionSuccess({ onClose, onSendAnother }: Submission
       animationFrame = requestAnimationFrame(animate);
     };
 
-    // Start animation after 0.8s delay (after checkmark animation)
     const startTimer = setTimeout(() => {
       animate();
     }, 800);
 
-    // Stop after 2 seconds
     const stopTimer = setTimeout(() => {
       cancelAnimationFrame(animationFrame);
       setIsAnimating(false);
@@ -152,9 +142,7 @@ export default function SubmissionSuccess({ onClose, onSendAnother }: Submission
 
   return (
     <>
-      {/* Backdrop */}
       <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-        {/* Confetti Particles */}
         {isAnimating && (
           <div className="fixed inset-0 pointer-events-none z-40">
             {particles.map(p => (
@@ -177,21 +165,17 @@ export default function SubmissionSuccess({ onClose, onSendAnother }: Submission
           </div>
         )}
 
-        {/* Success Card */}
         <div
           ref={containerRef}
           className="relative max-w-md w-full p-8 md:p-12 rounded-3xl bg-white/10 backdrop-blur-2xl border border-white/20 shadow-2xl text-center z-50"
         >
-          {/* Gradient Glow */}
           <div className="absolute inset-0 bg-gradient-to-br from-green-500/30 via-transparent to-cyan-500/30 blur-3xl -z-10 rounded-3xl" />
 
-          {/* Animated Checkmark */}
           <svg
             ref={checkmarkRef}
             className="w-24 h-24 mx-auto mb-6"
             viewBox="0 0 100 100"
           >
-            {/* Circle */}
             <circle
               className="checkmark-circle"
               cx="50"
@@ -204,7 +188,6 @@ export default function SubmissionSuccess({ onClose, onSendAnother }: Submission
               strokeDashoffset="283"
             />
 
-            {/* Checkmark Path */}
             <path
               className="checkmark-check"
               d="M25,50 L40,65 L75,30"
@@ -218,7 +201,6 @@ export default function SubmissionSuccess({ onClose, onSendAnother }: Submission
             />
           </svg>
 
-          {/* Success Message */}
           <h2 className="text-4xl font-bold text-white mb-4 animate-fade-in-up" style={{ animationDelay: '1s' }}>
             Thank You!
           </h2>
@@ -228,7 +210,6 @@ export default function SubmissionSuccess({ onClose, onSendAnother }: Submission
             Check your email for a confirmation.
           </p>
 
-          {/* Action Buttons */}
           <div className="flex flex-col sm:flex-row gap-4 animate-fade-in-up" style={{ animationDelay: '1.4s' }}>
             <button
               onClick={handleSendAnother}
@@ -245,14 +226,12 @@ export default function SubmissionSuccess({ onClose, onSendAnother }: Submission
             </button>
           </div>
 
-          {/* Screen Reader Announcement */}
           <div className="sr-only" aria-live="polite" aria-atomic="true">
             Message sent successfully! We&apos;ll get back to you within 24 hours.
           </div>
         </div>
       </div>
 
-      {/* CSS Animations */}
       <style jsx>{`
         @keyframes fade-in-up {
           from {

@@ -32,7 +32,6 @@ export default function FormField({
   const [isFocused, setIsFocused] = useState(false);
   const [isShaking, setIsShaking] = useState(false);
 
-  // Trigger shake animation when error appears
   useEffect(() => {
     if (error) {
       setIsShaking(true);
@@ -55,7 +54,6 @@ export default function FormField({
 
   return (
     <div className="relative">
-      {/* Gradient border wrapper (visible on focus) */}
       <div
         className={`
           relative rounded-2xl transition-all duration-300
@@ -63,7 +61,6 @@ export default function FormField({
           ${isShaking ? 'animate-shake' : ''}
         `}
       >
-        {/* Inner container with liquid glass effect */}
         <div
           className={`
             relative rounded-2xl transition-all duration-300
@@ -71,7 +68,6 @@ export default function FormField({
             ${error ? 'border-2 border-red-400/60 shadow-sm shadow-red-500/10' : 'border border-white/14'}
           `}
         >
-          {/* Floating Label */}
           <label
             htmlFor={name}
             className={`
@@ -85,7 +81,6 @@ export default function FormField({
             {!required && <span className="text-white/35 ml-1 text-[0.7em]">"optional"</span>}
           </label>
 
-          {/* Input Field */}
           <input
             id={name}
             name={name}
@@ -107,7 +102,6 @@ export default function FormField({
             style={{ minHeight: '56px' }} // Touch-friendly height
           />
 
-          {/* Validation Icons */}
           <div className="absolute right-4 top-1/2 -translate-y-1/2">
             {error && (
               <svg
@@ -143,7 +137,6 @@ export default function FormField({
         </div>
       </div>
 
-      {/* Error Message */}
       {error && (
         <div
           id={`${name}-error`}
@@ -166,7 +159,6 @@ export default function FormField({
         </div>
       )}
 
-      {/* CSS Animations */}
       <style jsx>{`
         @keyframes shake {
           0%, 100% { transform: translateX(0); }

@@ -39,20 +39,16 @@ export default function ContactSection({ onBack }: ContactSectionProps) {
       `,
     }}>
 
-      {/* Fixed Header */}
       <Header
         variant="dark"
         onLogoClick={onBack}
-        onGetInTouch={() => window.location.href = 'mailto:hello@agenz.com'}
         onMenuClick={() => setMenuOpen(true)}
       />
 
-      {/* Main Content */}
       <main className="relative z-10 pt-32 pb-24 px-6 md:px-12 scrollable-page">
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-20 items-start">
 
-            {/* Left Column — Heading & Contact Info */}
             <div className="lg:pt-6">
               <p className="text-[#00e92c] text-sm font-semibold tracking-widest uppercase mb-4">Contact Us</p>
               <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-white leading-tight mb-6">
@@ -66,7 +62,6 @@ export default function ContactSection({ onBack }: ContactSectionProps) {
                 Ready to bring your vision to life? Fill out the form and we&apos;ll get back to you within 24 hours.
               </p>
 
-              {/* Contact Details */}
               <div className="space-y-5">
                 <div className="flex items-center gap-4">
                   <div className="w-12 h-12 rounded-2xl bg-white/8 border border-white/14 flex items-center justify-center flex-shrink-0">
@@ -105,7 +100,6 @@ export default function ContactSection({ onBack }: ContactSectionProps) {
                 </div>
               </div>
 
-              {/* Social Links */}
               <div className="mt-10 pt-8 border-t border-white/10">
                 <p className="text-white/40 text-xs uppercase tracking-wider mb-4">Follow Us</p>
                 <div className="flex items-center gap-4">
@@ -128,7 +122,6 @@ export default function ContactSection({ onBack }: ContactSectionProps) {
               </div>
             </div>
 
-            {/* Right Column — Form */}
             <div>
               <ContactForm onSuccess={handleSuccess} />
             </div>
@@ -138,7 +131,6 @@ export default function ContactSection({ onBack }: ContactSectionProps) {
 
       <Footer />
 
-      {/* Success Screen Overlay */}
       {submitSuccess && (
         <SubmissionSuccess
           onClose={handleCloseSuccess}
@@ -146,7 +138,6 @@ export default function ContactSection({ onBack }: ContactSectionProps) {
         />
       )}
 
-      {/* Menu Overlay */}
       <MenuOverlay
         isOpen={menuOpen}
         onClose={() => setMenuOpen(false)}

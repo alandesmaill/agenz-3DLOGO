@@ -23,7 +23,6 @@ export default async function Image() {
           fontFamily: "sans-serif",
         }}
       >
-        {/* Background radial glow */}
         <div
           style={{
             position: "absolute",
@@ -49,7 +48,6 @@ export default async function Image() {
           }}
         />
 
-        {/* Left accent bar — gradient green → cyan */}
         <div
           style={{
             position: "absolute",
@@ -61,9 +59,7 @@ export default async function Image() {
           }}
         />
 
-        {/* Main content */}
         <div style={{ display: "flex", flexDirection: "column", gap: "0px" }}>
-          {/* AGENZ wordmark */}
           <div
             style={{
               fontSize: "108px",
@@ -80,7 +76,6 @@ export default async function Image() {
             AGENZ
           </div>
 
-          {/* CREATIVE HUB subtitle */}
           <div
             style={{
               fontSize: "26px",
@@ -94,7 +89,6 @@ export default async function Image() {
             CREATIVE HUB
           </div>
 
-          {/* Separator line */}
           <div
             style={{
               width: "80px",
@@ -105,7 +99,6 @@ export default async function Image() {
             }}
           />
 
-          {/* Services tagline */}
           <div
             style={{
               fontSize: "22px",
@@ -118,7 +111,6 @@ export default async function Image() {
           </div>
         </div>
 
-        {/* Bottom strip */}
         <div
           style={{
             position: "absolute",
@@ -129,7 +121,6 @@ export default async function Image() {
             flexDirection: "column",
           }}
         >
-          {/* Gradient line */}
           <div
             style={{
               height: "2px",
@@ -137,7 +128,6 @@ export default async function Image() {
                 "linear-gradient(90deg, transparent 0%, #00e92c 30%, #00ffff 70%, transparent 100%)",
             }}
           />
-          {/* Domain strip */}
           <div
             style={{
               display: "flex",

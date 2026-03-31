@@ -19,7 +19,6 @@ export default function ServiceDetailHero({
 }: ServiceDetailHeroProps) {
   return (
     <div className="max-w-6xl mx-auto relative">
-      {/* Large service number overlay */}
       <div
         className="
           absolute -top-12 -left-2 sm:-left-4 md:-left-8 lg:-left-12
@@ -35,9 +34,7 @@ export default function ServiceDetailHero({
         {number}
       </div>
 
-      {/* Content container */}
       <div className="relative z-10">
-        {/* Title with AnimatedText */}
         <AnimatedText
           className="text-4xl md:text-5xl lg:text-6xl font-['Gibson'] font-bold text-white mb-4 tracking-tight"
           splitBy="chars"
@@ -48,12 +45,10 @@ export default function ServiceDetailHero({
           {title}
         </AnimatedText>
 
-        {/* Tagline */}
         <p className="text-2xl md:text-3xl font-['Gibson'] font-medium text-white/65 mb-6">
           {tagline}
         </p>
 
-        {/* Description */}
         <p className="text-lg md:text-xl font-['Gibson'] text-white/50 mb-12 max-w-4xl leading-relaxed">
           {description}
         </p>

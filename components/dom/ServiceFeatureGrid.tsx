@@ -21,19 +21,17 @@ export default function ServiceFeatureGrid({
   const iconRefs = useRef<(HTMLDivElement | null)[]>([]);
   const { isMobile } = useResponsive();
 
-  // Icon float animation (disabled on mobile)
   useEffect(() => {
     if (isMobile) return;
 
     const animations = iconRefs.current.map((icon, index) => {
       if (!icon) return null;
 
-      // Stagger the float timing for visual interest
       const delay = index * 0.15;
 
       return gsap.to(icon, {
         y: -8,
-        duration: 2 + (index % 3) * 0.3, // Vary duration slightly
+        duration: 2 + (index % 3) * 0.3,
         ease: 'power1.inOut',
         yoyo: true,
         repeat: -1,
@@ -65,7 +63,6 @@ export default function ServiceFeatureGrid({
             group
           "
         >
-          {/* Icon container with float animation */}
           <div className="mb-6">
             <div
               ref={(el) => { iconRefs.current[index] = el; }}
@@ -85,7 +82,6 @@ export default function ServiceFeatureGrid({
             </div>
           </div>
 
-          {/* Title */}
           <h3
             className="
               text-xl md:text-2xl
@@ -98,7 +94,6 @@ export default function ServiceFeatureGrid({
             {feature.title}
           </h3>
 
-          {/* Description */}
           <p className="font-['Gibson'] text-white/65 leading-relaxed">
             {feature.description}
           </p>
