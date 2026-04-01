@@ -14,7 +14,7 @@ export const metadata: Metadata = {
     "AGENZ is Kurdistan's leading creative agency — delivering bold advertising campaigns, cinematic video production, premium graphic design, and data-driven brand strategy. Based in Sulaymaniyah, serving clients across Iraq and beyond.",
 
   applicationName: "AGENZ",
-  authors: [{ name: "Aland Esmail" }],
+  authors: [{ name: "Aland Esmail", url: "https://www.linkedin.com/in/aland-esmail-8a3276348/" }],
   creator: "Aland Esmail",
   publisher: "AGENZ",
 
